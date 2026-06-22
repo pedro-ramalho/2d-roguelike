@@ -188,6 +188,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e4e7deb9006d964cafcd08cfdc6bd38, type: 2}
   - {fileID: 11400000, guid: e655f44ee3b7ac84c8f6253a46b4ce91, type: 2}
   - {fileID: 11400000, guid: 1493dbcf3161d0e47a2f17bdf846588b, type: 2}
+  WallTiles:
+  - {fileID: 11400000, guid: 2a5cfd588f6c97949b84505efd0ffcdd, type: 2}
+  - {fileID: 11400000, guid: 60a1924b38b128f42b762c9fed106331, type: 2}
+  - {fileID: 11400000, guid: 61cb8ff8ec3cc4a4ea512dfb1eb6d3e1, type: 2}
+  - {fileID: 11400000, guid: 3cb27945bcbc1094bba4251d6820290b, type: 2}
+  - {fileID: 11400000, guid: aabe485d5c380f94a97a3755eb14d353, type: 2}
+  - {fileID: 11400000, guid: c0575222978a2e94ebd51fa527291ebe, type: 2}
+  - {fileID: 11400000, guid: c7732b5ee5fba9b4dbe11600c51a963f, type: 2}
 --- !u!1 &1379060560
 GameObject:
   m_ObjectHideFlags: 0
