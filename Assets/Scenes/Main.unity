@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1160969520}
   - component: {fileID: 1160969519}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: BoardManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
