@@ -8,6 +8,7 @@ public class BoardManager : MonoBehaviour
     public int Width;
     public int Height;
     public Tile[] GroundTiles;
+    public Tile[] WallTiles;
 
     void Start()
     {
@@ -17,8 +18,19 @@ public class BoardManager : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {
-                int tileNumber = Random.Range(0, GroundTiles.Length);
-                m_Tilemap.SetTile(new Vector3Int(x, y, 0), GroundTiles[tileNumber]);
+                Tile tile;
+
+                bool isBorder = x == 0 || y == 0 || x == Width - 1 || y == Height - 1;
+                if (isBorder)
+                {
+                    tile = WallTiles[Random.Range(0, WallTiles.Length)];
+                }
+                else
+                {
+                    tile = GroundTiles[Random.Range(0, GroundTiles.Length)];
+                }
+
+                m_Tilemap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
     }
