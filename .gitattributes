@@ -1,2 +1,35 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Unity-serialized data files dominate by byte count but aren't source code
+*.unity      linguist-generated
+*.prefab     linguist-generated
+*.asset      linguist-generated
+*.mat        linguist-generated
+*.anim       linguist-generated
+*.controller linguist-generated
+*.meta       linguist-generated
+
+# Image formats
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+
+# Audio
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+
+# Video
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+
+# 3D models
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+
+# Unity-specific binaries
+*.unity filter=lfs diff=lfs merge=lfs -text  # optional — see note below
+*.prefab filter=lfs diff=lfs merge=lfs -text # optional
