@@ -11,6 +11,7 @@ public class TurnManager
 
     public void Tick()
     {
+        Debug.Log($"Turn {m_TurnCount}");
         m_TurnCount++;
     }
 }
