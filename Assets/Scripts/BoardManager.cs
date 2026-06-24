@@ -54,4 +54,14 @@ public class BoardManager : MonoBehaviour
     {
         return m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
     }
+
+    public CellData GetCellData(Vector2Int cellIndex)
+    {
+        if (cellIndex.x < 0 || cellIndex.x >= Width || cellIndex.y < 0 || cellIndex.y >= Height)
+        {
+            return null;
+        }
+
+        return m_BoardData[cellIndex.x, cellIndex.y];
+    }
 }
