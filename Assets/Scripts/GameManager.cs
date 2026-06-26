@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private int m_FoodAmount = 100;
+
     public TurnManager TurnManager { get; private set; }
     public BoardManager BoardManager;
     public PlayerController PlayerController;
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         TurnManager = new TurnManager();
+        TurnManager.OnTick += OnTurnHappen;
         
         BoardManager.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
@@ -33,5 +36,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnTurnHappen()
+    {
+        m_FoodAmount--;
+        Debug.Log($"Current amount of food: {m_FoodAmount}");
     }
 }
