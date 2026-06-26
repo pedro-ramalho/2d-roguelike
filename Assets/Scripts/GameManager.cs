@@ -49,4 +49,10 @@ public class GameManager : MonoBehaviour
         m_FoodAmount--;
         m_FoodLabel.text = $"Food: {m_FoodAmount}";
     }
+
+    public void ChangeFood(int amount)
+    {
+        m_FoodAmount += amount;
+        m_FoodLabel.text = $"Food: {m_FoodAmount}";
+    }
 }
