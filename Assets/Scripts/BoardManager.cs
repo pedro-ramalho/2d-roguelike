@@ -20,7 +20,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] GroundTiles;
     public Tile[] WallTiles;
     public PlayerController Player;
-    public GameObject FoodPrefab;
+    public GameObject[] FoodPrefabs;
 
     public void Init()
     {
@@ -76,15 +76,17 @@ public class BoardManager : MonoBehaviour
 
     void GenerateFood()
     {
-        int foodCount = 5;
+        int foodCount = Random.Range(2, 6);
         for (int i = 0; i < foodCount; i++)
         {
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
+            int randomCellIndex = Random.Range(0, m_EmptyCells.Count);
+            Vector2Int coord = m_EmptyCells[randomCellIndex];
 
-            m_EmptyCells.RemoveAt(randomIndex);
+            m_EmptyCells.RemoveAt(randomCellIndex);
             CellData data = m_BoardData[coord.x, coord.y];
-            GameObject newFood = Instantiate(FoodPrefab);
+
+            int randomFoodIndex = Random.Range(0, FoodPrefabs.Length);
+            GameObject newFood = Instantiate(FoodPrefabs[randomFoodIndex]);
             newFood.transform.position = CellToWorld(coord);
             data.ContainedObject = newFood;
         }
