@@ -7,7 +7,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool Passable;
-        public GameObject ContainedObject;    
+        public CellObject ContainedObject;    
     }
 
     private Tilemap m_Tilemap;
@@ -20,7 +20,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] GroundTiles;
     public Tile[] WallTiles;
     public PlayerController Player;
-    public GameObject[] FoodPrefabs;
+    public FoodObject[] FoodPrefabs;
 
     public void Init()
     {
@@ -86,7 +86,7 @@ public class BoardManager : MonoBehaviour
             CellData data = m_BoardData[coord.x, coord.y];
 
             int randomFoodIndex = Random.Range(0, FoodPrefabs.Length);
-            GameObject newFood = Instantiate(FoodPrefabs[randomFoodIndex]);
+            FoodObject newFood = Instantiate(FoodPrefabs[randomFoodIndex]);
             newFood.transform.position = CellToWorld(coord);
             data.ContainedObject = newFood;
         }
