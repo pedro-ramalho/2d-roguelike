@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e55feaf4620f38499b238aca456f9a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallObject
+  ObstacleTile: {fileID: 11400000, guid: 60a1924b38b128f42b762c9fed106331, type: 2}
