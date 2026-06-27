@@ -82,6 +82,16 @@ public class BoardManager : MonoBehaviour
         m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
     }
 
+    void AddObject(CellObject obj, Vector2Int coord)
+    {
+        CellData data = m_BoardData[coord.x, coord.y];
+
+        obj.transform.position = CellToWorld(coord);
+        data.ContainedObject = obj;
+
+        obj.Init(coord);
+    }
+
     void GenerateFood()
     {
         int foodCount = Random.Range(2, 6);
@@ -91,12 +101,11 @@ public class BoardManager : MonoBehaviour
             Vector2Int coord = m_EmptyCells[randomCellIndex];
 
             m_EmptyCells.RemoveAt(randomCellIndex);
-            CellData data = m_BoardData[coord.x, coord.y];
 
             int randomFoodIndex = Random.Range(0, FoodPrefabs.Length);
             FoodObject newFood = Instantiate(FoodPrefabs[randomFoodIndex]);
-            newFood.transform.position = CellToWorld(coord);
-            data.ContainedObject = newFood;
+            
+            AddObject(newFood, coord);
         }
     }
 
@@ -109,14 +118,9 @@ public class BoardManager : MonoBehaviour
             Vector2Int coord = m_EmptyCells[randomIndex];
 
             m_EmptyCells.RemoveAt(randomIndex);
-            CellData data = m_BoardData[coord.x, coord.y];
             WallObject newWall = Instantiate(WallPrefab);
-
-            newWall.Init(coord);
-
-            newWall.transform.position = CellToWorld(coord);
-
-            data.ContainedObject = newWall;
+            
+            AddObject(newWall, coord);  
         }
     }
 }
