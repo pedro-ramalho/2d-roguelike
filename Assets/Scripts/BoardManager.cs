@@ -21,6 +21,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] WallTiles;
     public PlayerController Player;
     public FoodObject[] FoodPrefabs;
+    public WallObject WallPrefab;
 
     public void Init()
     {
@@ -56,6 +57,8 @@ public class BoardManager : MonoBehaviour
         }
 
         m_EmptyCells.Remove(new Vector2Int(1, 1));
+
+        GenerateWall();
         GenerateFood();
     }
 
@@ -74,6 +77,26 @@ public class BoardManager : MonoBehaviour
         return m_BoardData[cellIndex.x, cellIndex.y];
     }
 
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
+    {
+        m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
+    }
+
+    public Tile GetCellTile(Vector2Int cellIndex)
+    {
+        return m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
+    }
+
+    void AddObject(CellObject obj, Vector2Int coord)
+    {
+        CellData data = m_BoardData[coord.x, coord.y];
+
+        obj.transform.position = CellToWorld(coord);
+        data.ContainedObject = obj;
+
+        obj.Init(coord);
+    }
+
     void GenerateFood()
     {
         int foodCount = Random.Range(2, 6);
@@ -83,12 +106,26 @@ public class BoardManager : MonoBehaviour
             Vector2Int coord = m_EmptyCells[randomCellIndex];
 
             m_EmptyCells.RemoveAt(randomCellIndex);
-            CellData data = m_BoardData[coord.x, coord.y];
 
             int randomFoodIndex = Random.Range(0, FoodPrefabs.Length);
             FoodObject newFood = Instantiate(FoodPrefabs[randomFoodIndex]);
-            newFood.transform.position = CellToWorld(coord);
-            data.ContainedObject = newFood;
+            
+            AddObject(newFood, coord);
+        }
+    }
+
+    void GenerateWall()
+    {
+        int wallCount = Random.Range(6, 10);
+        for (int i = 0; i < wallCount; i++)
+        {
+            int randomIndex = Random.Range(0, m_EmptyCells.Count);
+            Vector2Int coord = m_EmptyCells[randomIndex];
+
+            m_EmptyCells.RemoveAt(randomIndex);
+            WallObject newWall = Instantiate(WallPrefab);
+            
+            AddObject(newWall, coord);  
         }
     }
 }
