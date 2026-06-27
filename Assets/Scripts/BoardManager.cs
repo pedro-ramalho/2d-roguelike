@@ -77,6 +77,11 @@ public class BoardManager : MonoBehaviour
         return m_BoardData[cellIndex.x, cellIndex.y];
     }
 
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
+    {
+        m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
+    }
+
     void GenerateFood()
     {
         int foodCount = Random.Range(2, 6);
@@ -106,6 +111,8 @@ public class BoardManager : MonoBehaviour
             m_EmptyCells.RemoveAt(randomIndex);
             CellData data = m_BoardData[coord.x, coord.y];
             WallObject newWall = Instantiate(WallPrefab);
+
+            newWall.Init(coord);
 
             newWall.transform.position = CellToWorld(coord);
 

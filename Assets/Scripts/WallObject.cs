@@ -1,16 +1,14 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class WallObject : CellObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Tile ObstacleTile;
 
-    // Update is called once per frame
-    void Update()
+    public override void Init(Vector2Int cell)
     {
-        
+        base.Init(cell);
+
+        GameManager.Instance.BoardManager.SetCellTile(cell, ObstacleTile);
     }
 }
