@@ -11,4 +11,6 @@ public class WallObject : CellObject
 
         GameManager.Instance.BoardManager.SetCellTile(cell, ObstacleTile);
     }
+
+    public override bool PlayerWantsToEnter() => false;
 }
