@@ -82,6 +82,11 @@ public class BoardManager : MonoBehaviour
         m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
     }
 
+    public Tile GetCellTile(Vector2Int cellIndex)
+    {
+        return m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
+    }
+
     void AddObject(CellObject obj, Vector2Int coord)
     {
         CellData data = m_BoardData[coord.x, coord.y];
