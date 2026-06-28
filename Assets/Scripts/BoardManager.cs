@@ -22,6 +22,7 @@ public class BoardManager : MonoBehaviour
     public PlayerController Player;
     public FoodObject[] FoodPrefabs;
     public WallObject WallPrefab;
+    public ExitCellObject ExitCellPrefab;
 
     public void Init()
     {
@@ -57,6 +58,10 @@ public class BoardManager : MonoBehaviour
         }
 
         m_EmptyCells.Remove(new Vector2Int(1, 1));
+
+        Vector2Int endCoord = new Vector2Int(Width - 2, Height - 2);
+        AddObject(Instantiate(ExitCellPrefab), endCoord);
+        m_EmptyCells.Remove(endCoord);
 
         GenerateWall();
         GenerateFood();
