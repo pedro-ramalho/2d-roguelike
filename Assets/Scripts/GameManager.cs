@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     private int m_FoodAmount = 100;
+    private int m_CurrentLevel = 1;
     private Label m_FoodLabel;
 
     public TurnManager TurnManager { get; private set; }
@@ -24,24 +25,15 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
-        m_FoodLabel.text = $"Food: {m_FoodAmount}";
-
         TurnManager = new TurnManager();
         TurnManager.OnTick += OnTurnHappen;
-        
-        BoardManager.Init();
-        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
-    }
+        NewLevel();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
+        m_FoodLabel.text = $"Food: {m_FoodAmount}";
     }
 
     void OnTurnHappen()
@@ -54,5 +46,15 @@ public class GameManager : MonoBehaviour
     {
         m_FoodAmount += amount;
         m_FoodLabel.text = $"Food: {m_FoodAmount}";
+    }
+
+    public void NewLevel()
+    {
+        BoardManager.Clean();
+        BoardManager.Init();
+
+        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+
+        m_CurrentLevel++;
     }
 }
