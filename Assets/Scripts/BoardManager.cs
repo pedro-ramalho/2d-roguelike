@@ -92,6 +92,29 @@ public class BoardManager : MonoBehaviour
         return m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
     }
 
+    public void Clean()
+    {
+        if (m_BoardData == null)
+        {
+            return;
+        }
+
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                CellData cellData = m_BoardData[x, y];
+
+                if (cellData.ContainedObject != null)
+                {
+                    Destroy(cellData.ContainedObject.gameObject);
+                }
+
+                SetCellTile(new Vector2Int(x, y), null);
+            }
+        }
+    }
+
     void AddObject(CellObject obj, Vector2Int coord)
     {
         CellData data = m_BoardData[coord.x, coord.y];
