@@ -3,9 +3,11 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private int m_FoodAmount = 100;
-    private int m_CurrentLevel = 1;
+    private int m_FoodAmount = 5;
+    private int m_CurrentLevel = 0;
     private Label m_FoodLabel;
+    private Label m_GameOverMessage;
+    private VisualElement m_GameOverPanel;
 
     public TurnManager TurnManager { get; private set; }
     public BoardManager BoardManager;
@@ -34,18 +36,31 @@ public class GameManager : MonoBehaviour
 
         m_FoodLabel = UIDoc.rootVisualElement.Q<Label>("FoodLabel");
         m_FoodLabel.text = $"Food: {m_FoodAmount}";
+
+        m_GameOverPanel = UIDoc.rootVisualElement.Q<VisualElement>("GameOverPanel");
+        m_GameOverMessage = m_GameOverPanel.Q<Label>("GameOverMessage");
+
+        m_GameOverPanel.style.visibility = Visibility.Hidden;
     }
 
     void OnTurnHappen()
     {
-        m_FoodAmount--;
-        m_FoodLabel.text = $"Food: {m_FoodAmount}";
+        ChangeFood(-1);
     }
 
     public void ChangeFood(int amount)
     {
         m_FoodAmount += amount;
         m_FoodLabel.text = $"Food: {m_FoodAmount}";
+
+        if (m_FoodAmount <= 0)
+        {
+            PlayerController.GameOver();
+
+            string levelString = m_CurrentLevel > 1 ? "levels" : "level";
+            m_GameOverPanel.style.visibility = Visibility.Visible;
+            m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}";
+        }
     }
 
     public void NewLevel()
