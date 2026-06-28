@@ -88,6 +88,10 @@ public class PlayerController : MonoBehaviour
                     MoveTo(newCellTarget);
                     cellData.ContainedObject.PlayerEntered();
                 }
+                else
+                {
+                    m_Animator.SetTrigger("Attack");
+                }
             }
         }
     }
