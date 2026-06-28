@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
             string levelString = m_CurrentLevel > 1 ? "levels" : "level";
             m_GameOverPanel.style.visibility = Visibility.Visible;
-            m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}";
+            m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
         }
     }
 
@@ -71,5 +71,20 @@ public class GameManager : MonoBehaviour
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
         m_CurrentLevel++;
+    }
+
+    public void StartNewGame()
+    {
+        m_GameOverPanel.style.visibility = Visibility.Hidden;
+
+        m_CurrentLevel = 1;
+        m_FoodAmount = 20;
+        m_FoodLabel.text = "Food: " + m_FoodAmount;
+
+        BoardManager.Clean();
+        BoardManager.Init();
+
+        PlayerController.Init();
+        PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
     }
 }
