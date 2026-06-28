@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private int m_FoodAmount = 5;
+    private int m_FoodAmount = 20;
     private int m_CurrentLevel = 0;
     private Label m_FoodLabel;
     private Label m_GameOverMessage;
