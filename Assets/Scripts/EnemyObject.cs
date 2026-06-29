@@ -58,6 +58,55 @@ public class EnemyObject : CellObject
 
     void TurnHappened()
     {
-        
+        Vector2Int playerCell = GameManager.Instance.PlayerController.Cell;
+
+        int xDist = playerCell.x - m_Cell.x;
+        int yDist = playerCell.y - m_Cell.y;
+
+        int absXDist = Mathf.Abs(xDist);
+        int absYDist = Mathf.Abs(yDist);
+
+        bool isAdjacent = (xDist == 0 && absYDist == 1) ||  (yDist == 0 && absXDist == 1);
+        if (isAdjacent)
+        {
+            GameManager.Instance.ChangeFood(-FoodDamage);
+        }
+        else
+        {
+            if (absXDist > absYDist)
+            {
+                if (!TryMoveInX(xDist))
+                {
+                    TryMoveInY(yDist);
+                }
+            }
+            else
+            {
+                if (!TryMoveInY(yDist))
+                {
+                    TryMoveInX(xDist);
+                }
+            }
+        }
+    }
+
+    bool TryMoveInX(int xDist)
+    {
+        if (xDist > 0)
+        {
+            return MoveTo(m_Cell + Vector2Int.right);
+        }
+
+        return MoveTo(m_Cell + Vector2Int.left);
+    }
+
+    bool TryMoveInY(int yDist)
+    {
+        if (yDist > 0)
+        {
+            return MoveTo(m_Cell + Vector2Int.up);
+        }
+
+        return MoveTo(m_Cell + Vector2Int.down);
     }
 }
