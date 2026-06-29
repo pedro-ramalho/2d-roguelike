@@ -2,15 +2,7 @@ using UnityEngine;
 
 public class EnemyObject : CellObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public int FoodDamage = 5;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public override void PlayerEntered() => GameManager.Instance?.ChangeFood(-FoodDamage);
 }
