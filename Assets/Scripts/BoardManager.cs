@@ -23,6 +23,7 @@ public class BoardManager : MonoBehaviour
     public FoodObject[] FoodPrefabs;
     public WallObject WallPrefab;
     public ExitCellObject ExitCellPrefab;
+    public EnemyObject EnemyPrefab;
 
     public void Init()
     {
