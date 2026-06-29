@@ -3,14 +3,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float MoveSpeed = 3f;
-
     private BoardManager m_Board;
     private Vector2Int m_CellPosition;
     private bool m_IsGameOver;
     private Animator m_Animator;
     private bool m_IsMoving;
     private Vector3 m_MoveTarget;
+
+    public float MoveSpeed = 3f;
+    public Vector2Int Cell => m_CellPosition;
 
     private void Awake() => m_Animator = GetComponent<Animator>();
 
