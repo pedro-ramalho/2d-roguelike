@@ -13,7 +13,7 @@ public readonly struct DamageResult
     }
 }
 
-public class ICombatant
+public interface ICombatant
 {
     int MaxHP { get; }
     int HP { get; }
