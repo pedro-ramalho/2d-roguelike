@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CombatantState : MonoBehaviour
+public class CombatantState
 {
     private readonly List<StatusEffect> m_StatusEffects = new();
 
