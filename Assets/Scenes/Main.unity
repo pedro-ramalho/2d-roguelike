@@ -304,6 +304,7 @@ MonoBehaviour:
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
   WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   ExitCellPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
+  EnemyPrefab: {fileID: 7702165756767455364, guid: 50519bc32474670408738a752f910956, type: 3}
 --- !u!1 &1379060560
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,6 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8b4587051593547a45a9966ebc6792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  MoveSpeed: 3
 --- !u!95 &1653753612
 Animator:
   serializedVersion: 7
