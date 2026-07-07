@@ -4,7 +4,8 @@ using UnityEngine;
 public class CombatantState
 {
     private readonly List<StatusEffect> m_StatusEffects = new();
-
+    
+    public int Attack { get; private set; }
     public int MaxHP { get; }
     public int HP { get; private set; }
     public int Block { get; private set; }
