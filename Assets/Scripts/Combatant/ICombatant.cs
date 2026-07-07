@@ -24,4 +24,5 @@ public interface ICombatant
     void Heal(int amount);
     void AddBlock(int amount);
     void ApplyStatusEffect(StatusEffect effect);
+    void Attack(ICombatant target);
 }
