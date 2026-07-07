@@ -4,29 +4,20 @@ using UnityEngine.Tilemaps;
 public class EnemyObject : CellObject
 {
     private int m_HealthPoint;
-    private Vector3 m_MoveTarget;
 
     public int MaxHealth = 3;
     public int FoodDamage = 5;
-    public float MoveSpeed = 3f;
 
     void Awake() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
 
     void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TurnHappened;
-
-    void Update()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
-    }
 
     public override void Init(Vector2Int cell)
     {
         base.Init(cell);
 
         m_HealthPoint = MaxHealth;
-        m_MoveTarget = GameManager.Instance.BoardManager.CellToWorld(cell);
-        
-        transform.position = m_MoveTarget;
+        transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
 
     public override bool PlayerWantsToEnter()
@@ -61,7 +52,7 @@ public class EnemyObject : CellObject
 
         targetCell.ContainedObject = this;
         m_Cell = coord;
-        m_MoveTarget = board.CellToWorld(coord);
+        transform.position = board.CellToWorld(coord);
 
         return true;
     }
