@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class CombatantDamage : MonoBehaviour
+public static class CombatantDamage
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static DamageResult ApplyDamage(ICombatant attacker, ICombatant defender)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return defender.TakeDamage(attacker.Attack);
     }
 }
