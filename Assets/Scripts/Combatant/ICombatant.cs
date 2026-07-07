@@ -15,6 +15,7 @@ public readonly struct DamageResult
 
 public interface ICombatant
 {
+    int Attack { get; }
     int MaxHP { get; }
     int HP { get; }
     int Block { get; }
@@ -24,5 +25,4 @@ public interface ICombatant
     void Heal(int amount);
     void AddBlock(int amount);
     void ApplyStatusEffect(StatusEffect effect);
-    void Attack(ICombatant target);
 }

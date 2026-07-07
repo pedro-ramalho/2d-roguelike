@@ -10,6 +10,7 @@ public class EnemyObject : CellObject, ICombatant
 
     public int FoodDamage = 5;
 
+    public int Attack => m_State.Attack;
     public int MaxHP => m_State.MaxHP;
     public int HP => m_State.HP;
     public int Block => m_State.Block;

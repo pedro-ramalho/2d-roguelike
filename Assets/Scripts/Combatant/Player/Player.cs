@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, ICombatant
     private int m_MaxHP = 100;
     private CombatantState m_State;
 
+    public int Attack => m_State.Attack;
     public int MaxHP => m_MaxHP;
     public int HP => m_State.HP;
     public int Block => m_State.Block;
