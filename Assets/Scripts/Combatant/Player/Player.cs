@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, ICombatant
 {
-    [SerializeField] 
-    private int m_MaxHP = 100;
+    [SerializeField] private int m_MaxHP = 100;
+    [SerializeField] private int m_Attack = 10;
     private CombatantState m_State;
 
     public int Attack => m_State.Attack;
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, ICombatant
 
     void Awake()
     {
-        m_State = new CombatantState(m_MaxHP);
+        m_State = new CombatantState(m_MaxHP, m_Attack);
     }
 
     public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);

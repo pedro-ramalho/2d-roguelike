@@ -4,8 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class EnemyObject : CellObject, ICombatant
 {
-    [SerializeField]
-    private int m_MaxHP = 10;
+    [SerializeField] private int m_MaxHP = 10;
+    [SerializeField] private int m_Attack = 5;
     private CombatantState m_State;
 
     public int FoodDamage = 5;
@@ -20,7 +20,7 @@ public class EnemyObject : CellObject, ICombatant
 
     void Awake()
     {
-        m_State = new CombatantState(m_MaxHP);
+        m_State = new CombatantState(m_MaxHP, m_Attack);
 
         GameManager.Instance.TurnManager.OnTick += TurnHappened;
     }
