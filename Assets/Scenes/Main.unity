@@ -579,6 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653753610}
   - component: {fileID: 1653753609}
+  - component: {fileID: 1653753613}
   - component: {fileID: 1653753611}
   - component: {fileID: 1653753612}
   m_Layer: 0
@@ -674,7 +675,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8b4587051593547a45a9966ebc6792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  MoveSpeed: 3
 --- !u!95 &1653753612
 Animator:
   serializedVersion: 7
@@ -697,6 +697,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1653753613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce6d4c5e2150594597e7aa2a6275458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  m_MaxHP: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

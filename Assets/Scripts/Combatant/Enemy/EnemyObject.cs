@@ -1,40 +1,49 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class EnemyObject : CellObject
+public class EnemyObject : CellObject, ICombatant
 {
-    private int m_HealthPoint;
-    private Vector3 m_MoveTarget;
+    [SerializeField]
+    private int m_MaxHP = 10;
+    private CombatantState m_State;
 
-    public int MaxHealth = 3;
     public int FoodDamage = 5;
-    public float MoveSpeed = 3f;
 
-    void Awake() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    public int MaxHP => m_State.MaxHP;
+    public int HP => m_State.HP;
+    public int Block => m_State.Block;
+
+    public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+
+
+    void Awake()
+    {
+        m_State = new CombatantState(m_MaxHP);
+
+        GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    }
 
     void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TurnHappened;
-
-    void Update()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
-    }
 
     public override void Init(Vector2Int cell)
     {
         base.Init(cell);
 
-        m_HealthPoint = MaxHealth;
-        m_MoveTarget = GameManager.Instance.BoardManager.CellToWorld(cell);
-        
-        transform.position = m_MoveTarget;
+        transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
+
+    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
+    public void Heal(int amount) => m_State.Heal(amount);
+    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
 
     public override bool PlayerWantsToEnter()
     {
-        m_HealthPoint--;
+        m_State.TakeDamage(1);
 
         // Enemy is still not dead, so Player cannot enter the cell yet
-        if (m_HealthPoint > 0)
+        if (HP > 0)
         {
             return false;
         }
@@ -61,7 +70,7 @@ public class EnemyObject : CellObject
 
         targetCell.ContainedObject = this;
         m_Cell = coord;
-        m_MoveTarget = board.CellToWorld(coord);
+        transform.position = board.CellToWorld(coord);
 
         return true;
     }
