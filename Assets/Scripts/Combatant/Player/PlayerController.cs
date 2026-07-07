@@ -24,18 +24,21 @@ public class PlayerController : MonoBehaviour
 
     public void Init() => m_IsGameOver = false;
 
-    void Update()
+    private void Update()
     {
-        if (m_IsGameOver) { HandleRestartInput(); return; }
+        if (m_IsGameOver) 
+        { 
+            HandleRestartInput(); 
+            
+            return; 
+        }
+        
         HandleMovementInput();
     }
 
     private void HandleRestartInput()
     {
-        if (m_InputActions.Player.Restart.WasPressedThisFrame())
-        {
-            GameManager.Instance.StartNewGame();
-        }
+        if (m_InputActions.Player.Restart.WasPressedThisFrame()) GameManager.Instance.StartNewGame();
     }
 
     private Vector2Int GetInputDirection()

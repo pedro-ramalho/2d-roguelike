@@ -1,14 +1,28 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class EnemyObject : CellObject
+public class EnemyObject : CellObject, ICombatant
 {
-    private int m_HealthPoint;
+    [SerializeField]
+    private int m_MaxHP = 10;
+    private CombatantState m_State;
 
-    public int MaxHealth = 3;
     public int FoodDamage = 5;
 
-    void Awake() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    public int MaxHP => m_State.MaxHP;
+    public int HP => m_State.HP;
+    public int Block => m_State.Block;
+
+    public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+
+
+    void Awake()
+    {
+        m_State = new CombatantState(m_MaxHP);
+
+        GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    }
 
     void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TurnHappened;
 
@@ -16,16 +30,20 @@ public class EnemyObject : CellObject
     {
         base.Init(cell);
 
-        m_HealthPoint = MaxHealth;
         transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
 
+    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
+    public void Heal(int amount) => m_State.Heal(amount);
+    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
+
     public override bool PlayerWantsToEnter()
     {
-        m_HealthPoint--;
+        m_State.TakeDamage(1);
 
         // Enemy is still not dead, so Player cannot enter the cell yet
-        if (m_HealthPoint > 0)
+        if (HP > 0)
         {
             return false;
         }
