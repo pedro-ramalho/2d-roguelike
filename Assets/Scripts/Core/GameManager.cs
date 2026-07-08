@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public BoardManager BoardManager;
     public PlayerController PlayerController;
     public UIDocument UIDoc;
+    public int FoodAmount => m_FoodAmount;
 
     public static GameManager Instance { get; private set; }
 

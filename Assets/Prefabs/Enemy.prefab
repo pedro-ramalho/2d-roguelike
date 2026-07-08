@@ -127,6 +127,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e19c4665eefdf4ea751dcd190e80e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyObject
-  m_MaxHP: 3
+  m_MaxHP: 1000
   m_Attack: 5
-  FoodDamage: 2

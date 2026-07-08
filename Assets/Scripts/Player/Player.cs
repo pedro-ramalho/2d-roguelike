@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, ICombatant
     void Awake()
     {
         m_State = new CombatantState(m_MaxHP, m_Attack);
+        m_State.AddBlock(7);
     }
 
     public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);

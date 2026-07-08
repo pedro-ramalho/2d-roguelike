@@ -4,8 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class EnemyObject : CellObject, ICombatant
 {
-    [SerializeField] private int m_MaxHP = 10;
-    [SerializeField] private int m_Attack = 5;
+    [SerializeField] private int m_MaxHP = 1000;
+    [SerializeField] private int m_Attack = 2;
     private CombatantState m_State;
 
     public int Attack => m_State.Attack;

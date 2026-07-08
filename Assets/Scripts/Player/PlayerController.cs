@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
         }
         
         HandleMovementInput();
+
+        Debug.Log($"Player HP: {m_Combatant.HP}/{m_Combatant.MaxHP} | Block: {m_Combatant.Block} | Food: {GameManager.Instance.FoodAmount}");
     }
 
     private void HandleRestartInput()
