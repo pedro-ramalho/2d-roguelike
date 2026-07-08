@@ -15,6 +15,7 @@ public readonly struct DamageResult
 
 public interface ICombatant
 {
+    int Attack { get; }
     int MaxHP { get; }
     int HP { get; }
     int Block { get; }

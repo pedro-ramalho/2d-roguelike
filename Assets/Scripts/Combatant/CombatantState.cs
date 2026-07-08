@@ -4,16 +4,18 @@ using UnityEngine;
 public class CombatantState
 {
     private readonly List<StatusEffect> m_StatusEffects = new();
-
+    
+    public int Attack { get; }
     public int MaxHP { get; }
     public int HP { get; private set; }
     public int Block { get; private set; }
     public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
-    public CombatantState(int maxHP)
+    public CombatantState(int maxHP, int attack)
     {
         MaxHP = maxHP;
         HP = maxHP;
+        Attack = attack;
     }
 
     public DamageResult TakeDamage(int amount)
