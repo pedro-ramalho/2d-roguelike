@@ -8,8 +8,6 @@ public class EnemyObject : CellObject, ICombatant
     [SerializeField] private int m_Attack = 5;
     private CombatantState m_State;
 
-    public int FoodDamage = 5;
-
     public int Attack => m_State.Attack;
     public int MaxHP => m_State.MaxHP;
     public int HP => m_State.HP;
@@ -72,7 +70,7 @@ public class EnemyObject : CellObject, ICombatant
         bool isAdjacent = (xDist == 0 && absYDist == 1) ||  (yDist == 0 && absXDist == 1);
         if (isAdjacent)
         {
-            GameManager.Instance.ChangeFood(-FoodDamage);
+            CombatantDamage.ApplyDamage(this, GameManager.Instance.PlayerController.Combatant);
         }
         else
         {
