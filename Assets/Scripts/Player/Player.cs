@@ -29,4 +29,5 @@ public class Player : MonoBehaviour, ICombatant
     public void Heal(int amount) => m_State.Heal(amount);
     public void AddBlock(int amount) => m_State.AddBlock(amount);
     public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
+    public void ChangeStamina(int amount) => m_Stamina = Mathf.Clamp(m_Stamina + amount, 0, m_MaxStamina);
 }
