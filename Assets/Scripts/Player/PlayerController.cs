@@ -19,11 +19,17 @@ public class PlayerController : MonoBehaviour
     {
         m_InputActions = new PlayerInputActions();
         m_Combatant = GetComponent<Player>();
+
+        GameManager.Instance.TurnManager.OnTick += TurnHappened;
     }
 
     private void OnEnable() => m_InputActions.Player.Enable();
     private void OnDisable() => m_InputActions.Player.Disable();
-    private void OnDestroy() => m_InputActions.Dispose();
+    private void OnDestroy()
+    {
+        m_InputActions.Dispose();
+        GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+    } 
 
     public void Init() => m_IsGameOver = false;
 
@@ -96,6 +102,8 @@ public class PlayerController : MonoBehaviour
             cellData.ContainedObject.PlayerEntered();
         }
     }
+
+    private void TurnHappened() => m_Combatant.ChangeStamina(-1);
 
     public void GameOver() => m_IsGameOver = true;
 
