@@ -6,16 +6,19 @@ public class PlayerController : MonoBehaviour
     // References
     private BoardManager m_Board;
     private PlayerInputActions m_InputActions;
+    private Player m_Combatant;
 
     // State
     private Vector2Int m_CellPosition;
     private bool m_IsGameOver;
-
+    
+    public Player Combatant => m_Combatant;
     public Vector2Int Cell => m_CellPosition;
 
     private void Awake()
     {
         m_InputActions = new PlayerInputActions();
+        m_Combatant = GetComponent<Player>();
     }
 
     private void OnEnable() => m_InputActions.Player.Enable();
@@ -65,6 +68,18 @@ public class PlayerController : MonoBehaviour
         if (cellData.ContainedObject == null)
         {
             MoveTo(target);
+        }
+        else if (cellData.ContainedObject is ICombatant enemy)
+        {
+            CombatantDamage.ApplyDamage(m_Combatant, enemy);
+            
+            // Enemy has been killed, destroy it and move the Player
+            if (enemy.HP <= 0)
+            {
+                Destroy(cellData.ContainedObject.gameObject);
+                cellData.ContainedObject = null;
+                MoveTo(target);
+            }
         }
         else if (cellData.ContainedObject.PlayerWantsToEnter())
         {

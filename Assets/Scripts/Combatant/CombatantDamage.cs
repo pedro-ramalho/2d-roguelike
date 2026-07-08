@@ -12,6 +12,8 @@ public static class CombatantDamage
         foreach (StatusEffect status in defender.StatusEffects)
             damage = status.ModifyIncomingDamage(damage);
 
-        return defender.TakeDamage(Mathf.FloorToInt(damage));
+        int finalDamage = Mathf.Max(0, Mathf.FloorToInt(damage));
+        
+        return defender.TakeDamage(finalDamage);
     }
 }

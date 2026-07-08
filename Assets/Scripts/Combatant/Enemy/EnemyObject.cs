@@ -39,23 +39,6 @@ public class EnemyObject : CellObject, ICombatant
     public void AddBlock(int amount) => m_State.AddBlock(amount);
     public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
 
-    public override bool PlayerWantsToEnter()
-    {
-        m_State.TakeDamage(1);
-
-        // Enemy is still not dead, so Player cannot enter the cell yet
-        if (HP > 0)
-        {
-            return false;
-        }
-
-        Destroy(gameObject);
-
-        return true;
-    }
-
-    public override void PlayerEntered() => GameManager.Instance?.ChangeFood(-FoodDamage);
-
     bool MoveTo(Vector2Int coord)
     {
         BoardManager board = GameManager.Instance.BoardManager;
