@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour, ICombatant
     public int Stamina => m_Stamina;
     public int Block => m_State.Block;
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+    public event Action Depleted;
 
     void Awake()
     {
@@ -29,5 +31,13 @@ public class Player : MonoBehaviour, ICombatant
     public void Heal(int amount) => m_State.Heal(amount);
     public void AddBlock(int amount) => m_State.AddBlock(amount);
     public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
-    public void ChangeStamina(int amount) => m_Stamina = Mathf.Clamp(m_Stamina + amount, 0, m_MaxStamina);
+    public void ChangeStamina(int amount) {
+        int previous = m_Stamina;
+
+        m_Stamina = Mathf.Clamp(m_Stamina + amount, 0, m_MaxStamina);
+        if (previous > 0 && m_Stamina == 0)
+        {
+            Depleted?.Invoke();
+        }
+    }
 }

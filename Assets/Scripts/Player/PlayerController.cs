@@ -15,12 +15,11 @@ public class PlayerController : MonoBehaviour
     public Player Combatant => m_Combatant;
     public Vector2Int Cell => m_CellPosition;
 
+    private void Start() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
     private void Awake()
     {
         m_InputActions = new PlayerInputActions();
         m_Combatant = GetComponent<Player>();
-
-        GameManager.Instance.TurnManager.OnTick += TurnHappened;
     }
 
     private void OnEnable() => m_InputActions.Player.Enable();
@@ -28,7 +27,11 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         m_InputActions.Dispose();
-        GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TurnManager.OnTick -= TurnHappened;        
+        }
     } 
 
     public void Init() => m_IsGameOver = false;
@@ -44,7 +47,7 @@ public class PlayerController : MonoBehaviour
         
         HandleMovementInput();
 
-        Debug.Log($"Player HP: {m_Combatant.HP}/{m_Combatant.MaxHP} | Block: {m_Combatant.Block} | Food: {GameManager.Instance.FoodAmount}");
+        Debug.Log($"Player HP: {m_Combatant.HP}/{m_Combatant.MaxHP} | Block: {m_Combatant.Block} | Stamina: {m_Combatant.Stamina}/{m_Combatant.MaxStamina}");
     }
 
     private void HandleRestartInput()
