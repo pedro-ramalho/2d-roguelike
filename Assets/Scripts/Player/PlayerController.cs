@@ -54,6 +54,21 @@ public class PlayerController : MonoBehaviour
         return Vector2Int.zero;
     }
 
+    private void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
+    {
+        CombatantDamage.ApplyDamage(m_Combatant, enemy);
+
+        // Enemy has been killed, destroy it and move the Player
+        if (enemy.HP <= 0)
+        {
+            Destroy(cell.ContainedObject.gameObject);
+            
+            cell.ContainedObject = null;
+            
+            MoveTo(target);
+        }
+    }
+
     private void HandleMovementInput()
     {
         Vector2Int direction = GetInputDirection();
@@ -71,15 +86,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (cellData.ContainedObject is ICombatant enemy)
         {
-            CombatantDamage.ApplyDamage(m_Combatant, enemy);
-            
-            // Enemy has been killed, destroy it and move the Player
-            if (enemy.HP <= 0)
-            {
-                Destroy(cellData.ContainedObject.gameObject);
-                cellData.ContainedObject = null;
-                MoveTo(target);
-            }
+            HandleEnemyDamage(enemy, target, cellData);
         }
         else if (cellData.ContainedObject.PlayerWantsToEnter())
         {
