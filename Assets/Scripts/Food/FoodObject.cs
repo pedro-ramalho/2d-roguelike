@@ -3,10 +3,10 @@ using UnityEngine;
 public class FoodObject : CellObject
 {
     public int Points = 5;
-    public override void PlayerEntered()
+    public override void PlayerEntered(Player player)
     {
         Destroy(gameObject);
 
-        GameManager.Instance?.ChangeFood(Points);
+        player.ChangeStamina(Points);
     }
 }

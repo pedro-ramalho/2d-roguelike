@@ -9,7 +9,7 @@ public class CellObject : MonoBehaviour
         m_Cell = cell;
     }
 
-    public virtual void PlayerEntered() {}
+    public virtual void PlayerEntered(Player player) {}
 
     public virtual bool PlayerWantsToEnter() => true;
 }

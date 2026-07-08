@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
         else if (cellData.ContainedObject.PlayerWantsToEnter())
         {
             MoveTo(target);
-            cellData.ContainedObject.PlayerEntered();
+            cellData.ContainedObject.PlayerEntered(m_Combatant);
         }
     }
 
