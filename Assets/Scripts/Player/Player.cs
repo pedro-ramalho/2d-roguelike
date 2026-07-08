@@ -19,13 +19,7 @@ public class Player : MonoBehaviour, ICombatant
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
     public event Action Depleted;
 
-    void Awake()
-    {
-        m_State = new CombatantState(m_MaxHP, m_Attack);
-        m_State.AddBlock(7);
-
-        m_Stamina = m_MaxStamina;
-    }
+    void Awake() => Init();
 
     public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
     public void Heal(int amount) => m_State.Heal(amount);
@@ -39,5 +33,14 @@ public class Player : MonoBehaviour, ICombatant
         {
             Depleted?.Invoke();
         }
+    }
+
+    public void ResetState() => Init();
+
+    private void Init()
+    {
+        m_State = new CombatantState(m_MaxHP, m_Attack);
+        m_State.AddBlock(7);
+        m_Stamina = m_MaxStamina;
     }
 }

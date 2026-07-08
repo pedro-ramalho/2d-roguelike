@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
         BoardManager.Clean();
         BoardManager.Init();
 
+        PlayerController.Combatant.ResetState();
         PlayerController.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
     }
