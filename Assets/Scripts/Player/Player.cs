@@ -40,7 +40,6 @@ public class Player : MonoBehaviour, ICombatant
     private void Init()
     {
         m_State = new CombatantState(m_MaxHP, m_Attack);
-        m_State.AddBlock(7);
         m_Stamina = m_MaxStamina;
     }
 }
