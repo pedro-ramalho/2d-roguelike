@@ -709,7 +709,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce6d4c5e2150594597e7aa2a6275458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  m_MaxHP: 100
+  m_MaxHP: 5
+  m_MaxStamina: 100
+  m_Attack: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
