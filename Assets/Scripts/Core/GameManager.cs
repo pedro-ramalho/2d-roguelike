@@ -61,8 +61,9 @@ public class GameManager : MonoBehaviour
         PlayerController.GameOver();
 
         string levelString = m_CurrentLevel > 1 ? "levels" : "level";
+        string reasonString = reason == GameOverReason.Depleted ? "You ran out of stamina!" : "You were defeated!";
         m_GameOverPanel.style.visibility = Visibility.Visible;
-        m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
+        m_GameOverMessage.text = $"Game Over! {reasonString}\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
         m_GameOverReason = reason;
     }
 
