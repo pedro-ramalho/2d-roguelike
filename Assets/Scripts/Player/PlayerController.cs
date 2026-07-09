@@ -46,8 +46,6 @@ public class PlayerController : MonoBehaviour
         }
         
         HandleMovementInput();
-
-        Debug.Log($"Player HP: {m_Combatant.HP}/{m_Combatant.MaxHP} | Block: {m_Combatant.Block} | Stamina: {m_Combatant.Stamina}/{m_Combatant.MaxStamina}");
     }
 
     private void HandleRestartInput()

@@ -18,10 +18,23 @@ public class Player : MonoBehaviour, ICombatant
     public int Block => m_State.Block;
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
     public event Action Depleted;
+    public event Action Defeated;
 
     void Awake() => Init();
 
-    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
+    public DamageResult TakeDamage(int amount) 
+    {
+        int previousHP = m_State.HP;
+
+        DamageResult result = m_State.TakeDamage(amount);
+
+        if (previousHP > 0 && m_State.HP == 0)
+        {
+            Defeated?.Invoke();
+        }
+
+        return result;
+    }
     public void Heal(int amount) => m_State.Heal(amount);
     public void AddBlock(int amount) => m_State.AddBlock(amount);
     public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);

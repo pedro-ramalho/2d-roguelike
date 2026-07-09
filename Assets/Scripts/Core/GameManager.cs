@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum GameOverReason { Depleted, Defeated }
+
 public class GameManager : MonoBehaviour
 {
     private int m_CurrentLevel = 0;
