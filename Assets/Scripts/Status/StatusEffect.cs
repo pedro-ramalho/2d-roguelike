@@ -19,6 +19,8 @@ public abstract class StatusEffect
         Duration = duration;
     }
 
+    public bool IsDepleted => Duration <= 0;
+
     public virtual float ModifyOutgoingDamage(float damage) => damage;
     public virtual float ModifyIncomingDamage(float damage) => damage;
     public virtual void OnTurnEnd(ICombatant combatant) => Duration--;

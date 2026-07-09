@@ -18,6 +18,16 @@ public class CombatantState
         Attack = attack;
     }
 
+    public void TickStatusEffects(ICombatant owner)
+    {
+        foreach (StatusEffect effect in m_StatusEffects)
+        {
+            effect.OnTurnEnd(owner);
+        }
+
+        m_StatusEffects.RemoveAll(e => e.IsDepleted);
+    }
+
     public DamageResult TakeDamage(int amount)
     {
         int blockLost = Mathf.Min(Block, amount);
@@ -33,5 +43,20 @@ public class CombatantState
     
     public void AddBlock(int amount) => Block = Mathf.Max(Block + amount, 0);
 
-    public void ApplyStatusEffect(StatusEffect effect) =>m_StatusEffects.Add(effect);
+    public void ApplyStatusEffect(StatusEffect effect) 
+    {
+        foreach (StatusEffect sf in m_StatusEffects)
+        {
+            if (sf.Type == effect.Type)
+            {
+                sf.Duration += effect.Duration;
+                
+                return;
+            }    
+        }
+
+        m_StatusEffects.Add(effect); 
+    }
+
+    public void RemoveDepletedStatusEffects() => m_StatusEffects.RemoveAll(StatusEffect => StatusEffect.IsDepleted);
 }

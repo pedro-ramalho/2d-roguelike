@@ -20,7 +20,28 @@ public class Player : MonoBehaviour, ICombatant
     public event Action Depleted;
     public event Action Defeated;
 
-    void Awake() => Init();
+    void Awake()
+    {
+        Init();
+    
+        GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
+    }
+
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
+        }
+    }
+
+    void TickStatusEffects() => m_State.TickStatusEffects(this);
+
+    void Init()
+    {
+        m_State = new CombatantState(m_MaxHP, m_Attack);
+        m_Stamina = m_MaxStamina;        
+    }
 
     public DamageResult TakeDamage(int amount) 
     {
@@ -50,9 +71,7 @@ public class Player : MonoBehaviour, ICombatant
 
     public void ResetState() => Init();
 
-    private void Init()
-    {
-        m_State = new CombatantState(m_MaxHP, m_Attack);
-        m_Stamina = m_MaxStamina;
-    }
+    public void RemoveDepletedStatusEffects() => m_State.RemoveDepletedStatusEffects();
+
+
 }
