@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private Label m_FoodLabel;
     private Label m_GameOverMessage;
     private VisualElement m_GameOverPanel;
+    private GameOverReason m_GameOverReason;    
 
     public TurnManager TurnManager { get; private set; }
     public BoardManager BoardManager;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel.style.visibility = Visibility.Hidden;
 
         PlayerController.Combatant.Depleted += OnPlayerDepleted;
+        PlayerController.Combatant.Defeated += OnPlayerDefeated;
     }
 
     void OnDestroy()
@@ -48,7 +50,18 @@ public class GameManager : MonoBehaviour
         if (PlayerController != null && PlayerController.Combatant != null)
         {
             PlayerController.Combatant.Depleted -= OnPlayerDepleted;
+            PlayerController.Combatant.Defeated -= OnPlayerDefeated;
         }
+    }
+
+    private void OnPlayerDefeated()
+    {
+        PlayerController.GameOver();
+
+        string levelString = m_CurrentLevel > 1 ? "levels" : "level";
+        m_GameOverPanel.style.visibility = Visibility.Visible;
+        m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
+        m_GameOverReason = GameOverReason.Defeated;
     }
 
     private void OnPlayerDepleted()
@@ -58,6 +71,7 @@ public class GameManager : MonoBehaviour
         string levelString = m_CurrentLevel > 1 ? "levels" : "level";
         m_GameOverPanel.style.visibility = Visibility.Visible;
         m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
+        m_GameOverReason = GameOverReason.Depleted;
     }
 
     public void NewLevel()
