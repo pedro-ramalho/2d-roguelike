@@ -28,7 +28,7 @@ public class Player : MonoBehaviour, ICombatant
 
         DamageResult result = m_State.TakeDamage(amount);
 
-        if (previousHP > 0 && m_State.HP == 0)
+        if (previousHP > 0 && m_State.HP <= 0)
         {
             Defeated?.Invoke();
         }

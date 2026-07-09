@@ -54,24 +54,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnPlayerDefeated()
+    private void OnPlayerDefeated() => TriggerGameOver(GameOverReason.Defeated);
+    private void OnPlayerDepleted() => TriggerGameOver(GameOverReason.Depleted);
+    private void TriggerGameOver(GameOverReason reason)
     {
         PlayerController.GameOver();
 
         string levelString = m_CurrentLevel > 1 ? "levels" : "level";
         m_GameOverPanel.style.visibility = Visibility.Visible;
         m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
-        m_GameOverReason = GameOverReason.Defeated;
-    }
-
-    private void OnPlayerDepleted()
-    {
-        PlayerController.GameOver();
-
-        string levelString = m_CurrentLevel > 1 ? "levels" : "level";
-        m_GameOverPanel.style.visibility = Visibility.Visible;
-        m_GameOverMessage.text = $"Game Over!\n\nYou traveled through {m_CurrentLevel} {levelString}.\n\nPress Enter to restart.";
-        m_GameOverReason = GameOverReason.Depleted;
+        m_GameOverReason = reason;
     }
 
     public void NewLevel()
