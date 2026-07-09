@@ -41,6 +41,14 @@ public class GameManager : MonoBehaviour
         PlayerController.Combatant.Depleted += OnPlayerDepleted;
     }
 
+    void OnDestroy()
+    {
+        if (PlayerController != null && PlayerController.Combatant != null)
+        {
+            PlayerController.Combatant.Depleted -= OnPlayerDepleted;
+        }
+    }
+
     private void OnPlayerDepleted()
     {
         PlayerController.GameOver();
@@ -65,7 +73,7 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel.style.visibility = Visibility.Hidden;
 
         m_CurrentLevel = 1;
-        m_FoodLabel.text = "Food: ";
+        m_FoodLabel.text = $"Stamina: {PlayerController.Combatant.Stamina}/{PlayerController.Combatant.MaxStamina}";
 
         BoardManager.Clean();
         BoardManager.Init();
