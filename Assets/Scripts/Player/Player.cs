@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, ICombatant
     public int Stamina => m_Stamina;
     public int Block => m_State.Block;
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+
+    public bool IsStunned => m_State.IsStunned;
     
     // Events
     public event Action Depleted;
@@ -70,8 +72,7 @@ public class Player : MonoBehaviour, ICombatant
     public void AddBlock(int amount) => m_State.AddBlock(amount);
     public void ApplyStatusEffect(StatusEffect effect)
     {
-        m_State.ApplyStatusEffect(effect);
-        effect.OnApplied(this);
+        m_State.ApplyStatusEffect(effect, this);
         StatusApplied?.Invoke(effect);
     }
 

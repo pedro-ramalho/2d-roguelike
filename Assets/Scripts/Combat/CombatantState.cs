@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatantState
@@ -10,6 +11,8 @@ public class CombatantState
     public int HP { get; private set; }
     public int Block { get; private set; }
     public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
+
+    public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
 
     public CombatantState(int maxHP, int attack)
     {

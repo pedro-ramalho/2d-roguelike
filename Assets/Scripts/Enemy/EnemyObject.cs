@@ -15,6 +15,8 @@ public class EnemyObject : CellObject, ICombatant
 
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
 
+    public bool IsStunned => m_State.IsStunned;
+
 
     void Awake()
     {
@@ -66,6 +68,11 @@ public class EnemyObject : CellObject, ICombatant
 
     void TurnHappened()
     {
+        if (IsStunned)
+        {
+            return;
+        }
+        
         Vector2Int playerCell = GameManager.Instance.PlayerController.Cell;
 
         int xDist = playerCell.x - m_Cell.x;

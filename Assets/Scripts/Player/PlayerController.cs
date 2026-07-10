@@ -89,6 +89,12 @@ public class PlayerController : MonoBehaviour
 
         GameManager.Instance.TurnManager.Tick();
 
+        if (m_Combatant.IsStunned)
+        {
+            GameManager.Instance.TurnManager.Tick();
+            return;
+        }
+
         if (cellData.ContainedObject == null)
         {
             MoveTo(target);
