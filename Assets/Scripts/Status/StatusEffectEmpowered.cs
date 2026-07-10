@@ -4,7 +4,7 @@ public class StatusEffectEmpowered : StatusEffect
 {
     private readonly float m_EmpoweredDamageMultiplier = 1.5f;
     
-    public StatusEffectEmpowered(StatusEffectType type, int duration) : base(StatusEffectType.Empowered, duration)
+    public StatusEffectEmpowered(int duration) : base(StatusEffectType.Empowered, duration)
     { }
 
     public override float ModifyOutgoingDamage(float damage) => damage * m_EmpoweredDamageMultiplier;

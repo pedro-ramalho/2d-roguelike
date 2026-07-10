@@ -18,7 +18,7 @@ public abstract class StatusEffect
         Type = type;
         Duration = duration;
     }
-
+    
     public bool IsDepleted => Duration <= 0;
 
     public virtual float ModifyOutgoingDamage(float damage) => damage;
