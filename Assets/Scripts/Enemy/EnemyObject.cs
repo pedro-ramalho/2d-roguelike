@@ -1,51 +1,51 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class EnemyObject : CellObject
+public class EnemyObject : CellObject, ICombatant
 {
-    private int m_HealthPoint;
-    private Vector3 m_MoveTarget;
+    [SerializeField] private int m_MaxHP = 1000;
+    [SerializeField] private int m_Attack = 2;
+    private CombatantState m_State;
 
-    public int MaxHealth = 3;
-    public int FoodDamage = 5;
-    public float MoveSpeed = 3f;
+    public int Attack => m_State.Attack;
+    public int MaxHP => m_State.MaxHP;
+    public int HP => m_State.HP;
+    public int Block => m_State.Block;
 
-    void Awake() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
 
-    void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+    public bool IsStunned => m_State.IsStunned;
 
-    void Update()
+
+    void Awake()
     {
-        transform.position = Vector3.MoveTowards(transform.position, m_MoveTarget, MoveSpeed * Time.deltaTime);
+        m_State = new CombatantState(m_MaxHP, m_Attack);
+
+        GameManager.Instance.TurnManager.OnTick += TurnHappened;
+        GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
     }
+
+    void OnDestroy()
+    {
+        GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+        GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
+    }
+
+    void TickStatusEffects() => m_State.TickStatusEffects(this);
 
     public override void Init(Vector2Int cell)
     {
         base.Init(cell);
 
-        m_HealthPoint = MaxHealth;
-        m_MoveTarget = GameManager.Instance.BoardManager.CellToWorld(cell);
-        
-        transform.position = m_MoveTarget;
+        transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
 
-    public override bool PlayerWantsToEnter()
-    {
-        m_HealthPoint--;
-
-        // Enemy is still not dead, so Player cannot enter the cell yet
-        if (m_HealthPoint > 0)
-        {
-            return false;
-        }
-
-        Destroy(gameObject);
-
-        return true;
-    }
-
-    public override void PlayerEntered() => GameManager.Instance?.ChangeFood(-FoodDamage);
-
+    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
+    public void Heal(int amount) => m_State.Heal(amount);
+    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
+    
     bool MoveTo(Vector2Int coord)
     {
         BoardManager board = GameManager.Instance.BoardManager;
@@ -61,13 +61,18 @@ public class EnemyObject : CellObject
 
         targetCell.ContainedObject = this;
         m_Cell = coord;
-        m_MoveTarget = board.CellToWorld(coord);
+        transform.position = board.CellToWorld(coord);
 
         return true;
     }
 
     void TurnHappened()
     {
+        if (IsStunned)
+        {
+            return;
+        }
+        
         Vector2Int playerCell = GameManager.Instance.PlayerController.Cell;
 
         int xDist = playerCell.x - m_Cell.x;
@@ -79,7 +84,7 @@ public class EnemyObject : CellObject
         bool isAdjacent = (xDist == 0 && absYDist == 1) ||  (yDist == 0 && absXDist == 1);
         if (isAdjacent)
         {
-            GameManager.Instance.ChangeFood(-FoodDamage);
+            CombatantDamage.ApplyDamage(this, GameManager.Instance.PlayerController.Combatant);
         }
         else
         {
