@@ -58,8 +58,6 @@ public class CombatantState
     {
         foreach (StatusEffect sf in m_StatusEffects)
         {
-            sf.OnApplied(owner);
-            
             if (sf.Type == effect.Type)
             {
                 sf.Duration = Mathf.Max(sf.Duration, effect.Duration);
@@ -69,5 +67,6 @@ public class CombatantState
         }
         
         m_StatusEffects.Add(effect); 
+        effect.OnApplied(owner);
     }
 }
