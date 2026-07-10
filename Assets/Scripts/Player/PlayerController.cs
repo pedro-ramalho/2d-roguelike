@@ -87,13 +87,13 @@ public class PlayerController : MonoBehaviour
         BoardManager.CellData cellData = m_Board.GetCellData(target);
         if (cellData == null || !cellData.Passable) return;
 
-        GameManager.Instance.TurnManager.Tick();
-
         if (m_Combatant.IsStunned)
         {
             GameManager.Instance.TurnManager.Tick();
             return;
         }
+
+        GameManager.Instance.TurnManager.Tick();
 
         if (cellData.ContainedObject == null)
         {
