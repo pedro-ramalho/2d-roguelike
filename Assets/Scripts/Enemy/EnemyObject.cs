@@ -21,9 +21,16 @@ public class EnemyObject : CellObject, ICombatant
         m_State = new CombatantState(m_MaxHP, m_Attack);
 
         GameManager.Instance.TurnManager.OnTick += TurnHappened;
+        GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
     }
 
-    void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+    void OnDestroy()
+    {
+        GameManager.Instance.TurnManager.OnTick -= TurnHappened;
+        GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
+    }
+
+    void TickStatusEffects() => m_State.TickStatusEffects(this);
 
     public override void Init(Vector2Int cell)
     {
@@ -35,8 +42,8 @@ public class EnemyObject : CellObject, ICombatant
     public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
     public void Heal(int amount) => m_State.Heal(amount);
     public void AddBlock(int amount) => m_State.AddBlock(amount);
-    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
-
+    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
+    
     bool MoveTo(Vector2Int coord)
     {
         BoardManager board = GameManager.Instance.BoardManager;

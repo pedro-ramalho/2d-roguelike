@@ -17,8 +17,13 @@ public class Player : MonoBehaviour, ICombatant
     public int Stamina => m_Stamina;
     public int Block => m_State.Block;
     public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+    
+    // Events
     public event Action Depleted;
     public event Action Defeated;
+    public event Action<StatusEffect> StatusApplied;
+    public event Action<StatusEffect> StatusRemoved;
+
 
     void Awake()
     {
@@ -35,7 +40,12 @@ public class Player : MonoBehaviour, ICombatant
         }
     }
 
-    void TickStatusEffects() => m_State.TickStatusEffects(this);
+    void TickStatusEffects()
+    {
+        List<StatusEffect> removed = m_State.TickStatusEffects(this);
+
+        foreach (StatusEffect effect in removed) StatusRemoved?.Invoke(effect);
+    } 
 
     void Init()
     {
@@ -58,7 +68,13 @@ public class Player : MonoBehaviour, ICombatant
     }
     public void Heal(int amount) => m_State.Heal(amount);
     public void AddBlock(int amount) => m_State.AddBlock(amount);
-    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect);
+    public void ApplyStatusEffect(StatusEffect effect)
+    {
+        m_State.ApplyStatusEffect(effect);
+        effect.OnApplied(this);
+        StatusApplied?.Invoke(effect);
+    }
+
     public void ChangeStamina(int amount) {
         int previous = m_Stamina;
 
@@ -70,8 +86,4 @@ public class Player : MonoBehaviour, ICombatant
     }
 
     public void ResetState() => Init();
-
-    public void RemoveDepletedStatusEffects() => m_State.RemoveDepletedStatusEffects();
-
-
 }

@@ -24,4 +24,6 @@ public abstract class StatusEffect
     public virtual float ModifyOutgoingDamage(float damage) => damage;
     public virtual float ModifyIncomingDamage(float damage) => damage;
     public virtual void OnTurnEnd(ICombatant combatant) => Duration--;
+    public virtual void OnApplied(ICombatant combatant) {}
+    public virtual void OnRemoved(ICombatant combatant) {}
 }
