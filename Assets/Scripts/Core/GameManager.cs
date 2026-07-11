@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null)
         {
             Destroy(gameObject);
+
             return;
         }
 
@@ -54,9 +55,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnPlayerDefeated() => TriggerGameOver(GameOverReason.Defeated);
-    private void OnPlayerDepleted() => TriggerGameOver(GameOverReason.Depleted);
-    private void TriggerGameOver(GameOverReason reason)
+    void OnPlayerDefeated() => TriggerGameOver(GameOverReason.Defeated);
+    void OnPlayerDepleted() => TriggerGameOver(GameOverReason.Depleted);
+    void TriggerGameOver(GameOverReason reason)
     {
         PlayerController.GameOver();
 

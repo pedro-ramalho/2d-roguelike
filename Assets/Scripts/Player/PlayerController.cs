@@ -15,16 +15,19 @@ public class PlayerController : MonoBehaviour
     public Player Combatant => m_Combatant;
     public Vector2Int Cell => m_CellPosition;
 
-    private void Start() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
-    private void Awake()
+    void Start() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    
+    void Awake()
     {
         m_InputActions = new PlayerInputActions();
         m_Combatant = GetComponent<Player>();
     }
 
-    private void OnEnable() => m_InputActions.Player.Enable();
-    private void OnDisable() => m_InputActions.Player.Disable();
-    private void OnDestroy()
+    void OnEnable() => m_InputActions.Player.Enable();
+    
+    void OnDisable() => m_InputActions.Player.Disable();
+    
+    void OnDestroy()
     {
         m_InputActions.Dispose();
 
@@ -34,9 +37,7 @@ public class PlayerController : MonoBehaviour
         }
     } 
 
-    public void Init() => m_IsGameOver = false;
-
-    private void Update()
+    void Update()
     {
         if (m_IsGameOver) 
         { 
@@ -48,12 +49,13 @@ public class PlayerController : MonoBehaviour
         HandleMovementInput();
     }
 
-    private void HandleRestartInput()
+    void HandleRestartInput()
     {
-        if (m_InputActions.Player.Restart.WasPressedThisFrame()) GameManager.Instance.StartNewGame();
+        if (m_InputActions.Player.Restart.WasPressedThisFrame()) 
+            GameManager.Instance.StartNewGame();
     }
 
-    private Vector2Int GetInputDirection()
+    Vector2Int GetInputDirection()
     {
         if (m_InputActions.Player.MoveUp.WasPressedThisFrame()) return Vector2Int.up;
         if (m_InputActions.Player.MoveDown.WasPressedThisFrame()) return Vector2Int.down;
@@ -63,7 +65,7 @@ public class PlayerController : MonoBehaviour
         return Vector2Int.zero;
     }
 
-    private void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
+    void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
     {
         CombatantDamage.ApplyDamage(m_Combatant, enemy);
 
@@ -78,7 +80,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleMovementInput()
+    void HandleMovementInput()
     {
         Vector2Int direction = GetInputDirection();
         if (direction == Vector2Int.zero) return;
@@ -110,7 +112,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void TurnHappened() => m_Combatant.ChangeStamina(-1);
+    void TurnHappened() => m_Combatant.ChangeStamina(-1);
+
+    public void Init() => m_IsGameOver = false;
 
     public void GameOver() => m_IsGameOver = true;
 
