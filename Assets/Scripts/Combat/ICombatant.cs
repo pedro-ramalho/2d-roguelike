@@ -28,7 +28,6 @@ public interface ICombatant
     // States
     bool IsStunned { get; }
 
-
     DamageResult TakeDamage(int amount);
     void Heal(int amount);
     void AddBlock(int amount);

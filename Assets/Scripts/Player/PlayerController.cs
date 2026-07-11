@@ -32,9 +32,7 @@ public class PlayerController : MonoBehaviour
         m_InputActions.Dispose();
 
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.TurnManager.OnTick -= TurnHappened;        
-        }
     } 
 
     void Update()
@@ -83,28 +81,30 @@ public class PlayerController : MonoBehaviour
     void HandleMovementInput()
     {
         Vector2Int direction = GetInputDirection();
+        if (direction != Vector2Int.zero) Debug.Log($"direction={direction}");
+
         if (direction == Vector2Int.zero) return;
 
         Vector2Int target = m_CellPosition + direction;
+        
         BoardManager.CellData cellData = m_Board.GetCellData(target);
+        Debug.Log($"target={target} cellData={(cellData == null ? "NULL" : "ok")} passable={cellData?.Passable} isStunned={m_Combatant.IsStunned} contained={cellData?.ContainedObject}");
+        
         if (cellData == null || !cellData.Passable) return;
 
         if (m_Combatant.IsStunned)
         {
             GameManager.Instance.TurnManager.Tick();
+            
             return;
         }
 
         GameManager.Instance.TurnManager.Tick();
 
         if (cellData.ContainedObject == null)
-        {
             MoveTo(target);
-        }
         else if (cellData.ContainedObject is ICombatant enemy)
-        {
             HandleEnemyDamage(enemy, target, cellData);
-        }
         else if (cellData.ContainedObject.PlayerWantsToEnter())
         {
             MoveTo(target);

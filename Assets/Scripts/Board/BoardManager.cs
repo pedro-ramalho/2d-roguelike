@@ -129,10 +129,11 @@ public class BoardManager : MonoBehaviour
     
     public CellData GetCellData(Vector2Int cellIndex)
     {
-        bool isInsideBoardX = cellIndex.x < 0 || cellIndex.x >= Width;
-        bool isInsideBoardY = cellIndex.y < 0 || cellIndex.y >= Height;
+        bool isOutsideBoardX = cellIndex.x < 0 || cellIndex.x >= Width;
+        bool isOutsideBoardY = cellIndex.y < 0 || cellIndex.y >= Height;
+        bool isOutsideBoard = isOutsideBoardX || isOutsideBoardY;
 
-        if (!isInsideBoardX || !isInsideBoardY)
+        if (isOutsideBoard)
             return null;
         
         return m_BoardData[cellIndex.x, cellIndex.y];

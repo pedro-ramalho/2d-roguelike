@@ -6,12 +6,14 @@ public class CombatantState
 {
     private readonly List<StatusEffect> m_StatusEffects = new();
     
+    // Stats
     public int Attack { get; }
     public int MaxHP { get; }
     public int HP { get; private set; }
     public int Block { get; private set; }
     public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
+    // Flags
     public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
 
     public CombatantState(int maxHP, int attack)

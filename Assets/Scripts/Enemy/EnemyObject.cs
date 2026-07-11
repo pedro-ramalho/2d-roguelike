@@ -33,18 +33,6 @@ public class EnemyObject : CellObject, ICombatant
     }
 
     void TickStatusEffects() => m_State.TickStatusEffects(this);
-
-    public override void Init(Vector2Int cell)
-    {
-        base.Init(cell);
-
-        transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
-    }
-
-    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
-    public void Heal(int amount) => m_State.Heal(amount);
-    public void AddBlock(int amount) => m_State.AddBlock(amount);
-    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
     
     bool MoveTo(Vector2Int coord)
     {
@@ -124,4 +112,16 @@ public class EnemyObject : CellObject, ICombatant
 
         return MoveTo(m_Cell + Vector2Int.down);
     }
+
+    public override void Init(Vector2Int cell)
+    {
+        base.Init(cell);
+
+        transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
+    }
+
+    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
+    public void Heal(int amount) => m_State.Heal(amount);
+    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
 }
