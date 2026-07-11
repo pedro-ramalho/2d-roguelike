@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -17,6 +18,10 @@ public class EnemyObject : CellObject, ICombatant
 
     public bool IsStunned => m_State.IsStunned;
 
+    // Events
+    public event Action<DamageResult> Damaged;
+    public event Action<int> HealthAdded;
+    public event Action<int> BlockAdded;
 
     void Awake()
     {
@@ -24,6 +29,8 @@ public class EnemyObject : CellObject, ICombatant
 
         GameManager.Instance.TurnManager.OnTick += TurnHappened;
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
+
+        GetComponentInChildren<CombatantHUD>().Bind(this);
     }
 
     void OnDestroy()
@@ -120,8 +127,25 @@ public class EnemyObject : CellObject, ICombatant
         transform.position = GameManager.Instance.BoardManager.CellToWorld(cell);
     }
 
-    public DamageResult TakeDamage(int amount) => m_State.TakeDamage(amount);
-    public void Heal(int amount) => m_State.Heal(amount);
-    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    public DamageResult TakeDamage(int amount) 
+    {
+        DamageResult result = m_State.TakeDamage(amount);
+        Damaged?.Invoke(result);
+
+        return result;
+    }
+
+    public void Heal(int amount) 
+    { 
+        m_State.Heal(amount);
+        HealthAdded?.Invoke(amount); 
+    }
+    
+    public void AddBlock(int amount) 
+    {
+        m_State.AddBlock(amount);
+        BlockAdded?.Invoke(amount);
+    }
+    
     public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
 }
