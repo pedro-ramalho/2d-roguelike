@@ -177,8 +177,9 @@ GameObject:
   - component: {fileID: 487850891}
   - component: {fileID: 487850893}
   - component: {fileID: 487850892}
+  - component: {fileID: 487850894}
   m_Layer: 5
-  m_Name: BarContainer
+  m_Name: HUDContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -243,6 +244,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487850890}
   m_CullTransparentMesh: 1
+--- !u!114 &487850894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487850890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e98c36c6248e44783f9c9269020fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantHUD
+  m_HPBar: {fileID: 2028671669}
+  m_BlockBar: {fileID: 2001794470}
 --- !u!1 &583965552
 GameObject:
   m_ObjectHideFlags: 0
