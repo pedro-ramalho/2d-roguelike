@@ -25,7 +25,9 @@ public class Player : MonoBehaviour, ICombatant
     public event Action Defeated;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
-
+    public event Action<DamageResult> Damaged;
+    public event Action<int> HealthAdded;
+    public event Action<int> BlockAdded;
 
     void Awake()
     {
@@ -62,14 +64,25 @@ public class Player : MonoBehaviour, ICombatant
         DamageResult result = m_State.TakeDamage(amount);
 
         if (previousHP > 0 && m_State.HP <= 0)
-        {
             Defeated?.Invoke();
-        }
+
+        Damaged?.Invoke(result);
 
         return result;
     }
-    public void Heal(int amount) => m_State.Heal(amount);
-    public void AddBlock(int amount) => m_State.AddBlock(amount);
+    
+    public void Heal(int amount) 
+    { 
+        m_State.Heal(amount);
+        HealthAdded?.Invoke(amount); 
+    }
+
+    public void AddBlock(int amount) 
+    { 
+        m_State.AddBlock(amount);
+        BlockAdded?.Invoke(amount); 
+    }
+    
     public void ApplyStatusEffect(StatusEffect effect)
     {
         m_State.ApplyStatusEffect(effect, this);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -27,6 +28,11 @@ public interface ICombatant
 
     // States
     bool IsStunned { get; }
+
+    // Events
+    public event Action<DamageResult> Damaged;
+    public event Action<int> HealthAdded;
+    public event Action<int> BlockAdded;
 
     DamageResult TakeDamage(int amount);
     void Heal(int amount);
