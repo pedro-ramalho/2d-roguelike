@@ -20,7 +20,7 @@ public class StatusEffectSlot : MonoBehaviour
         _ => Color.white  
     };
 
-    void Refresh() => m_Duration.text = m_Effect.Duration.ToString();
+    public void Refresh() => m_Duration.text = m_Effect.Duration.ToString();
 
     public void Bind(StatusEffect effect)
     {

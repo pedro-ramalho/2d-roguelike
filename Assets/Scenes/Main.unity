@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 678261665}
   - component: {fileID: 678261667}
   - component: {fileID: 678261666}
+  - component: {fileID: 678261668}
   m_Layer: 5
   m_Name: StatusEffectContainer
   m_TagString: Untagged
@@ -298,6 +299,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &678261668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678261664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3018e62ca6857e4d9e7860ddcd25c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectHUD
+  m_Player: {fileID: 1653753613}
+  m_SlotPrefab: {fileID: 7089704783447106549, guid: e65c13b7171dae947a10b80a831ed117, type: 3}
 --- !u!224 &1023639307 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
