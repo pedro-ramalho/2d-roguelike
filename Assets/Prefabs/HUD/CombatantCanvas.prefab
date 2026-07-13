@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 833409124596331057}
   - component: {fileID: 1070369672057378230}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CombatantCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1070369672057378230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 151179761868052773}
   - component: {fileID: 1806046325505635627}
   m_Layer: 5
-  m_Name: HUDContainer
+  m_Name: BarsContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
