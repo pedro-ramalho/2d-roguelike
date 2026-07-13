@@ -29,6 +29,7 @@ public class Player : MonoBehaviour, ICombatant
     public event Action<DamageResult> Damaged;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
+    public event Action<int> StaminaChanged;
 
     void Awake()
     {
@@ -96,6 +97,9 @@ public class Player : MonoBehaviour, ICombatant
         int previous = m_Stamina;
 
         m_Stamina = Mathf.Clamp(m_Stamina + amount, 0, m_MaxStamina);
+
+        StaminaChanged?.Invoke(m_Stamina);
+        
         if (previous > 0 && m_Stamina == 0)
             Depleted?.Invoke();
     }
