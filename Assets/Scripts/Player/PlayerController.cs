@@ -43,6 +43,19 @@ public class PlayerController : MonoBehaviour
             
             return; 
         }
+        
+        // Temporary debug logs (should be removed later)
+        if (Keyboard.current.vKey.wasPressedThisFrame)
+            m_Combatant.ApplyStatusEffect(new StatusEffectEmpowered(2));
+
+        if (Keyboard.current.bKey.wasPressedThisFrame)
+            m_Combatant.ApplyStatusEffect(new StatusEffectVulnerable(3));
+
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+            m_Combatant.ApplyStatusEffect(new StatusEffectWeak(4));
+
+        if (Keyboard.current.mKey.wasPressedThisFrame)
+            m_Combatant.ApplyStatusEffect(new StatusEffectStunned(1));
 
         HandleMovementInput();
     }
