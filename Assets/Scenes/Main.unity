@@ -1005,7 +1005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2882661048858321057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: CombatantCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 2882661048858321057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
       propertyPath: m_IsActive

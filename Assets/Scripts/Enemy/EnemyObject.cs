@@ -30,7 +30,7 @@ public class EnemyObject : CellObject, ICombatant
         GameManager.Instance.TurnManager.OnTick += TurnHappened;
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
-        GetComponentInChildren<CombatantHUD>().Bind(this);
+        GetComponentInChildren<CombatantBarsHUD>().Bind(this);
     }
 
     void OnDestroy()

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombatantHUD : MonoBehaviour
+public class CombatantBarsHUD : MonoBehaviour
 {
     [SerializeField] private Image m_HPBar;
     [SerializeField] private Image m_BlockBar;
