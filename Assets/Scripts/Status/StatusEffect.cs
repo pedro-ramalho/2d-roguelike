@@ -26,4 +26,13 @@ public abstract class StatusEffect
     public virtual void OnTurnEnd(ICombatant combatant) => Duration--;
     public virtual void OnApplied(ICombatant combatant) {}
     public virtual void OnRemoved(ICombatant combatant) {}
+    
+    public override string ToString() => Type switch
+    {
+        StatusEffectType.Empowered => "EMPW",
+        StatusEffectType.Stunned => "STUN",
+        StatusEffectType.Weak => "WEAK",
+        StatusEffectType.Vulnerable => "VULN",
+        _ => ""
+    };
 }
