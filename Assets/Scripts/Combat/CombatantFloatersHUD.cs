@@ -5,48 +5,28 @@ public class CombatantFloatersHUD : MonoBehaviour
     [SerializeField] CombatantFloater m_FloaterPrefab;
     private ICombatant m_Combatant;
 
+    private readonly Color m_BlockLostColor = new Color(0.05139729f, 0.09887581f, 0.3113208f);
+    private readonly Color m_HealthLostColor = new Color(0.622f, 0, 0);
+    private readonly Color m_HealthAddedColor = new Color(0f, 1f, 0f);
+    private readonly Color m_BlockAddedColor = new Color(0.05139729f, 0.09887581f, 0.3113208f);
+    private readonly Color m_StatusAppliedColor = new Color(204, 204, 0);
+
     void OnDamaged(DamageResult result)
     {
-        CombatantFloater f;
-
-        Debug.Log($"OnDamaged triggered with BLK Lost: {result.BlockLost} and HP Lost: {result.HPLost}");
-        int blockLost = result.BlockLost;
-        int healthLost = result.HPLost;
-
-        if (blockLost > 0)
-        {
-            f = Instantiate(m_FloaterPrefab, transform);
-            f.Show($"-{blockLost}", new Color(0.05139729f, 0.09887581f, 0.3113208f));
-        }
-        else if (healthLost > 0)
-        {
-            f = Instantiate(m_FloaterPrefab, transform);
-            f.Show($"-{healthLost}", new Color(0.622f, 0, 0));
-        }
+        if (result.BlockLost > 0) InstantiateAndShow($"-{result.BlockLost}", m_BlockLostColor);
+        if (result.HPLost > 0) InstantiateAndShow($"-{result.HPLost}", m_HealthLostColor);
     }
 
-    void OnHealthAdded(int amount)
+    void OnHealthAdded(int amount) => InstantiateAndShow($"+{amount}", m_HealthAddedColor);
+
+    void OnBlockAdded(int amount) => InstantiateAndShow($"+{amount}", m_BlockAddedColor);
+
+    void OnStatusApplied(StatusEffect effect) => InstantiateAndShow($"+{effect}", m_StatusAppliedColor);
+
+    void InstantiateAndShow(string text, Color color)
     {
-        CombatantFloater f;
-
-        f = Instantiate(m_FloaterPrefab, transform);
-        f.Show($"+{amount}", new Color(0f, 1f, 0f));
-    }
-
-    void OnBlockAdded(int amount)
-    {
-        CombatantFloater f;
-
-        f = Instantiate(m_FloaterPrefab, transform);
-        f.Show($"+{amount}", new Color(0.05139729f, 0.09887581f, 0.3113208f));
-    }
-
-    void OnStatusApplied(StatusEffect effect)
-    {
-        CombatantFloater f;
-
-        f = Instantiate(m_FloaterPrefab, transform);
-        f.Show($"+{effect}", new Color(204, 204, 0)); 
+        CombatantFloater floater = Instantiate(m_FloaterPrefab, transform);
+        floater.Show(text, color);
     }
 
     void OnDestroy()
