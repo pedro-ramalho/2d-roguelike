@@ -9,7 +9,7 @@ public class CombatantFloatersHUD : MonoBehaviour
     private readonly Color m_HealthLostColor = new Color(0.622f, 0, 0);
     private readonly Color m_HealthAddedColor = new Color(0f, 1f, 0f);
     private readonly Color m_BlockAddedColor = new Color(0.05139729f, 0.09887581f, 0.3113208f);
-    private readonly Color m_StatusAppliedColor = new Color(204, 204, 0);
+    private readonly Color m_StatusAppliedColor = new Color(1f, 1f, 0);
 
     void OnDamaged(DamageResult result)
     {

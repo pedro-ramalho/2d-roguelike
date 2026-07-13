@@ -11,7 +11,7 @@ public class CombatantFloater : MonoBehaviour
         float duration = 0.5f;
         float elapsed = 0f;
 
-        Vector3 startPos = transform.position;
+        Vector3 startPos = transform.localPosition;
         Vector3 riseAmount = new Vector3(0, 50f, 0);
         
         Color startColor = m_Text.color;
