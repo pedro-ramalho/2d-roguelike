@@ -9,19 +9,19 @@ public class CombatantFloatersHUD : MonoBehaviour
     {
         CombatantFloater f;
 
+        Debug.Log($"OnDamaged triggered with BLK Lost: {result.BlockLost} and HP Lost: {result.HPLost}");
         int blockLost = result.BlockLost;
         int healthLost = result.HPLost;
 
         if (blockLost > 0)
         {
             f = Instantiate(m_FloaterPrefab, transform);
-            f.Show($"-{healthLost}", new Color(0.05139729f, 0.09887581f, 0.3113208f));
+            f.Show($"-{blockLost}", new Color(0.05139729f, 0.09887581f, 0.3113208f));
         }
-
-        if (healthLost > 0)
+        else if (healthLost > 0)
         {
             f = Instantiate(m_FloaterPrefab, transform);
-            f.Show($"-{blockLost}", new Color(0.622f, 0, 0));
+            f.Show($"-{healthLost}", new Color(0.622f, 0, 0));
         }
     }
 
@@ -30,7 +30,7 @@ public class CombatantFloatersHUD : MonoBehaviour
         CombatantFloater f;
 
         f = Instantiate(m_FloaterPrefab, transform);
-        f.Show($"+{amount}", new Color(34, 139, 34));
+        f.Show($"+{amount}", new Color(0f, 1f, 0f));
     }
 
     void OnBlockAdded(int amount)
@@ -58,7 +58,6 @@ public class CombatantFloatersHUD : MonoBehaviour
         m_Combatant.BlockAdded -= OnBlockAdded;
         m_Combatant.StatusApplied -= OnStatusApplied; 
     }
-
 
     public void Bind(ICombatant combatant)
     {

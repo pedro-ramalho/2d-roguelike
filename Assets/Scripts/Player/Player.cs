@@ -38,6 +38,7 @@ public class Player : MonoBehaviour, ICombatant
 
         GetComponentInChildren<CombatantBarsHUD>().Bind(this);
         GetComponentInChildren<CombatantStatusEffectsHUD>().Bind(this);
+        GetComponentInChildren<CombatantFloatersHUD>().Bind(this);
     }
 
     void OnDestroy()

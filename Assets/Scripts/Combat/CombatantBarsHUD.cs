@@ -14,9 +14,6 @@ public class CombatantBarsHUD : MonoBehaviour
     {
         m_BlockBar.fillAmount = (float)m_Combatant.Block / m_Combatant.MaxHP; 
         m_HPBar.fillAmount = (float)m_Combatant.HP / m_Combatant.MaxHP;
-
-        bool active = m_Combatant.HP < m_Combatant.MaxHP || m_Combatant.Block > 0;
-        gameObject.SetActive(active);     
     }
 
     void OnDestroy()

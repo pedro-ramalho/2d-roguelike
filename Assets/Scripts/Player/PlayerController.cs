@@ -57,6 +57,12 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.mKey.wasPressedThisFrame)
             m_Combatant.ApplyStatusEffect(new StatusEffectStunned(1));
 
+        if (Keyboard.current.oKey.wasPressedThisFrame)
+            m_Combatant.TakeDamage(1);
+
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+            m_Combatant.Heal(1);
+
         HandleMovementInput();
     }
 
