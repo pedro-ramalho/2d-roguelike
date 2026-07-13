@@ -33,6 +33,8 @@ public interface ICombatant
     public event Action<DamageResult> Damaged;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
+    public event Action<StatusEffect> StatusApplied;
+    public event Action<StatusEffect> StatusRemoved;
 
     DamageResult TakeDamage(int amount);
     void Heal(int amount);
