@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, ICombatant
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
         GetComponentInChildren<CombatantBarsHUD>().Bind(this);
+        GetComponentInChildren<CombatantStatusEffectsHUD>().Bind(this);
     }
 
     void OnDestroy()

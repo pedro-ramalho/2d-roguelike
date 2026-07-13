@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 678261665}
   - component: {fileID: 678261667}
   - component: {fileID: 678261666}
-  - component: {fileID: 678261668}
+  - component: {fileID: 678261669}
   m_Layer: 5
   m_Name: StatusEffectContainer
   m_TagString: Untagged
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &678261668
+--- !u!114 &678261669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -308,10 +308,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 678261664}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3018e62ca6857e4d9e7860ddcd25c1c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ea282f6b8b1e3846b94e4dc888aa6e5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectHUD
-  m_Player: {fileID: 1653753613}
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantStatusEffectsHUD
   m_SlotPrefab: {fileID: 7089704783447106549, guid: e65c13b7171dae947a10b80a831ed117, type: 3}
 --- !u!224 &1023639307 stripped
 RectTransform:
@@ -331,7 +330,7 @@ GameObject:
   - component: {fileID: 1157696963}
   - component: {fileID: 1157696962}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: ScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -413,7 +412,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 678261665}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1653753610}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -940,6 +939,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1023639307}
+  - {fileID: 1157696965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1653753611
@@ -1106,4 +1106,3 @@ SceneRoots:
   - {fileID: 377119139}
   - {fileID: 583965554}
   - {fileID: 1198043208}
-  - {fileID: 1157696965}

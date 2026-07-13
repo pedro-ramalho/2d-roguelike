@@ -33,6 +33,7 @@ public class EnemyObject : CellObject, ICombatant
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
         GetComponentInChildren<CombatantBarsHUD>().Bind(this);
+        GetComponentInChildren<CombatantStatusEffectsHUD>().Bind(this);
     }
 
     void OnDestroy()
@@ -41,7 +42,12 @@ public class EnemyObject : CellObject, ICombatant
         GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
     }
 
-    void TickStatusEffects() => m_State.TickStatusEffects(this);
+    void TickStatusEffects()
+    {
+        List<StatusEffect> removed = m_State.TickStatusEffects(this);
+
+        foreach (StatusEffect effect in removed) StatusRemoved?.Invoke(effect);
+    }
     
     bool MoveTo(Vector2Int coord)
     {
@@ -149,5 +155,9 @@ public class EnemyObject : CellObject, ICombatant
         BlockAdded?.Invoke(amount);
     }
     
-    public void ApplyStatusEffect(StatusEffect effect) => m_State.ApplyStatusEffect(effect, this);
+    public void ApplyStatusEffect(StatusEffect effect)
+    {
+        m_State.ApplyStatusEffect(effect, this);
+        StatusApplied?.Invoke(effect);
+    }
 }
