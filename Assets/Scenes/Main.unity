@@ -859,6 +859,7 @@ GameObject:
   - component: {fileID: 1653753613}
   - component: {fileID: 1653753611}
   - component: {fileID: 1653753612}
+  - component: {fileID: 1653753614}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -988,9 +989,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce6d4c5e2150594597e7aa2a6275458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  m_MaxHP: 5
-  m_MaxStamina: 100
-  m_Attack: 1
+  m_MaxHP: 20
+  m_MaxStamina: 20
+  m_Attack: 3
+--- !u!114 &1653753614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6bf8851ac7238846831f82abbcfd968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHUD
+  m_UIDocument: {fileID: 583965553}
 --- !u!1001 &4925473022026951784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1135,7 +1149,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1379060563}
   - {fileID: 1160969520}
-  - {fileID: 1653753610}
   - {fileID: 377119139}
+  - {fileID: 1653753610}
   - {fileID: 583965554}
   - {fileID: 1198043208}
