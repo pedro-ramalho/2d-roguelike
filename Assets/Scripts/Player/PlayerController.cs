@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private BoardManager m_Board;
     private PlayerInputActions m_InputActions;
     private Player m_Combatant;
+    private CombatantAnimator m_CombatantAnimator;
 
     // State
     private Vector2Int m_CellPosition;
@@ -20,7 +21,9 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         m_InputActions = new PlayerInputActions();
+
         m_Combatant = GetComponent<Player>();
+        m_CombatantAnimator = GetComponent<CombatantAnimator>();
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
@@ -93,7 +96,7 @@ public class PlayerController : MonoBehaviour
             
             cell.ContainedObject = null;
             
-            MoveTo(target);
+            MoveTo(target, false);
         }
     }
 
@@ -121,12 +124,12 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.TurnManager.Tick();
 
         if (cellData.ContainedObject == null)
-            MoveTo(target);
+            MoveTo(target, false);
         else if (cellData.ContainedObject is ICombatant enemy)
             HandleEnemyDamage(enemy, target, cellData);
         else if (cellData.ContainedObject.PlayerWantsToEnter())
         {
-            MoveTo(target);
+            MoveTo(target, false);
             cellData.ContainedObject.PlayerEntered(m_Combatant);
         }
     }
@@ -140,12 +143,16 @@ public class PlayerController : MonoBehaviour
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {
         m_Board = boardManager;
-        MoveTo(cell);
+        MoveTo(cell, true);
     }
 
-    public void MoveTo(Vector2Int cell)
+    public void MoveTo(Vector2Int cell, bool snap)
     {
         m_CellPosition = cell;
-        transform.position = m_Board.CellToWorld(cell);
+        
+        if (snap)
+            transform.position = m_Board.CellToWorld(cell);
+        else
+            m_CombatantAnimator.PlayWalkAnimation(cell);
     }
 }

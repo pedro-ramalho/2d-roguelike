@@ -858,8 +858,9 @@ GameObject:
   - component: {fileID: 1653753609}
   - component: {fileID: 1653753613}
   - component: {fileID: 1653753611}
-  - component: {fileID: 1653753612}
   - component: {fileID: 1653753614}
+  - component: {fileID: 1653753615}
+  - component: {fileID: 1653753612}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -1005,6 +1006,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHUD
   m_UIDocument: {fileID: 583965553}
+--- !u!114 &1653753615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
 --- !u!1001 &4925473022026951784
 PrefabInstance:
   m_ObjectHideFlags: 0
