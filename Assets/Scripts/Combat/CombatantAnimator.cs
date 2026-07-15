@@ -2,10 +2,28 @@ using System.Collections;
 using UnityEngine;
 
 public class CombatantAnimator : MonoBehaviour
-{
+{   
+    private ICombatant m_Combatant;
+
+    // Components
+    private SpriteRenderer m_SpriteRenderer;
+
+    // Coroutines
     private Coroutine m_WalkCoroutine;
+    private Coroutine m_HurtCoroutine; 
 
     private readonly float m_WalkAnimationDuration = 0.25f;
+    private readonly float m_HurtAnimationDuration = 0.15f;
+
+    void Awake()
+    {
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void OnDestroy()
+    {
+        m_Combatant.Damaged -= PlayHurtAnimation;
+    }
 
     IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)
     {
@@ -35,9 +53,17 @@ public class CombatantAnimator : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator PlayHurtAnimation()
+    IEnumerator HurtAnimationCoroutine()
     {
-        yield return null;
+        Color startColor = m_SpriteRenderer.color;
+
+        m_SpriteRenderer.color = Color.red;
+        
+        yield return new WaitForSeconds(m_HurtAnimationDuration);
+
+        m_SpriteRenderer.color = startColor;
+
+        m_HurtCoroutine = null;
     }
 
     IEnumerator PlayDeathAnimation()
@@ -51,5 +77,21 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_WalkCoroutine);
 
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
+    }
+
+    public void PlayHurtAnimation(DamageResult result)
+    {
+        if (m_HurtCoroutine != null)
+            StopCoroutine(m_HurtCoroutine);
+
+        if (result.HPLost > 0)
+            m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
+    }
+
+    public void Bind(ICombatant combatant)
+    {
+        m_Combatant = combatant;
+
+        m_Combatant.Damaged += PlayHurtAnimation;
     }
 }
