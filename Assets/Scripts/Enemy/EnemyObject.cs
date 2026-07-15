@@ -8,6 +8,7 @@ public class EnemyObject : CellObject, ICombatant
     [SerializeField] private int m_MaxHP = 1000;
     [SerializeField] private int m_Attack = 2;
     private CombatantState m_State;
+    private CombatantAnimator m_CombatantAnimator;
 
     public int Attack => m_State.Attack;
     public int MaxHP => m_State.MaxHP;
@@ -28,6 +29,7 @@ public class EnemyObject : CellObject, ICombatant
     void Awake()
     {
         m_State = new CombatantState(m_MaxHP, m_Attack);
+        m_CombatantAnimator = GetComponent<CombatantAnimator>();
 
         GameManager.Instance.TurnManager.OnTick += TurnHappened;
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
@@ -65,7 +67,8 @@ public class EnemyObject : CellObject, ICombatant
 
         targetCell.ContainedObject = this;
         m_Cell = coord;
-        transform.position = board.CellToWorld(coord);
+        
+        m_CombatantAnimator.PlayWalkAnimation(coord);
 
         return true;
     }
