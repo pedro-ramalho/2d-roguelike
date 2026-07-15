@@ -110,7 +110,6 @@ public class PlayerController : MonoBehaviour
         Vector2Int target = m_CellPosition + direction;
         
         BoardManager.CellData cellData = m_Board.GetCellData(target);
-        Debug.Log($"target={target} cellData={(cellData == null ? "NULL" : "ok")} passable={cellData?.Passable} isStunned={m_Combatant.IsStunned} contained={cellData?.ContainedObject}");
         
         if (cellData == null || !cellData.Passable) return;
 
