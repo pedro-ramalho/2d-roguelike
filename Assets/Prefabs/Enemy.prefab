@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4643804580259343903}
   - component: {fileID: 5227256866594031395}
   - component: {fileID: 7702165756767455364}
+  - component: {fileID: 4943251867301102487}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -130,6 +131,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyObject
   m_MaxHP: 10
   m_Attack: 5
+--- !u!114 &4943251867301102487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
 --- !u!1 &6675062771931331712
 GameObject:
   m_ObjectHideFlags: 0

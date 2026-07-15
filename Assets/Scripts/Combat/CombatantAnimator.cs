@@ -5,7 +5,7 @@ public class CombatantAnimator : MonoBehaviour
 {
     private Coroutine m_WalkCoroutine;
 
-    private readonly float m_WalkAnimationDuration = 0.5f;
+    private readonly float m_WalkAnimationDuration = 0.25f;
 
     IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)
     {
