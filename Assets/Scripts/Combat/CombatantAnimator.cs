@@ -14,6 +14,7 @@ public class CombatantAnimator : MonoBehaviour
 
     private readonly float m_WalkAnimationDuration = 0.25f;
     private readonly float m_HurtAnimationDuration = 0.15f;
+    private readonly float m_DeathAnimationDuration = 0.3f;
 
     void Awake()
     {
@@ -66,9 +67,28 @@ public class CombatantAnimator : MonoBehaviour
         m_HurtCoroutine = null;
     }
 
-    IEnumerator PlayDeathAnimation()
+    IEnumerator DeathAnimationCoroutine()
     {
-        yield return null;
+        float elapsed = 0;
+
+        Color startColor = m_SpriteRenderer.color;
+
+        while (elapsed <= m_DeathAnimationDuration)
+        {
+            Color c = startColor;
+            
+            float t = elapsed / m_DeathAnimationDuration;
+
+            c.a = 1 - t;
+
+            m_SpriteRenderer.color = c;
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
     public void PlayWalkAnimation(Vector2Int targetCell)
@@ -88,10 +108,13 @@ public class CombatantAnimator : MonoBehaviour
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
     }
 
+    public void PlayDeathAnimation() => StartCoroutine(DeathAnimationCoroutine());
+
     public void Bind(ICombatant combatant)
     {
         m_Combatant = combatant;
 
         m_Combatant.Damaged += PlayHurtAnimation;
+        m_Combatant.Defeated += PlayDeathAnimation;
     }
 }
