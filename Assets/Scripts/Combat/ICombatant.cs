@@ -30,6 +30,7 @@ public interface ICombatant
     bool IsStunned { get; }
 
     // Events
+    public event Action Defeated;
     public event Action<DamageResult> Damaged;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;

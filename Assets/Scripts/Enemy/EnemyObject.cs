@@ -20,6 +20,7 @@ public class EnemyObject : CellObject, ICombatant
     public bool IsStunned => m_State.IsStunned;
 
     // Events
+    public event Action Defeated;
     public event Action<DamageResult> Damaged;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
