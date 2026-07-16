@@ -20,6 +20,7 @@ public class EnemyObject : CellObject, ICombatant
 
     // Events
     public event Action Defeated;
+    public event Action<Vector2Int> AttackPerformed;
     public event Action<DamageResult> Damaged;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
@@ -45,6 +46,11 @@ public class EnemyObject : CellObject, ICombatant
         List<StatusEffect> removed = m_State.TickStatusEffects(this);
 
         foreach (StatusEffect effect in removed) StatusRemoved?.Invoke(effect);
+    }
+
+    public void AttackTarget(ICombatant target, Vector2Int direction)
+    {
+        
     }
 
     public DamageResult TakeDamage(int amount) 

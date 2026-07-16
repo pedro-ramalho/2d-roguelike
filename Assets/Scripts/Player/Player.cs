@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, ICombatant
     // Events
     public event Action Depleted;
     public event Action Defeated;
+    public event Action<Vector2Int> AttackPerformed;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
     public event Action<DamageResult> Damaged;
@@ -60,6 +61,11 @@ public class Player : MonoBehaviour, ICombatant
     {
         m_State = new CombatantState(m_MaxHP, m_Attack);
         m_Stamina = m_MaxStamina;        
+    }
+    
+    public void AttackTarget(ICombatant target, Vector2Int direction)
+    {
+        throw new NotImplementedException();
     }
 
     public DamageResult TakeDamage(int amount) 
