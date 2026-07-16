@@ -86,7 +86,7 @@ public class EnemyController : MonoBehaviour
 
         if (IsAdjacentToPlayer(delta))
         {
-            CombatantDamage.ApplyDamage(m_Combatant, GameManager.Instance.PlayerController.Combatant);
+            m_Combatant.AttackTarget(GameManager.Instance.PlayerController.Combatant, delta);
             
             return;
         }

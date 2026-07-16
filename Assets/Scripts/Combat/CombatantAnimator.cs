@@ -23,7 +23,9 @@ public class CombatantAnimator : MonoBehaviour
 
     void OnDestroy()
     {
+        m_Combatant.AttackPerformed -= PlayAttackAnimation;
         m_Combatant.Damaged -= PlayHurtAnimation;
+        m_Combatant.Defeated -= PlayDeathAnimation;
     }
 
     IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)

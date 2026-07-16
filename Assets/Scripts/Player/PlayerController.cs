@@ -87,13 +87,11 @@ public class PlayerController : MonoBehaviour
 
     void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
     {
-        CombatantDamage.ApplyDamage(m_Combatant, enemy);
+        m_Combatant.AttackTarget(enemy, target - m_CellPosition);
 
         // Enemy has been killed, destroy it and move the Player
         if (enemy.HP <= 0)
-        {
-            Destroy(cell.ContainedObject.gameObject);
-            
+        {            
             cell.ContainedObject = null;
             
             MoveTo(target, false);
