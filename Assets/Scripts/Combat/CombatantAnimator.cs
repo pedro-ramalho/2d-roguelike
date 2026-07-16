@@ -49,7 +49,7 @@ public class CombatantAnimator : MonoBehaviour
         m_WalkCoroutine = null;    
     }
 
-    IEnumerator PlayAttackAnimation()
+    IEnumerator AttackNudgeCoroutine(Vector2Int direction)
     {
         yield return null;
     }
@@ -110,10 +110,13 @@ public class CombatantAnimator : MonoBehaviour
 
     public void PlayDeathAnimation() => StartCoroutine(DeathAnimationCoroutine());
 
+    public void PlayAttackAnimation(Vector2Int direction) => StartCoroutine(AttackNudgeCoroutine(direction));
+
     public void Bind(ICombatant combatant)
     {
         m_Combatant = combatant;
 
+        m_Combatant.AttackPerformed += PlayAttackAnimation;
         m_Combatant.Damaged += PlayHurtAnimation;
         m_Combatant.Defeated += PlayDeathAnimation;
     }
