@@ -50,7 +50,8 @@ public class EnemyObject : CellObject, ICombatant
 
     public void AttackTarget(ICombatant target, Vector2Int direction)
     {
-        
+        CombatantDamage.ApplyDamage(this, target);
+        AttackPerformed?.Invoke(direction);
     }
 
     public DamageResult TakeDamage(int amount) 

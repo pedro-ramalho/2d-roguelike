@@ -65,7 +65,8 @@ public class Player : MonoBehaviour, ICombatant
     
     public void AttackTarget(ICombatant target, Vector2Int direction)
     {
-        throw new NotImplementedException();
+        CombatantDamage.ApplyDamage(this, target);
+        AttackPerformed?.Invoke(direction);
     }
 
     public DamageResult TakeDamage(int amount) 
