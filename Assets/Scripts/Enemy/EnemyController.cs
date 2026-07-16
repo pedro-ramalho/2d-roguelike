@@ -15,7 +15,6 @@ public class EnemyController : MonoBehaviour
     
     void Awake()
     {
-        m_Board = GameManager.Instance.BoardManager;
         m_Combatant = GetComponent<EnemyObject>();
         m_CombatantAnimator = GetComponent<CombatantAnimator>();    
     }
@@ -27,7 +26,7 @@ public class EnemyController : MonoBehaviour
 
     void OnDestroy()
     {
-        GameManager.Instance.TurnManager.OnTick += OnTurnHappened;
+        GameManager.Instance.TurnManager.OnTick -= OnTurnHappened;
     }
 
     bool MoveTo(Vector2Int coord)
@@ -47,6 +46,12 @@ public class EnemyController : MonoBehaviour
         m_CombatantAnimator.PlayWalkAnimation(coord);
 
         return true;
+    }
+
+    void SnapTo(Vector2Int coord)
+    {
+        m_Cell = coord;
+        transform.position = m_Board.CellToWorld(coord);
     }
 
     bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
@@ -87,5 +92,11 @@ public class EnemyController : MonoBehaviour
         }
         
         MoveTowards(delta);
+    }
+
+    public void Spawn(BoardManager boardManager, Vector2Int cell)
+    {
+        m_Board = boardManager;
+        SnapTo(cell);
     }
 }
