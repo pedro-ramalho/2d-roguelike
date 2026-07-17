@@ -1038,8 +1038,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   m_MaxHP: 1000
-  m_MaxStamina: 200
-  m_Attack: 100
+  m_MaxStamina: 2000
+  m_Attack: 1
 --- !u!114 &1653753614
 MonoBehaviour:
   m_ObjectHideFlags: 0

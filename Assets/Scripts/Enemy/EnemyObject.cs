@@ -34,9 +34,6 @@ public class EnemyObject : CellObject, ICombatant
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
         GetComponent<CombatantAnimator>().Bind(this);
-        GetComponentInChildren<CombatantBarsHUD>().Bind(this);
-        GetComponentInChildren<CombatantStatusEffectsHUD>().Bind(this);
-        GetComponentInChildren<CombatantFloatersHUD>().Bind(this);
     }
 
     void OnDestroy() => GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
