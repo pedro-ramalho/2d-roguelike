@@ -33,10 +33,10 @@ public class PlayerHUD : MonoBehaviour
     {
         if (m_Player == null) return;
         
-        m_Player.Damaged += _ => Refresh();
-        m_Player.HealthAdded += _ => Refresh();
-        m_Player.BlockAdded += _ => Refresh();
-        m_Player.StaminaChanged += _ => Refresh();
+        m_Player.Damaged -= _ => Refresh();
+        m_Player.HealthAdded -= _ => Refresh();
+        m_Player.BlockAdded -= _ => Refresh();
+        m_Player.StaminaChanged -= _ => Refresh();
     }
 
     void Refresh()
