@@ -19,13 +19,35 @@ public class LevelTransitionManager : MonoBehaviour
         m_LevelTransitionPanel = root.Q<VisualElement>("LevelTransitionPanel");
     }
 
-    IEnumerator FadeIn()
+    public IEnumerator FadeIn()
     {
-        yield return null;
+        float elapsed = 0;
+
+        while (elapsed < m_FadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float opacity = m_LevelTransitionPanel.style.opacity.value;
+
+            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 1, elapsed / m_FadeDuration);
+
+            yield return null;    
+        }
     }
 
-    IEnumerator FadeOut(int levelNumber)
+    public IEnumerator FadeOut(int levelNumber)
     {
-        yield return null;
+        float elapsed = 0;
+
+        while (elapsed < m_FadeDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float opacity = m_LevelTransitionPanel.style.opacity.value;
+
+            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(1, opacity, elapsed / m_FadeDuration);
+
+            yield return null;    
+        }
     }
 }
