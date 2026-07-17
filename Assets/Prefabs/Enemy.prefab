@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6913251002662538411}
   - component: {fileID: 4943251867301102487}
   - component: {fileID: 1863524310077405169}
+  - component: {fileID: -3585038373898010958}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -172,3 +173,19 @@ MonoBehaviour:
   m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
   m_ShowStatusEffects: 1
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
+--- !u!114 &-3585038373898010958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9641e0d05be0a541bf0bc7f8a83601c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantFloaters
+  m_FloaterTemplate: {fileID: 9197481963319205126, guid: f3909eb1f19fd7942974b47abe58a77d, type: 3}
+  m_WorldOffset: {x: 0, y: 0.5, z: 0}
+  m_Duration: 0.5
+  m_RisePixels: 50
