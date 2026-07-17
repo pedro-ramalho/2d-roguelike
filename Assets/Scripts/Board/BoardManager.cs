@@ -25,6 +25,7 @@ public class BoardManager : MonoBehaviour
 
     // Prefabs & references
     public PlayerController Player;
+    public EnemyController Enemy;
     public FoodObject[] FoodPrefabs;
     public WallObject WallPrefab;
     public ExitCellObject ExitCellPrefab;
@@ -79,8 +80,11 @@ public class BoardManager : MonoBehaviour
 
         m_EmptyCells.RemoveAt(randomIndex);
         EnemyObject newEnemy = Instantiate(EnemyPrefab);
-
-        AddObject(newEnemy, coord);
+        
+        m_BoardData[coord.x, coord.y].ContainedObject = newEnemy;
+        
+        EnemyController controller = newEnemy.GetComponent<EnemyController>();
+        controller.Spawn(this, coord);
     }
 
     public void Init()
