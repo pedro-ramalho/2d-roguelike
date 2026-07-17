@@ -22,7 +22,9 @@ public class CombatantHUD : MonoBehaviour
     {
         UIDocument doc = GameManager.Instance.UIDoc;
         m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("CombatantHUDLayer");
-        m_Root = m_Template.Instantiate();
+        
+        VisualElement container = m_Template.Instantiate();
+        m_Root = container.Q<VisualElement>("CombatantHUD");
         m_ParentLayer.Add(m_Root);
 
         m_HPFill = m_Root.Q<VisualElement>("HPFill");
@@ -33,6 +35,9 @@ public class CombatantHUD : MonoBehaviour
             m_StatusRow.style.display = DisplayStyle.None;
 
         m_Camera = Camera.main;
+
+        ICombatant combatant = GetComponent<ICombatant>();
+        if (combatant != null) Bind(combatant);
     }
 
     void LateUpdate()
