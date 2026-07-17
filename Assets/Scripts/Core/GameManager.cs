@@ -74,11 +74,6 @@ public class GameManager : MonoBehaviour
     IEnumerator NewLevelCoroutine()
     {
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
-        
-        SpriteRenderer sr = PlayerController.GetComponent<SpriteRenderer>();
-        Canvas hud = PlayerController.GetComponentInChildren<Canvas>();
-        sr.enabled = false;
-        hud.enabled = false;
 
         BoardManager.Clean();
         BoardManager.Init();

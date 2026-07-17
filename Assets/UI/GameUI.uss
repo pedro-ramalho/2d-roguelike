@@ -1,0 +1,49 @@
+.combatant-hud {
+    position: absolute;
+    width: 40px;
+    translate: -50% 0;               
+    visibility: hidden;             
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar {
+    width: 100%;
+    height: 4px;
+    background-color: rgb(30, 30, 30);
+    margin-top: 1px;
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%;                     
+}
+
+.bar-fill-hp { background-color: rgb(200, 40, 40); }
+.bar-fill-block { background-color: rgb(50, 90, 200); }
+
+.status-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.status-slot {
+    width: 12px;
+    height: 12px;
+    margin: 1px;
+    background-color: rgb(180, 180, 180);   
+    align-items: center;
+    justify-content: center;
+}
+
+.status-duration {
+    font-size: 8px;
+    color: rgb(255, 255, 255);
+}
+
+.floater {
+    position: absolute;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+}
