@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,6 +6,8 @@ public enum GameOverReason { Depleted, Defeated }
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private LevelTransitionManager m_LevelTransitionManager;
+
     private int m_CurrentLevel = 0;
     private Label m_FoodLabel;
     private Label m_GameOverMessage;
@@ -68,15 +71,27 @@ public class GameManager : MonoBehaviour
         m_GameOverReason = reason;
     }
 
-    public void NewLevel()
+    IEnumerator NewLevelCoroutine()
     {
+        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
+        
+        SpriteRenderer sr = PlayerController.GetComponent<SpriteRenderer>();
+        Canvas hud = PlayerController.GetComponentInChildren<Canvas>();
+        sr.enabled = false;
+        hud.enabled = false;
+
         BoardManager.Clean();
         BoardManager.Init();
 
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
         m_CurrentLevel++;
+        yield return new WaitForSeconds(3f);
+
+        yield return m_LevelTransitionManager.FadeInCoroutine();
     }
+
+    public void NewLevel() => StartCoroutine(NewLevelCoroutine());
 
     public void StartNewGame()
     {

@@ -119,6 +119,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &270326506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 270326507}
+  - component: {fileID: 270326508}
+  m_Layer: 0
+  m_Name: LevelTransitionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &270326507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270326506}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &270326508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270326506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2295dc365fb24c74681f4996cd836ede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelTransitionManager
+  m_UIDocument: {fileID: 583965553}
 --- !u!1 &377119138
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bda8fcf7df2ba439978f72b0c525db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  m_LevelTransitionManager: {fileID: 270326508}
   BoardManager: {fileID: 1160969521}
   PlayerController: {fileID: 1653753611}
   UIDoc: {fileID: 583965553}
@@ -497,6 +543,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0575222978a2e94ebd51fa527291ebe, type: 2}
   - {fileID: 11400000, guid: c7732b5ee5fba9b4dbe11600c51a963f, type: 2}
   Player: {fileID: 1653753611}
+  Enemy: {fileID: 0}
   FoodPrefabs:
   - {fileID: -2554186031408535444, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
@@ -990,9 +1037,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce6d4c5e2150594597e7aa2a6275458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  m_MaxHP: 20
-  m_MaxStamina: 20
-  m_Attack: 3
+  m_MaxHP: 1000
+  m_MaxStamina: 200
+  m_Attack: 100
 --- !u!114 &1653753614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,6 +1210,7 @@ SceneRoots:
   - {fileID: 1379060563}
   - {fileID: 1160969520}
   - {fileID: 377119139}
+  - {fileID: 270326507}
   - {fileID: 1653753610}
   - {fileID: 583965554}
   - {fileID: 1198043208}

@@ -8,6 +8,7 @@ public class LevelTransitionManager : MonoBehaviour
 
     // UI Elements
     private VisualElement m_LevelTransitionPanel;
+    private Label m_NewLevelLabel;
 
     // Animation parameters
     private readonly float m_FadeDuration = 0.5f;
@@ -17,35 +18,38 @@ public class LevelTransitionManager : MonoBehaviour
         VisualElement root = m_UIDocument.rootVisualElement;
 
         m_LevelTransitionPanel = root.Q<VisualElement>("LevelTransitionPanel");
+        m_NewLevelLabel = m_LevelTransitionPanel.Q<Label>("NewLevelLabel");
     }
 
-    public IEnumerator FadeIn()
+    void SetLevelText(int levelNumber) => m_NewLevelLabel.text = $"Level {levelNumber}";
+
+    public IEnumerator FadeInCoroutine()
     {
         float elapsed = 0;
+        float opacity = m_LevelTransitionPanel.style.opacity.value;
 
         while (elapsed < m_FadeDuration)
         {
             elapsed += Time.deltaTime;
 
-            float opacity = m_LevelTransitionPanel.style.opacity.value;
-
-            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 1, elapsed / m_FadeDuration);
+            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 0, elapsed / m_FadeDuration);
 
             yield return null;    
         }
     }
 
-    public IEnumerator FadeOut(int levelNumber)
+    public IEnumerator FadeOutCoroutine(int levelNumber)
     {
+        SetLevelText(levelNumber);
+
         float elapsed = 0;
+        float opacity = m_LevelTransitionPanel.style.opacity.value;
 
         while (elapsed < m_FadeDuration)
         {
             elapsed += Time.deltaTime;
 
-            float opacity = m_LevelTransitionPanel.style.opacity.value;
-
-            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(1, opacity, elapsed / m_FadeDuration);
+            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 1, elapsed / m_FadeDuration);
 
             yield return null;    
         }
