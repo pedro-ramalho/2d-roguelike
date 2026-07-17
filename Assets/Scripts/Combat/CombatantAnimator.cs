@@ -9,9 +9,12 @@ public class CombatantAnimator : MonoBehaviour
     private SpriteRenderer m_SpriteRenderer;
 
     // Coroutines
+    private Coroutine m_AttackCoroutine;
     private Coroutine m_WalkCoroutine;
-    private Coroutine m_HurtCoroutine; 
+    private Coroutine m_HurtCoroutine;  
 
+    private readonly float m_AttackNudgeDistance = 0.3f;
+    private readonly float m_AttackAnimationDuration = 0.2f;
     private readonly float m_WalkAnimationDuration = 0.25f;
     private readonly float m_HurtAnimationDuration = 0.15f;
     private readonly float m_DeathAnimationDuration = 0.3f;
@@ -53,7 +56,47 @@ public class CombatantAnimator : MonoBehaviour
 
     IEnumerator AttackNudgeCoroutine(Vector2Int direction)
     {
-        yield return null;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + new Vector3(direction.x, direction.y, 0) * m_AttackNudgeDistance;
+
+        float elapsed = 0;
+        float t = 0;
+        float singlePhaseDuration = m_AttackAnimationDuration / 2;
+
+        // Ascent phase
+        while (elapsed < singlePhaseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            t = elapsed / singlePhaseDuration;
+
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+
+            yield return null;
+        }
+
+        // Ascent phase complete, set position and reset elapsed & t
+        transform.position = endPos;
+        
+        elapsed = 0f;
+        t = 0f;
+
+        // Begin descent phase
+        while (elapsed < singlePhaseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            t = elapsed / singlePhaseDuration;
+
+            transform.position = Vector3.Lerp(endPos, startPos, t);
+
+            yield return null;
+        }
+
+        // Descent phase complete, set position
+        transform.position = startPos;
+
+        m_AttackCoroutine = null;
     }
 
     IEnumerator HurtAnimationCoroutine()
@@ -112,7 +155,13 @@ public class CombatantAnimator : MonoBehaviour
 
     public void PlayDeathAnimation() => StartCoroutine(DeathAnimationCoroutine());
 
-    public void PlayAttackAnimation(Vector2Int direction) => StartCoroutine(AttackNudgeCoroutine(direction));
+    public void PlayAttackAnimation(Vector2Int direction)
+    { 
+        if (m_AttackCoroutine != null)
+            StopCoroutine(m_AttackCoroutine);
+
+        m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
+    }
 
     public void Bind(ICombatant combatant)
     {
