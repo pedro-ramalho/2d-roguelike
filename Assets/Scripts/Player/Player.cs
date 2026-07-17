@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, ICombatant
 {
-    [SerializeField] private int m_MaxHP = 100;
-    [SerializeField] private int m_MaxStamina = 20;
-    [SerializeField] private int m_Attack = 10;
+    [SerializeField] private int m_MaxHP = 1000;
+    [SerializeField] private int m_MaxStamina = 200;
+    [SerializeField] private int m_Attack = 100;
     private int m_Stamina;
     private CombatantState m_State;
 
@@ -39,9 +39,6 @@ public class Player : MonoBehaviour, ICombatant
         GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
         GetComponent<CombatantAnimator>().Bind(this);
-        GetComponentInChildren<CombatantBarsHUD>().Bind(this);
-        GetComponentInChildren<CombatantStatusEffectsHUD>().Bind(this);
-        GetComponentInChildren<CombatantFloatersHUD>().Bind(this);
     }
 
     void OnDestroy()

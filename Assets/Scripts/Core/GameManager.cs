@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,6 +6,8 @@ public enum GameOverReason { Depleted, Defeated }
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private LevelTransitionManager m_LevelTransitionManager;
+
     private int m_CurrentLevel = 0;
     private Label m_FoodLabel;
     private Label m_GameOverMessage;
@@ -68,20 +71,30 @@ public class GameManager : MonoBehaviour
         m_GameOverReason = reason;
     }
 
-    public void NewLevel()
+    IEnumerator NewLevelCoroutine()
     {
+        PlayerController.gameObject.SetActive(false);
+
+        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
+
         BoardManager.Clean();
         BoardManager.Init();
 
+        PlayerController.gameObject.SetActive(true);
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
         m_CurrentLevel++;
+        yield return new WaitForSeconds(3f);
+
+        yield return m_LevelTransitionManager.FadeInCoroutine();
     }
+
+    public void NewLevel() => StartCoroutine(NewLevelCoroutine());
 
     public void StartNewGame()
     {
         m_GameOverPanel.style.visibility = Visibility.Hidden;
-
+    
         m_CurrentLevel = 1;
         m_FoodLabel.text = $"Stamina: {PlayerController.Combatant.Stamina}/{PlayerController.Combatant.MaxStamina}";
 
@@ -91,5 +104,6 @@ public class GameManager : MonoBehaviour
         PlayerController.Combatant.ResetState();
         PlayerController.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+        PlayerController.SetVisible(true);
     }
 }

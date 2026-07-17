@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 7702165756767455364}
   - component: {fileID: 6913251002662538411}
   - component: {fileID: 4943251867301102487}
+  - component: {fileID: 1863524310077405169}
+  - component: {fileID: -3585038373898010958}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -33,8 +35,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1200051866254138330}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4643804580259343903
@@ -156,224 +157,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
---- !u!1 &6675062771931331712
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7134827123940167437}
-  - component: {fileID: 8503262430336216733}
-  - component: {fileID: 3598054042765727375}
-  - component: {fileID: 3650061144043427537}
-  m_Layer: 5
-  m_Name: StatusEffectContainer_Enemy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7134827123940167437
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6675062771931331712}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1200051866254138330}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8503262430336216733
+--- !u!114 &1863524310077405169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6675062771931331712}
+  m_GameObject: {fileID: 2182124353006668779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ff0976062235b941af152adac2b9534, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 4
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
---- !u!114 &3598054042765727375
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantHUD
+  m_Template: {fileID: 9197481963319205126, guid: 7c63a2d9060ffc54ebfbe4bea2e037b1, type: 3}
+  m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
+  m_ShowStatusEffects: 1
+  m_WorldOffset: {x: 0, y: 0.5, z: 0}
+--- !u!114 &-3585038373898010958
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6675062771931331712}
+  m_GameObject: {fileID: 2182124353006668779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Script: {fileID: 11500000, guid: b9641e0d05be0a541bf0bc7f8a83601c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
---- !u!114 &3650061144043427537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6675062771931331712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ea282f6b8b1e3846b94e4dc888aa6e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatantStatusEffectsHUD
-  m_SlotPrefab: {fileID: 2851022803457554079, guid: 71d9baff43527da44826edb06b20be4d, type: 3}
---- !u!1001 &8303903195788243976
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4387385277494319780}
-    m_Modifications:
-    - target: {fileID: 833409124596331057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2882661048858321057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_Name
-      value: CombatantCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1080
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7134827123940167437}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2882661048858321057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1923230097030043073}
-  m_SourcePrefab: {fileID: 100100000, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
---- !u!224 &1200051866254138330 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7177070008389808082, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-  m_PrefabInstance: {fileID: 8303903195788243976}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6574172465381921961 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2882661048858321057, guid: fe729c7fede312d4aa1e89ca69e04a75, type: 3}
-  m_PrefabInstance: {fileID: 8303903195788243976}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1923230097030043073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574172465381921961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a07717c3b392a4f80d3952f304281a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatantFloatersHUD
-  m_FloaterPrefab: {fileID: 2821893187595362376, guid: 8980298a058ab5044956a0634336f9ca, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::CombatantFloaters
+  m_FloaterTemplate: {fileID: 9197481963319205126, guid: f3909eb1f19fd7942974b47abe58a77d, type: 3}
+  m_WorldOffset: {x: 0, y: 0.5, z: 0}
+  m_Duration: 0.5
+  m_RisePixels: 50
