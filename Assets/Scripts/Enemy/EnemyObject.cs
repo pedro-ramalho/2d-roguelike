@@ -56,7 +56,13 @@ public class EnemyObject : CellObject, ICombatant
 
     public DamageResult TakeDamage(int amount) 
     {
+        int previousHP = m_State.HP;
+
         DamageResult result = m_State.TakeDamage(amount);
+
+        if (previousHP > 0 && m_State.HP <= 0)
+            Defeated?.Invoke();
+
         Damaged?.Invoke(result);
 
         return result;
