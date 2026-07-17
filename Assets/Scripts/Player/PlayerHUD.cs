@@ -6,6 +6,7 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private UIDocument m_UIDocument;
     private Player m_Player;
 
+    private VisualElement m_PlayerStatsPanel;
     private Label m_HealthLabel;
     private Label m_BlockLabel;
     private Label m_StaminaLabel;
@@ -15,11 +16,11 @@ public class PlayerHUD : MonoBehaviour
     {
         m_Player = GetComponent<Player>();
 
-        VisualElement playerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");        
-        m_HealthLabel = playerStatsPanel.Q<Label>("HealthLabel");
-        m_BlockLabel = playerStatsPanel.Q<Label>("BlockLabel");
-        m_StaminaLabel = playerStatsPanel.Q<Label>("StaminaLabel");
-        m_AttackLabel = playerStatsPanel.Q<Label>("AttackLabel");
+        m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");        
+        m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
+        m_BlockLabel = m_PlayerStatsPanel.Q<Label>("BlockLabel");
+        m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
+        m_AttackLabel = m_PlayerStatsPanel.Q<Label>("AttackLabel");
 
         m_Player.Damaged += _ => Refresh();
         m_Player.HealthAdded += _ => Refresh();
@@ -28,6 +29,19 @@ public class PlayerHUD : MonoBehaviour
     }
 
     void Start() => Refresh();
+
+    void OnDisable()
+    {
+        if (m_PlayerStatsPanel != null)
+            m_PlayerStatsPanel.style.display = DisplayStyle.None;
+
+    }
+
+    void OnEnable()
+    {
+        if (m_PlayerStatsPanel != null)
+            m_PlayerStatsPanel.style.display = DisplayStyle.Flex;
+    }
 
     void OnDestroy()
     {

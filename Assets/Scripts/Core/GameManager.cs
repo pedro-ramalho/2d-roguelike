@@ -73,11 +73,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator NewLevelCoroutine()
     {
+        PlayerController.gameObject.SetActive(false);
+
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
 
         BoardManager.Clean();
         BoardManager.Init();
 
+        PlayerController.gameObject.SetActive(true);
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
 
         m_CurrentLevel++;
@@ -91,7 +94,7 @@ public class GameManager : MonoBehaviour
     public void StartNewGame()
     {
         m_GameOverPanel.style.visibility = Visibility.Hidden;
-
+    
         m_CurrentLevel = 1;
         m_FoodLabel.text = $"Stamina: {PlayerController.Combatant.Stamina}/{PlayerController.Combatant.MaxStamina}";
 
@@ -101,5 +104,6 @@ public class GameManager : MonoBehaviour
         PlayerController.Combatant.ResetState();
         PlayerController.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
+        PlayerController.SetVisible(true);
     }
 }

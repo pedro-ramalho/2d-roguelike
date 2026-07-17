@@ -40,6 +40,12 @@ public class CombatantHUD : MonoBehaviour
         if (combatant != null) Bind(combatant);
     }
 
+    void OnDisable()
+    {
+        if (m_Root != null)
+            m_Root.style.visibility = Visibility.Hidden;
+    }
+
     void LateUpdate()
     {
         if (m_Root == null || m_Camera == null) return;

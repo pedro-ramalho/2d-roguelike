@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions m_InputActions;
     private Player m_Combatant;
     private CombatantAnimator m_CombatantAnimator;
+    private SpriteRenderer m_SpriteRenderer;
 
     // State
     private Vector2Int m_CellPosition;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
         m_Combatant = GetComponent<Player>();
         m_CombatantAnimator = GetComponent<CombatantAnimator>();
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
@@ -136,6 +138,8 @@ public class PlayerController : MonoBehaviour
     public void Init() => m_IsGameOver = false;
 
     public void GameOver() => m_IsGameOver = true;
+
+    public void SetVisible(bool visible) => m_SpriteRenderer.enabled = visible;
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {
