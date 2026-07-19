@@ -1,8 +1,8 @@
 .combatant-hud {
     position: absolute;
     width: 40px;
-    translate: -50% 0;               
-    visibility: hidden;             
+    translate: -50% 0;
+    visibility: hidden;
     flex-direction: column;
     align-items: center;
 }
@@ -23,8 +23,13 @@
     width: 100%;
 }
 
-.bar-fill-hp { background-color: rgb(200, 40, 40); }
-.bar-fill-block { background-color: rgb(50, 90, 200); }
+.bar-fill-hp {
+    background-color: rgb(200, 40, 40);
+}
+
+.bar-fill-block {
+    background-color: rgb(50, 90, 200);
+}
 
 .status-row {
     flex-direction: row;
@@ -33,21 +38,31 @@
 }
 
 .status-slot {
-    width: 12px;
-    height: 12px;
-    margin: 1px;
-    background-color: rgb(180, 180, 180);   
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    margin: 0 3px;
+}
+
+.status-icon {
+    width: 16px;
+    height: 16px;
+    background-color: rgb(180, 180, 180);
 }
 
 .status-duration {
     font-size: 8px;
     color: rgb(255, 255, 255);
+    margin-left: 2px;
 }
 
 .floater {
     position: absolute;
     font-size: 14px;
     color: rgb(255, 255, 255);
+}
+
+
+
+Label {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&guid=b284a6525342f44599e9ce79e37c2d61&type=3#PressStart2P-Regular");
 }

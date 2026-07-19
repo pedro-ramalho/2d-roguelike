@@ -8,6 +8,7 @@ public class CombatantHUD : MonoBehaviour
     [SerializeField] private VisualTreeAsset m_StatusSlotTemplate;
     [SerializeField] private bool m_ShowStatusEffects = true;
     [SerializeField] private Vector3 m_WorldOffset = new Vector3(0, 0.5f, 0);
+    [SerializeField] private StatusEffectIconSet m_IconSet;
 
     private ICombatant m_Combatant;
     private VisualElement m_ParentLayer;
@@ -92,9 +93,13 @@ public class CombatantHUD : MonoBehaviour
         if (m_Slots.ContainsKey(effect.Type)) return;
 
         VisualElement slot = m_StatusSlotTemplate.Instantiate();
+        Sprite icon = m_IconSet != null ? m_IconSet.For(effect.Type) : null;
+        if (icon != null)
+            slot.Q<VisualElement>("Icon").style.backgroundImage = new StyleBackground(icon);
+
         Label duration = slot.Q<Label>("Duration");
         duration.text = effect.Duration.ToString();
-        // Background color per effect type would go here — for now, default USS color.
+
         m_StatusRow.Add(slot);
         m_Slots[effect.Type] = slot;
     }

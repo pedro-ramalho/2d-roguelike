@@ -173,6 +173,7 @@ MonoBehaviour:
   m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
   m_ShowStatusEffects: 1
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
+  m_IconSet: {fileID: 11400000, guid: 493c85b27f0fbc04d844abe5369e67df, type: 2}
 --- !u!114 &-3585038373898010958
 MonoBehaviour:
   m_ObjectHideFlags: 0
