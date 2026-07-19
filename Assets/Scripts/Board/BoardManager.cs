@@ -24,7 +24,6 @@ public class BoardManager : MonoBehaviour
     public Tile[] WallTiles;
 
     // Prefabs & references
-    public EnemyController Enemy;
     public FoodObject[] FoodPrefabs;
     public WallObject WallPrefab;
     public ExitCellObject ExitCellPrefab;
