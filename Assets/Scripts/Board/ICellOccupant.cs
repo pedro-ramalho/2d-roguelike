@@ -1,6 +1,1 @@
-using UnityEngine;
-
-public class ICellOccupant
-{
-    
-}
+public interface ICellOccupant { }
