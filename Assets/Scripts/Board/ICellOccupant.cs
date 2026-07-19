@@ -1,1 +1,3 @@
-public interface ICellOccupant { }
+using UnityEngine;
+
+public interface ICellOccupant { GameObject GameObject { get; } }

@@ -7,7 +7,7 @@ public class BoardManager : MonoBehaviour
     public class CellData
     {
         public bool Passable;
-        public CellObject ContainedObject;    
+        public ICellOccupant ContainedObject;    
     }
 
     private Tilemap m_Tilemap;
@@ -24,12 +24,11 @@ public class BoardManager : MonoBehaviour
     public Tile[] WallTiles;
 
     // Prefabs & references
-    public PlayerController Player;
     public EnemyController Enemy;
     public FoodObject[] FoodPrefabs;
     public WallObject WallPrefab;
     public ExitCellObject ExitCellPrefab;
-    public EnemyObject EnemyPrefab;
+    public Combatant EnemyPrefab;
 
     void AddObject(CellObject obj, Vector2Int coord)
     {
@@ -79,7 +78,7 @@ public class BoardManager : MonoBehaviour
         Vector2Int coord = m_EmptyCells[randomIndex];
 
         m_EmptyCells.RemoveAt(randomIndex);
-        EnemyObject newEnemy = Instantiate(EnemyPrefab);
+        Combatant newEnemy = Instantiate(EnemyPrefab);
         
         m_BoardData[coord.x, coord.y].ContainedObject = newEnemy;
         
@@ -143,6 +142,14 @@ public class BoardManager : MonoBehaviour
         return m_BoardData[cellIndex.x, cellIndex.y];
     }
 
+    public void ClearCell(Vector2Int cellIndex)
+    {
+        CellData cellData = GetCellData(cellIndex);
+
+        if (cellData != null)
+            cellData.ContainedObject = null;
+    }
+
     public void SetCellTile(Vector2Int cellIndex, Tile tile) => m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
     public Tile GetCellTile(Vector2Int cellIndex) => m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
@@ -158,7 +165,7 @@ public class BoardManager : MonoBehaviour
                 CellData cellData = m_BoardData[x, y];
 
                 if (cellData.ContainedObject != null)
-                    Destroy(cellData.ContainedObject.gameObject);
+                    Destroy(cellData.ContainedObject.GameObject);
 
                 SetCellTile(new Vector2Int(x, y), null);
             }

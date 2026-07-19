@@ -7,7 +7,8 @@ public class PlayerController : MonoBehaviour
     // References
     private BoardManager m_Board;
     private PlayerInputActions m_InputActions;
-    private Player m_Combatant;
+    private PlayerStats m_PlayerStats;
+    private Combatant m_Combatant;
     private CombatantAnimator m_CombatantAnimator;
     private SpriteRenderer m_SpriteRenderer;
 
@@ -16,7 +17,8 @@ public class PlayerController : MonoBehaviour
     private bool m_IsGameOver;
     private bool m_IsProcessingTurn;
     
-    public Player Combatant => m_Combatant;
+    public Combatant Combatant => m_Combatant;
+    public PlayerStats PlayerStats => m_PlayerStats;
     public Vector2Int Cell => m_CellPosition;
 
     void Start() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
@@ -24,15 +26,21 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         m_InputActions = new PlayerInputActions();
-
-        m_Combatant = GetComponent<Player>();
-        m_CombatantAnimator = GetComponent<CombatantAnimator>();
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
+
+        m_Combatant = GetComponent<Combatant>();
+        m_CombatantAnimator = GetComponent<CombatantAnimator>();
+
+        m_PlayerStats = GetComponent<PlayerStats>();
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
     
-    void OnDisable() => m_InputActions.Player.Disable();
+    void OnDisable()
+    {
+        m_InputActions.Player.Disable();
+        m_IsProcessingTurn = false;  
+    } 
     
     void OnDestroy()
     {
@@ -93,7 +101,6 @@ public class PlayerController : MonoBehaviour
     {
         m_Combatant.AttackTarget(enemy, target - m_CellPosition);
 
-        // Enemy has been killed, destroy it and move the Player
         if (enemy.HP <= 0)
         {            
             cell.ContainedObject = null;
@@ -127,10 +134,10 @@ public class PlayerController : MonoBehaviour
                 MoveTo(target, false);
             else if (cellData.ContainedObject is ICombatant enemy)
                 HandleEnemyDamage(enemy, target, cellData);
-            else if (cellData.ContainedObject.PlayerWantsToEnter())
+            else if (cellData.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
             {
                 MoveTo(target, false);
-                cellData.ContainedObject.PlayerEntered(m_Combatant);
+                obj.PlayerEntered(this);
             }
 
             yield return new WaitForSeconds(m_CombatantAnimator.WalkDuration);
@@ -143,7 +150,7 @@ public class PlayerController : MonoBehaviour
         m_IsProcessingTurn = false;
     }
 
-    void TurnHappened() => m_Combatant.ChangeStamina(-1);
+    void TurnHappened() => m_PlayerStats.DecrementStamina();
 
     public void Init() => m_IsGameOver = false;
 

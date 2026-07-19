@@ -39,6 +39,7 @@ public class WallObject : CellObject
         }
 
         GameManager.Instance.BoardManager.SetCellTile(m_Cell, m_OriginalTile);
+        GameManager.Instance.BoardManager.ClearCell(m_Cell);
         Destroy(gameObject);
 
         return true;

@@ -23,6 +23,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     // Shared
     public bool IsStunned => m_State.IsStunned;
 
+    GameObject ICellOccupant.GameObject => gameObject;
+
     // Shared events
     public event Action Defeated;
     public event Action<DamageResult> Damaged;
@@ -36,10 +38,10 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     {
         ResetState();
 
-        GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
-
         GetComponent<CombatantAnimator>().Bind(this);
     }
+
+    void Start() => GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
 
     void OnDestroy()
     {

@@ -344,14 +344,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aabe485d5c380f94a97a3755eb14d353, type: 2}
   - {fileID: 11400000, guid: c0575222978a2e94ebd51fa527291ebe, type: 2}
   - {fileID: 11400000, guid: c7732b5ee5fba9b4dbe11600c51a963f, type: 2}
-  Player: {fileID: 1653753611}
   Enemy: {fileID: 0}
   FoodPrefabs:
   - {fileID: -2554186031408535444, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
   WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   ExitCellPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
-  EnemyPrefab: {fileID: 7702165756767455364, guid: 50519bc32474670408738a752f910956, type: 3}
+  EnemyPrefab: {fileID: 5536179765283063511, guid: 50519bc32474670408738a752f910956, type: 3}
 --- !u!1 &1198043205
 GameObject:
   m_ObjectHideFlags: 0

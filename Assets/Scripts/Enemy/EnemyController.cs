@@ -4,19 +4,21 @@ public class EnemyController : MonoBehaviour
 {
     // References
     private BoardManager m_Board;
-    private EnemyObject m_Combatant;
+    private Combatant m_Combatant;
     private CombatantAnimator m_CombatantAnimator;
 
     // State
     private Vector2Int m_Cell;
 
-    public EnemyObject Combatant => m_Combatant;
+    public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_Cell;
     
     void Awake()
     {
-        m_Combatant = GetComponent<EnemyObject>();
-        m_CombatantAnimator = GetComponent<CombatantAnimator>();    
+        m_Combatant = GetComponent<Combatant>();
+        m_CombatantAnimator = GetComponent<CombatantAnimator>();
+
+        m_Combatant.Defeated += OnDefeated;
     }
 
     void Start()
@@ -27,7 +29,10 @@ public class EnemyController : MonoBehaviour
     void OnDestroy()
     {
         GameManager.Instance.TurnManager.OnTick -= OnTurnHappened;
+        m_Combatant.Defeated -= OnDefeated;
     }
+
+    void OnDefeated() => GameManager.Instance.TurnManager.OnTick -= OnTurnHappened;
 
     bool MoveTo(Vector2Int coord)
     {

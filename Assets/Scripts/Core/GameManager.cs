@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
         m_GameOverPanel.style.visibility = Visibility.Hidden;
 
-        PlayerController.Combatant.Depleted += OnPlayerDepleted;
+        PlayerController.PlayerStats.Depleted += OnPlayerDepleted;
         PlayerController.Combatant.Defeated += OnPlayerDefeated;
     }
 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         if (PlayerController != null && PlayerController.Combatant != null)
         {
-            PlayerController.Combatant.Depleted -= OnPlayerDepleted;
+            PlayerController.PlayerStats.Depleted -= OnPlayerDepleted;
             PlayerController.Combatant.Defeated -= OnPlayerDefeated;
         }
     }
@@ -96,12 +96,14 @@ public class GameManager : MonoBehaviour
         m_GameOverPanel.style.visibility = Visibility.Hidden;
     
         m_CurrentLevel = 1;
-        m_FoodLabel.text = $"Stamina: {PlayerController.Combatant.Stamina}/{PlayerController.Combatant.MaxStamina}";
+        m_FoodLabel.text = $"Stamina: {PlayerController.PlayerStats.Stamina}/{PlayerController.PlayerStats.MaxStamina}";
 
         BoardManager.Clean();
         BoardManager.Init();
 
         PlayerController.Combatant.ResetState();
+        PlayerController.PlayerStats.ResetState();
+
         PlayerController.Init();
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
         PlayerController.SetVisible(true);
