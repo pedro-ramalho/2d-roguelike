@@ -1,10 +1,12 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
-    <ui:VisualElement name="CombatantHUD" class="combatant-hud" style="flex-grow: 1;">
-        <ui:VisualElement name="StatusEffectsRow" class="status-row" style="flex-grow: 1;"/>
-        <ui:VisualElement name="Bars" class="bar">
-            <ui:VisualElement name="HPFill" class="bar-fill bar-fill-hp"/>
-            <ui:VisualElement name="BlockFill" class="bar-fill bar-fill-block"/>
+    <ui:VisualElement name="CombatantHUD" class="combatant-hud">
+        <ui:VisualElement name="HUDContent" class="hud-content">
+            <ui:VisualElement name="StatusEffectsRow" class="status-row"/>
+            <ui:VisualElement name="Bars" class="bar">
+                <ui:VisualElement name="HPFill" class="bar-fill bar-fill-hp"/>
+                <ui:VisualElement name="BlockFill" class="bar-fill bar-fill-block"/>
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
