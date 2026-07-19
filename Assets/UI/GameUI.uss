@@ -42,13 +42,12 @@
 .status-row {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 .status-slot {
     flex-direction: row;
     align-items: center;
-    margin: 0 2px;
 }
 
 .status-icon {
@@ -58,9 +57,9 @@
 }
 
 .status-duration {
-    font-size: 12px;
+    font-size: 8px;
     color: rgb(255, 255, 255);
-    margin-left: 2px;
+    margin-left: 1px;
 }
 
 .floater {
