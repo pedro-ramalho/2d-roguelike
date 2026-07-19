@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4387385277494319780}
   - component: {fileID: 4643804580259343903}
-  - component: {fileID: 5227256866594031395}
-  - component: {fileID: 7702165756767455364}
-  - component: {fileID: 6913251002662538411}
+  - component: {fileID: 5536179765283063511}
   - component: {fileID: 4943251867301102487}
   - component: {fileID: 1863524310077405169}
   - component: {fileID: -3585038373898010958}
+  - component: {fileID: 6913251002662538411}
+  - component: {fileID: 5227256866594031395}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -97,29 +97,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &5227256866594031395
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2182124353006668779}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0837c3c082e6e67449155c9716ad69a4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7702165756767455364
+--- !u!114 &5536179765283063511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,23 +106,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2182124353006668779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6e19c4665eefdf4ea751dcd190e80e6, type: 3}
+  m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyObject
+  m_EditorClassIdentifier: Assembly-CSharp::Combatant
   m_MaxHP: 10
-  m_Attack: 5
---- !u!114 &6913251002662538411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2182124353006668779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6f522a9ccadff3479525e2e450dacff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  m_Attack: 2
 --- !u!114 &4943251867301102487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,3 +156,37 @@ MonoBehaviour:
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_Duration: 0.5
   m_RisePixels: 50
+--- !u!114 &6913251002662538411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f522a9ccadff3479525e2e450dacff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+--- !u!95 &5227256866594031395
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0837c3c082e6e67449155c9716ad69a4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

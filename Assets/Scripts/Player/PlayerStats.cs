@@ -27,5 +27,7 @@ public class PlayerStats : MonoBehaviour
             Depleted?.Invoke();
     }
 
+    public void DecrementStamina() => ChangeStamina(-1);
+
     public void ResetState() => m_Stamina = m_MaxStamina;
 }
