@@ -19,6 +19,8 @@ public class CombatantAnimator : MonoBehaviour
     private readonly float m_HurtAnimationDuration = 0.15f;
     private readonly float m_DeathAnimationDuration = 0.3f;
 
+    public float WalkDuration => m_WalkAnimationDuration;
+
     void Awake()
     {
         m_SpriteRenderer = GetComponent<SpriteRenderer>();

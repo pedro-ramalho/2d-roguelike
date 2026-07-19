@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     // State
     private Vector2Int m_CellPosition;
     private bool m_IsGameOver;
+    private bool m_IsProcessingTurn;
     
     public Player Combatant => m_Combatant;
     public Vector2Int Cell => m_CellPosition;
@@ -102,35 +104,43 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovementInput()
     {
-        Vector2Int direction = GetInputDirection();
-        if (direction != Vector2Int.zero) Debug.Log($"direction={direction}");
+        if (m_IsProcessingTurn) return;
 
+        Vector2Int direction = GetInputDirection();
         if (direction == Vector2Int.zero) return;
 
         Vector2Int target = m_CellPosition + direction;
-        
+
         BoardManager.CellData cellData = m_Board.GetCellData(target);
-        
         if (cellData == null || !cellData.Passable) return;
 
-        if (m_Combatant.IsStunned)
+        StartCoroutine(ProcessTurn(target, cellData));
+    }
+
+    IEnumerator ProcessTurn(Vector2Int target, BoardManager.CellData cellData)
+    {
+        m_IsProcessingTurn = true;
+
+        if (!m_Combatant.IsStunned)
         {
-            GameManager.Instance.TurnManager.Tick();
-            
-            return;
+            if (cellData.ContainedObject == null)
+                MoveTo(target, false);
+            else if (cellData.ContainedObject is ICombatant enemy)
+                HandleEnemyDamage(enemy, target, cellData);
+            else if (cellData.ContainedObject.PlayerWantsToEnter())
+            {
+                MoveTo(target, false);
+                cellData.ContainedObject.PlayerEntered(m_Combatant);
+            }
+
+            yield return new WaitForSeconds(m_CombatantAnimator.WalkDuration);
         }
 
         GameManager.Instance.TurnManager.Tick();
 
-        if (cellData.ContainedObject == null)
-            MoveTo(target, false);
-        else if (cellData.ContainedObject is ICombatant enemy)
-            HandleEnemyDamage(enemy, target, cellData);
-        else if (cellData.ContainedObject.PlayerWantsToEnter())
-        {
-            MoveTo(target, false);
-            cellData.ContainedObject.PlayerEntered(m_Combatant);
-        }
+        yield return new WaitForSeconds(m_CombatantAnimator.WalkDuration);
+
+        m_IsProcessingTurn = false;
     }
 
     void TurnHappened() => m_Combatant.ChangeStamina(-1);
