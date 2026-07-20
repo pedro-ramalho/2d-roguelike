@@ -2,8 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 public class CombatantAnimator : MonoBehaviour
-{   
+{      
+    // Private references
     private ICombatant m_Combatant;
+    private TurnManager m_TurnManager;
+    private BoardManager m_BoardManager;
 
     // Components
     private SpriteRenderer m_SpriteRenderer;
@@ -30,23 +33,25 @@ public class CombatantAnimator : MonoBehaviour
     void Awake()
     {
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
-
-        GameManager.Instance.TurnManager.Register(this);
     }
 
     void OnDestroy()
     {
-        m_Combatant.AttackPerformed -= PlayAttackAnimation;
-        m_Combatant.Damaged -= PlayHurtAnimation;
-        m_Combatant.Defeated -= PlayDeathAnimation;
+        if (m_Combatant != null)
+        {
+            m_Combatant.AttackPerformed -= PlayAttackAnimation;
+            m_Combatant.Damaged -= PlayHurtAnimation;
+            m_Combatant.Defeated -= PlayDeathAnimation;
+        }
 
-        GameManager.Instance.TurnManager.Unregister(this);
+        if (m_TurnManager != null)
+            m_TurnManager.Unregister(this);
     }
 
     IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)
     {
         Vector3 startPos = transform.position;
-        Vector3 endPos = GameManager.Instance.BoardManager.CellToWorld(targetCell);
+        Vector3 endPos = m_BoardManager.CellToWorld(targetCell);
 
         float elapsed = 0;
         float t;
@@ -63,6 +68,7 @@ public class CombatantAnimator : MonoBehaviour
         }
 
         transform.position = endPos;
+
         m_WalkCoroutine = null;    
     }
 
@@ -183,9 +189,13 @@ public class CombatantAnimator : MonoBehaviour
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
     }
 
-    public void Bind(ICombatant combatant)
+    public void Bind(ICombatant combatant, TurnManager turnManager, BoardManager boardManager)
     {
         m_Combatant = combatant;
+        m_TurnManager = turnManager;
+        m_BoardManager = boardManager;
+
+        m_TurnManager.Register(this);
 
         m_Combatant.AttackPerformed += PlayAttackAnimation;
         m_Combatant.Damaged += PlayHurtAnimation;

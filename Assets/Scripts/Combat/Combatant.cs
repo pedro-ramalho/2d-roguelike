@@ -8,6 +8,10 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     [SerializeField] private int m_MaxHP;
     [SerializeField] private int m_Attack;
 
+    // Private references
+    private TurnManager m_TurnManager;
+    private BoardManager m_BoardManager;
+
     // State
     private CombatantState m_State;
 
@@ -38,15 +42,18 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     {
         ResetState();
 
-        GetComponent<CombatantAnimator>().Bind(this);
+        m_TurnManager = GameManager.Instance.TurnManager;
+        m_BoardManager = GameManager.Instance.BoardManager;
+
+        GetComponent<CombatantAnimator>().Bind(this, m_TurnManager, m_BoardManager);
     }
 
-    void Start() => GameManager.Instance.TurnManager.OnTick += TickStatusEffects;
+    void Start() => m_TurnManager.OnTick += TickStatusEffects;
 
     void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.TurnManager.OnTick -= TickStatusEffects;
+        if (m_TurnManager != null)
+            m_TurnManager.OnTick -= TickStatusEffects;
     }
 
     void TickStatusEffects()
