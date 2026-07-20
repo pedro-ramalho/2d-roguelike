@@ -876,6 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff0976062235b941af152adac2b9534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantHUD
+  m_UIDocument: {fileID: 583965553}
   m_Template: {fileID: 9197481963319205126, guid: 7c63a2d9060ffc54ebfbe4bea2e037b1, type: 3}
   m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
   m_ShowStatusEffects: 1
@@ -893,6 +894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9641e0d05be0a541bf0bc7f8a83601c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantFloaters
+  m_UIDocument: {fileID: 583965553}
   m_FloaterTemplate: {fileID: 9197481963319205126, guid: f3909eb1f19fd7942974b47abe58a77d, type: 3}
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_Duration: 0.5

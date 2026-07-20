@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class CombatantFloaters : MonoBehaviour
 {
+    [SerializeField] private UIDocument m_UIDocument;
     [SerializeField] private VisualTreeAsset m_FloaterTemplate;
     [SerializeField] private Vector3 m_WorldOffset = new Vector3(0, 0.5f, 0);
     [SerializeField] private float m_Duration = 0.5f;
@@ -23,8 +24,7 @@ public class CombatantFloaters : MonoBehaviour
 
     void Start()
     {
-        UIDocument doc = GameManager.Instance.UIDoc;
-        m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
+        m_ParentLayer = m_UIDocument.rootVisualElement.Q<VisualElement>("FloaterLayer");
         m_Camera = Camera.main;
 
         ICombatant combatant = GetComponent<ICombatant>();
@@ -40,18 +40,23 @@ public class CombatantFloaters : MonoBehaviour
             m_Combatant.BlockAdded -= OnBlockAdded;
             m_Combatant.StatusApplied -= OnStatusApplied;
         }
+
         if (m_ParentLayer != null)
         {
             foreach (VisualElement floater in m_Active)
                 m_ParentLayer.Remove(floater);
         }
+
         m_Active.Clear();
     }
 
     void OnDamaged(DamageResult result)
     {
-        if (result.BlockLost > 0) Spawn($"-{result.BlockLost}", BlockLostColor);
-        if (result.HPLost > 0) Spawn($"-{result.HPLost}", HealthLostColor);
+        if (result.BlockLost > 0) 
+            Spawn($"-{result.BlockLost}", BlockLostColor);
+        
+        if (result.HPLost > 0) 
+            Spawn($"-{result.HPLost}", HealthLostColor);
     }
 
     void OnHealthAdded(int amount) => Spawn($"+{amount}", HealthAddedColor);
@@ -71,12 +76,14 @@ public class CombatantFloaters : MonoBehaviour
 
         m_ParentLayer.Add(floater);
         m_Active.Add(floater);
+
         StartCoroutine(RiseAndFade(floater, panelPos.y));
     }
 
     IEnumerator RiseAndFade(Label floater, float startTop)
     {
         float elapsed = 0;
+
         while (elapsed < m_Duration)
         {
             elapsed += Time.deltaTime;
@@ -85,7 +92,10 @@ public class CombatantFloaters : MonoBehaviour
             floater.style.opacity = 1 - t;
             yield return null;
         }
-        if (m_ParentLayer != null) m_ParentLayer.Remove(floater);
+
+        if (m_ParentLayer != null) 
+            m_ParentLayer.Remove(floater);
+        
         m_Active.Remove(floater);
     }
 
