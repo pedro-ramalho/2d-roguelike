@@ -133,6 +133,9 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovementInput()
     {
+        if (m_TurnManager.IsProcessingTurn)
+            return;
+            
         Vector2Int direction = GetInputDirection();
         if (direction == Vector2Int.zero) 
             return;

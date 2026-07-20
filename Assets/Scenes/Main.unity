@@ -1014,8 +1014,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12219cbe4fa765b43a82431ea36dc502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  m_Stamina: 1
-  m_MaxStamina: 1
+  m_Stamina: 10
+  m_MaxStamina: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
