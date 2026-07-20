@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 public class CombatantFloaters : MonoBehaviour
 {
-    [SerializeField] private UIDocument m_UIDocument;
     [SerializeField] private VisualTreeAsset m_FloaterTemplate;
     [SerializeField] private Vector3 m_WorldOffset = new Vector3(0, 0.5f, 0);
     [SerializeField] private float m_Duration = 0.5f;
@@ -24,7 +23,9 @@ public class CombatantFloaters : MonoBehaviour
 
     void Start()
     {
-        m_ParentLayer = m_UIDocument.rootVisualElement.Q<VisualElement>("FloaterLayer");
+        UIDocument doc = GameManager.Instance.UIDoc;
+        
+        m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
         m_Camera = Camera.main;
 
         ICombatant combatant = GetComponent<ICombatant>();

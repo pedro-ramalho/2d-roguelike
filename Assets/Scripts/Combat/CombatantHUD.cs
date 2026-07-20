@@ -4,7 +4,6 @@ using UnityEngine.UIElements;
 
 public class CombatantHUD : MonoBehaviour
 {
-    [SerializeField] private UIDocument m_UIDocument;
     [SerializeField] private VisualTreeAsset m_Template;
     [SerializeField] private VisualTreeAsset m_StatusSlotTemplate;
     [SerializeField] private bool m_ShowStatusEffects = true;
@@ -23,7 +22,8 @@ public class CombatantHUD : MonoBehaviour
 
     void Start()
     {
-        m_ParentLayer = m_UIDocument.rootVisualElement.Q<VisualElement>("CombatantHUDLayer");
+        UIDocument doc = GameManager.Instance.UIDoc;
+        m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("CombatantHUDLayer");
         
         VisualElement container = m_Template.Instantiate();
         m_Root = container.Q<VisualElement>("CombatantHUD");
