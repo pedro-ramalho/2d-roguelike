@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     void HandleRestartInput()
     {
         if (m_InputActions.Player.Restart.WasPressedThisFrame()) 
-            GameManager.Instance.StartNewGame();
+            GameManager.Instance.LevelManager.StartNewGame();
     }
 
     Vector2Int GetInputDirection()

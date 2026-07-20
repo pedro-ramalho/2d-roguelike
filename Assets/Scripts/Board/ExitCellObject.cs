@@ -12,5 +12,5 @@ public class ExitCellObject : CellObject
         m_Board.SetCellTile(coord, endTile);
     }
 
-    public override void PlayerEntered(PlayerController _) => GameManager.Instance?.NewLevel();
+    public override void PlayerEntered(PlayerController _) => GameManager.Instance?.LevelManager?.NewLevel();
 }
