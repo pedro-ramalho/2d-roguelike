@@ -12,6 +12,7 @@ public class CombatantAnimator : MonoBehaviour
     private Coroutine m_AttackCoroutine;
     private Coroutine m_WalkCoroutine;
     private Coroutine m_HurtCoroutine;  
+    private Coroutine m_DeathCoroutine;
 
     private readonly float m_AttackNudgeDistance = 0.3f;
     private readonly float m_AttackAnimationDuration = 0.2f;
@@ -20,6 +21,11 @@ public class CombatantAnimator : MonoBehaviour
     private readonly float m_DeathAnimationDuration = 0.3f;
 
     public float WalkDuration => m_WalkAnimationDuration;
+    public bool IsBusy => 
+        m_WalkCoroutine != null ||
+        m_AttackCoroutine != null ||
+        m_HurtCoroutine != null ||
+        m_DeathCoroutine != null;
 
     void Awake()
     {
@@ -135,6 +141,8 @@ public class CombatantAnimator : MonoBehaviour
             yield return null;
         }
 
+        m_DeathCoroutine = null;
+
         Destroy(gameObject);
     }
 
@@ -155,7 +163,13 @@ public class CombatantAnimator : MonoBehaviour
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
     }
 
-    public void PlayDeathAnimation() => StartCoroutine(DeathAnimationCoroutine());
+    public void PlayDeathAnimation() 
+    {
+        if (m_DeathCoroutine != null)
+            StopCoroutine(m_DeathCoroutine);
+
+        m_DeathCoroutine = StartCoroutine(DeathAnimationCoroutine());
+    }
 
     public void PlayAttackAnimation(Vector2Int direction)
     { 
