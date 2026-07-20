@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        TurnManager = new TurnManager();
+        TurnManager = GetComponent<TurnManager>();
     }
 
     void Start()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TurnManager
+public class TurnManager : MonoBehaviour
 {
     private int m_TurnCount;
 
