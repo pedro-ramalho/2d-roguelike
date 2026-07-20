@@ -121,33 +121,24 @@ public class PlayerController : MonoBehaviour
         BoardManager.CellData cellData = m_Board.GetCellData(target);
         if (cellData == null || !cellData.Passable) return;
 
-        StartCoroutine(ProcessTurn(target, cellData));
-    }
-
-    IEnumerator ProcessTurn(Vector2Int target, BoardManager.CellData cellData)
-    {
-        m_IsProcessingTurn = true;
-
-        if (!m_Combatant.IsStunned)
+        if (m_Combatant.IsStunned)
         {
-            if (cellData.ContainedObject == null)
-                MoveTo(target, false);
-            else if (cellData.ContainedObject is ICombatant enemy)
-                HandleEnemyDamage(enemy, target, cellData);
-            else if (cellData.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
-            {
-                MoveTo(target, false);
-                obj.PlayerEntered(this);
-            }
-
-            yield return new WaitForSeconds(m_CombatantAnimator.WalkDuration);
+            GameManager.Instance.TurnManager.BeginTurn();
+            
+            return;
         }
 
-        GameManager.Instance.TurnManager.Tick();
+        if (cellData.ContainedObject == null)
+            MoveTo(target,false);
+        else if (cellData.ContainedObject is ICombatant enemy)
+            HandleEnemyDamage(enemy, target, cellData);
+        else if (cellData.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
+        {
+            MoveTo(target, false);
+            obj.PlayerEntered(this);
+        }
 
-        yield return new WaitForSeconds(m_CombatantAnimator.WalkDuration);
-
-        m_IsProcessingTurn = false;
+        GameManager.Instance.TurnManager.BeginTurn();
     }
 
     void TurnHappened() => m_PlayerStats.DecrementStamina();

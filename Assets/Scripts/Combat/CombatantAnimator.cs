@@ -30,6 +30,8 @@ public class CombatantAnimator : MonoBehaviour
     void Awake()
     {
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
+
+        GameManager.Instance.TurnManager.Register(this);
     }
 
     void OnDestroy()
@@ -37,6 +39,8 @@ public class CombatantAnimator : MonoBehaviour
         m_Combatant.AttackPerformed -= PlayAttackAnimation;
         m_Combatant.Damaged -= PlayHurtAnimation;
         m_Combatant.Defeated -= PlayDeathAnimation;
+
+        GameManager.Instance.TurnManager.Unregister(this);
     }
 
     IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)
