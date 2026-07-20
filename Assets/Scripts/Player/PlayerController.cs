@@ -109,18 +109,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void HandleMovementInput()
+    void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)
     {
-        if (m_IsProcessingTurn) return;
-
-        Vector2Int direction = GetInputDirection();
-        if (direction == Vector2Int.zero) return;
-
-        Vector2Int target = m_CellPosition + direction;
-
-        BoardManager.CellData cellData = m_Board.GetCellData(target);
-        if (cellData == null || !cellData.Passable) return;
-
         if (m_Combatant.IsStunned)
         {
             GameManager.Instance.TurnManager.BeginTurn();
@@ -128,17 +118,35 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (cellData.ContainedObject == null)
+        if (cell.ContainedObject == null)
             MoveTo(target,false);
-        else if (cellData.ContainedObject is ICombatant enemy)
-            HandleEnemyDamage(enemy, target, cellData);
-        else if (cellData.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
+        else if (cell.ContainedObject is ICombatant enemy)
+            HandleEnemyDamage(enemy, target, cell);
+        else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
         {
             MoveTo(target, false);
             obj.PlayerEntered(this);
         }
 
         GameManager.Instance.TurnManager.BeginTurn();
+    }
+
+    void HandleMovementInput()
+    {
+        if (m_IsProcessingTurn) 
+            return;
+
+        Vector2Int direction = GetInputDirection();
+        if (direction == Vector2Int.zero) 
+            return;
+
+        Vector2Int target = m_CellPosition + direction;
+
+        BoardManager.CellData cell = m_Board.GetCellData(target);
+        if (cell == null || !cell.Passable) 
+            return;
+
+        ResolvePlayerAction(cell, target);
     }
 
     void TurnHappened() => m_PlayerStats.DecrementStamina();
