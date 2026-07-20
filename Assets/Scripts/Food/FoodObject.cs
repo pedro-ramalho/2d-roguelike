@@ -6,7 +6,8 @@ public class FoodObject : CellObject
     
     public override void PlayerEntered(PlayerController player)
     {
-        GameManager.Instance.BoardManager.ClearCell(m_Cell);
+        m_Board.ClearCell(m_Cell);
+        
         Destroy(gameObject);
 
         player.PlayerStats.ChangeStamina(Points);

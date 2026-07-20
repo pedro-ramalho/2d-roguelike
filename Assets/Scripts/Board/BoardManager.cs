@@ -36,7 +36,7 @@ public class BoardManager : MonoBehaviour
         obj.transform.position = CellToWorld(coord);
         data.ContainedObject = obj;
 
-        obj.Init(coord);
+        obj.Init(this, coord);
     }
 
     void GenerateFood()

@@ -5,11 +5,11 @@ public class ExitCellObject : CellObject
 {
     public Tile endTile;
 
-    public override void Init(Vector2Int coord)
+    public override void Init(BoardManager board, Vector2Int coord)
     {
-        base.Init(coord);
+        base.Init(board, coord);
 
-        GameManager.Instance?.BoardManager?.SetCellTile(coord, endTile);
+        m_Board.SetCellTile(coord, endTile);
     }
 
     public override void PlayerEntered(PlayerController _) => GameManager.Instance?.NewLevel();
