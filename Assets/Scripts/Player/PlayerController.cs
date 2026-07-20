@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     // References
-    private BoardManager m_Board;
+    private BoardManager m_BoardManager;
+    private TurnManager m_TurnManager;
     private PlayerInputActions m_InputActions;
     private PlayerStats m_PlayerStats;
     private Combatant m_Combatant;
@@ -15,13 +16,16 @@ public class PlayerController : MonoBehaviour
     // State
     private Vector2Int m_CellPosition;
     private bool m_IsGameOver;
-    private bool m_IsProcessingTurn;
     
     public Combatant Combatant => m_Combatant;
     public PlayerStats PlayerStats => m_PlayerStats;
     public Vector2Int Cell => m_CellPosition;
 
-    void Start() => GameManager.Instance.TurnManager.OnTick += TurnHappened;
+    void Start() 
+    {
+        m_TurnManager = GameManager.Instance.TurnManager;
+        m_TurnManager.OnTick += TurnHappened;
+    }
     
     void Awake()
     {
@@ -35,19 +39,15 @@ public class PlayerController : MonoBehaviour
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
-    
-    void OnDisable()
-    {
-        m_InputActions.Player.Disable();
-        m_IsProcessingTurn = false;  
-    } 
+    void OnDisable() => m_InputActions.Player.Disable();
+     
     
     void OnDestroy()
     {
         m_InputActions.Dispose();
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.TurnManager.OnTick -= TurnHappened;        
+        if (m_TurnManager != null)
+            m_TurnManager.OnTick -= TurnHappened;        
     } 
 
     void Update()
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         if (m_Combatant.IsStunned)
         {
-            GameManager.Instance.TurnManager.BeginTurn();
+            m_TurnManager.BeginTurn();
             
             return;
         }
@@ -128,21 +128,18 @@ public class PlayerController : MonoBehaviour
             obj.PlayerEntered(this);
         }
 
-        GameManager.Instance.TurnManager.BeginTurn();
+        m_TurnManager.BeginTurn();
     }
 
     void HandleMovementInput()
     {
-        if (m_IsProcessingTurn) 
-            return;
-
         Vector2Int direction = GetInputDirection();
         if (direction == Vector2Int.zero) 
             return;
 
         Vector2Int target = m_CellPosition + direction;
 
-        BoardManager.CellData cell = m_Board.GetCellData(target);
+        BoardManager.CellData cell = m_BoardManager.GetCellData(target);
         if (cell == null || !cell.Passable) 
             return;
 
@@ -159,7 +156,7 @@ public class PlayerController : MonoBehaviour
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {
-        m_Board = boardManager;
+        m_BoardManager = boardManager;
         MoveTo(cell, true);
     }
 
@@ -168,7 +165,7 @@ public class PlayerController : MonoBehaviour
         m_CellPosition = cell;
         
         if (snap)
-            transform.position = m_Board.CellToWorld(cell);
+            transform.position = m_BoardManager.CellToWorld(cell);
         else
             m_CombatantAnimator.PlayWalkAnimation(cell);
     }
