@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
 
         BoardManager.Clean();
-        BoardManager.Init();
+        BoardManager.Init(TurnManager, PlayerController);
 
         PlayerController.gameObject.SetActive(true);
         PlayerController.Spawn(BoardManager, new Vector2Int(1, 1));
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         m_FoodLabel.text = $"Stamina: {PlayerController.PlayerStats.Stamina}/{PlayerController.PlayerStats.MaxStamina}";
 
         BoardManager.Clean();
-        BoardManager.Init();
+        BoardManager.Init(TurnManager, PlayerController);
 
         PlayerController.Combatant.ResetState();
         PlayerController.PlayerStats.ResetState();

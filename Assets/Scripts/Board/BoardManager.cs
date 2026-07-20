@@ -15,6 +15,10 @@ public class BoardManager : MonoBehaviour
     private Grid m_Grid;
     private List<Vector2Int> m_EmptyCells;
 
+    // Private references
+    private TurnManager m_TurnManager;
+    private PlayerController m_PlayerController;
+
     // Board dimensions
     public int Width;
     public int Height;
@@ -82,13 +86,17 @@ public class BoardManager : MonoBehaviour
         m_BoardData[coord.x, coord.y].ContainedObject = newEnemy;
         
         EnemyController controller = newEnemy.GetComponent<EnemyController>();
-        controller.Spawn(this, coord);
+        controller.Spawn(this, m_TurnManager, m_PlayerController, coord);
     }
 
-    public void Init()
+    public void Init(TurnManager turnManager, PlayerController playerController)
     {
+        m_TurnManager = turnManager;
+        m_PlayerController = playerController;
+
         m_Tilemap = GetComponentInChildren<Tilemap>();
         m_Grid = GetComponentInChildren<Grid>();
+        
         m_BoardData = new CellData[Width, Height];
         m_EmptyCells = new List<Vector2Int>();
 

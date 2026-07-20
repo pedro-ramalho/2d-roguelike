@@ -3,7 +3,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     // References
-    private BoardManager m_Board;
+    private BoardManager m_BoardManager;
+    private TurnManager m_TurnManager;
+    private PlayerController m_PlayerController;
     private Combatant m_Combatant;
     private CombatantAnimator m_CombatantAnimator;
 
@@ -23,26 +25,33 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.TurnManager.OnTick += OnTurnHappened;
+        m_TurnManager.OnTick += OnTurnHappened;
     }
 
     void OnDestroy()
     {
-        GameManager.Instance.TurnManager.OnTick -= OnTurnHappened;
-        m_Combatant.Defeated -= OnDefeated;
+        if (m_TurnManager != null)
+            m_TurnManager.OnTick -= OnTurnHappened;
+        
+        if (m_Combatant != null)
+            m_Combatant.Defeated -= OnDefeated;
     }
 
-    void OnDefeated() => GameManager.Instance.TurnManager.OnTick -= OnTurnHappened;
+    void OnDefeated()
+    {
+        if (m_TurnManager != null)
+            m_TurnManager.OnTick -= OnTurnHappened;
+    }
 
     bool MoveTo(Vector2Int coord)
     {
-        BoardManager.CellData targetCell = m_Board.GetCellData(coord);
+        BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
 
         bool isInvalidCell = (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
         if (isInvalidCell)
             return false;
 
-        BoardManager.CellData currentCell = m_Board.GetCellData(m_Cell);
+        BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Cell);
         currentCell.ContainedObject = null;
         
         targetCell.ContainedObject = m_Combatant;
@@ -56,7 +65,7 @@ public class EnemyController : MonoBehaviour
     void SnapTo(Vector2Int coord)
     {
         m_Cell = coord;
-        transform.position = m_Board.CellToWorld(coord);
+        transform.position = m_BoardManager.CellToWorld(coord);
     }
 
     bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
@@ -87,11 +96,11 @@ public class EnemyController : MonoBehaviour
         if (m_Combatant.IsStunned)
             return;
 
-        Vector2Int delta = GameManager.Instance.PlayerController.Cell - m_Cell;
+        Vector2Int delta = m_PlayerController.Cell - m_Cell;
 
         if (IsAdjacentToPlayer(delta))
         {
-            m_Combatant.AttackTarget(GameManager.Instance.PlayerController.Combatant, delta);
+            m_Combatant.AttackTarget(m_PlayerController.Combatant, delta);
             
             return;
         }
@@ -99,9 +108,12 @@ public class EnemyController : MonoBehaviour
         MoveTowards(delta);
     }
 
-    public void Spawn(BoardManager boardManager, Vector2Int cell)
+    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
     {
-        m_Board = boardManager;
+        m_BoardManager = boardManager;
+        m_TurnManager = turnManager;
+        m_PlayerController = playerController;
+
         SnapTo(cell);
     }
 }
