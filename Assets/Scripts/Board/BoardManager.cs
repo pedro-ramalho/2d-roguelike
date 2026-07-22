@@ -157,6 +157,8 @@ public class BoardManager : MonoBehaviour
             cellData.ContainedObject = null;
     }
 
+    public void SetCellPassable(Vector2Int cellIndex, bool passable) => GetCellData(cellIndex).Passable = passable;
+
     public void SetCellTile(Vector2Int cellIndex, Tile tile) => m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
     public Tile GetCellTile(Vector2Int cellIndex) => m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
