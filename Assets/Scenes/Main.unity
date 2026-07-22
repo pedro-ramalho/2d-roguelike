@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 1160969520}
   - component: {fileID: 1160969519}
   - component: {fileID: 1160969521}
+  - component: {fileID: 1160969522}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -384,9 +385,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b29ea21c80e59409e9c83854c94764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
-  Width: 8
-  Height: 8
-  GroundTiles:
+--- !u!114 &1160969522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160969518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28335dd12708b61409aef3a36f705fba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardGenerator
+  m_GroundTiles:
   - {fileID: 11400000, guid: 01f5f708585106c46bcddd00018d02a7, type: 2}
   - {fileID: 11400000, guid: af9c7faca4e344949af8aba0270e5782, type: 2}
   - {fileID: 11400000, guid: 88ff22028b0828842a25134e3e15bf44, type: 2}
@@ -395,20 +406,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e4e7deb9006d964cafcd08cfdc6bd38, type: 2}
   - {fileID: 11400000, guid: e655f44ee3b7ac84c8f6253a46b4ce91, type: 2}
   - {fileID: 11400000, guid: 1493dbcf3161d0e47a2f17bdf846588b, type: 2}
-  WallTiles:
+  m_WallTiles:
+  - {fileID: 11400000, guid: 4f7a8f287480e4045af04f0d1c669a6e, type: 2}
   - {fileID: 11400000, guid: 2a5cfd588f6c97949b84505efd0ffcdd, type: 2}
   - {fileID: 11400000, guid: 60a1924b38b128f42b762c9fed106331, type: 2}
-  - {fileID: 11400000, guid: 61cb8ff8ec3cc4a4ea512dfb1eb6d3e1, type: 2}
-  - {fileID: 11400000, guid: 3cb27945bcbc1094bba4251d6820290b, type: 2}
-  - {fileID: 11400000, guid: aabe485d5c380f94a97a3755eb14d353, type: 2}
-  - {fileID: 11400000, guid: c0575222978a2e94ebd51fa527291ebe, type: 2}
-  - {fileID: 11400000, guid: c7732b5ee5fba9b4dbe11600c51a963f, type: 2}
-  FoodPrefabs:
+  m_FoodPrefabs:
   - {fileID: -2554186031408535444, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
-  WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
-  ExitCellPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
-  EnemyPrefab: {fileID: 5536179765283063511, guid: 50519bc32474670408738a752f910956, type: 3}
+  m_WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
+  m_ExitPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
+  m_EnemyPrefab: {fileID: 5536179765283063511, guid: 50519bc32474670408738a752f910956, type: 3}
+  m_MinFoodCount: 2
+  m_MaxFoodCount: 6
+  m_MinWallCount: 6
+  m_MaxWallCount: 10
 --- !u!1 &1198043205
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   m_LevelTransitionManager: {fileID: 270326508}
+  m_BoardGenerator: {fileID: 1160969522}
 --- !u!1 &1379060560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,8 +1026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12219cbe4fa765b43a82431ea36dc502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  m_Stamina: 10
-  m_MaxStamina: 10
+  m_Stamina: 50
+  m_MaxStamina: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

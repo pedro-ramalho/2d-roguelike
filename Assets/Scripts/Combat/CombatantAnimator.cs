@@ -35,6 +35,14 @@ public class CombatantAnimator : MonoBehaviour
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    void OnDisable()
+    {
+        m_WalkCoroutine = null;
+        m_AttackCoroutine = null;
+        m_HurtCoroutine = null;
+        m_DeathCoroutine = null;
+    }
+
     void OnDestroy()
     {
         if (m_Combatant != null)

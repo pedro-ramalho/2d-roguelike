@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
     void OnEnable() => m_InputActions.Player.Enable();
     void OnDisable() => m_InputActions.Player.Disable();
      
-    
     void OnDestroy()
     {
         m_InputActions.Dispose();
