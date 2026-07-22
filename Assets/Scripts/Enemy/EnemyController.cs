@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public abstract class EnemyController : MonoBehaviour
 {
     // References
     private BoardManager m_BoardManager;
@@ -23,11 +23,8 @@ public class EnemyController : MonoBehaviour
         m_Combatant.Defeated += OnDefeated;
     }
 
-    void Start()
-    {
-        m_TurnManager.OnTick += OnTurnHappened;
-    }
-
+    void Start() => m_TurnManager.OnTick += OnTurnHappened;
+    
     void OnDestroy()
     {
         if (m_TurnManager != null)
