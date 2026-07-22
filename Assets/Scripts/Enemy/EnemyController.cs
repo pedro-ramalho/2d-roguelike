@@ -88,16 +88,20 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
+    Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
+
+    void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, direction);
+
     void OnTurnHappened()
     {
         if (m_Combatant.IsStunned)
             return;
 
-        Vector2Int delta = m_PlayerController.Cell - m_Cell;
+        Vector2Int delta = ComputeDeltaToPlayer();
 
         if (IsAdjacentToPlayer(delta))
         {
-            m_Combatant.AttackTarget(m_PlayerController.Combatant, delta);
+            AttackPlayer(delta);
             
             return;
         }
