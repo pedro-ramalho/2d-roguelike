@@ -12,6 +12,9 @@ public abstract class EnemyController : MonoBehaviour
     // State
     private Vector2Int m_Cell;
 
+    // Protected properties
+    protected CombatantAnimator Animator => m_CombatantAnimator;
+
     // Public properties
     public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_Cell;
