@@ -415,7 +415,7 @@ MonoBehaviour:
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
   m_WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   m_ExitPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
-  m_EnemyPrefab: {fileID: 5536179765283063511, guid: 50519bc32474670408738a752f910956, type: 3}
+  m_EnemyPrefab: {fileID: 6934467402906414784, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
   m_MinFoodCount: 2
   m_MaxFoodCount: 6
   m_MinWallCount: 6
@@ -545,63 +545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   m_LevelTransitionManager: {fileID: 270326508}
   m_BoardGenerator: {fileID: 1160969522}
---- !u!1001 &1357392662
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2866038250968637081, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_Name
-      value: Skirmisher
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.28591
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.39693
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4411988309896173787, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
 --- !u!1 &1379060560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,4 +1041,3 @@ SceneRoots:
   - {fileID: 1653753610}
   - {fileID: 583965554}
   - {fileID: 1198043208}
-  - {fileID: 1357392662}
