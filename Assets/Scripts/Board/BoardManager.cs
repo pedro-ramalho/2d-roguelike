@@ -33,7 +33,7 @@ public class BoardManager : MonoBehaviour
     public ExitCellObject ExitCellPrefab;
     public Combatant EnemyPrefab;
 
-    void AddObject(CellObject obj, Vector2Int coord)
+    public void AddObject(CellObject obj, Vector2Int coord)
     {
         CellData data = m_BoardData[coord.x, coord.y];
 
@@ -157,8 +157,12 @@ public class BoardManager : MonoBehaviour
             cellData.ContainedObject = null;
     }
 
+    public void SetCellOccupant(Vector2Int cellIndex, ICellOccupant occupant) => m_BoardData[cellIndex.x, cellIndex.y].ContainedObject = occupant;
+
     public void SetCellPassable(Vector2Int cellIndex, bool passable) => GetCellData(cellIndex).Passable = passable;
 
+    public void SetCellData(Vector2Int cellIndex, CellData data) => m_BoardData[cellIndex.x, cellIndex.y] = data;
+    
     public void SetCellTile(Vector2Int cellIndex, Tile tile) => m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
     public Tile GetCellTile(Vector2Int cellIndex) => m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
