@@ -72,7 +72,7 @@ public class BoardGenerator : MonoBehaviour
 
         m_BoardManager.SetCellOccupant(coord, newEnemy);
 
-        EnemyController controller = newEnemy.GetComponent<EnemyController>();
+        Brute controller = newEnemy.GetComponent<Brute>();
         controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
     }
 

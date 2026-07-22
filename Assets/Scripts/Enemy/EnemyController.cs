@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public abstract class EnemyController : MonoBehaviour
 {
     // References
     private BoardManager m_BoardManager;
@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     // State
     private Vector2Int m_Cell;
 
+    // Public properties
     public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_Cell;
     
@@ -23,11 +24,8 @@ public class EnemyController : MonoBehaviour
         m_Combatant.Defeated += OnDefeated;
     }
 
-    void Start()
-    {
-        m_TurnManager.OnTick += OnTurnHappened;
-    }
-
+    void Start() => m_TurnManager.OnTick += OnTurnHappened;
+    
     void OnDestroy()
     {
         if (m_TurnManager != null)
@@ -68,11 +66,11 @@ public class EnemyController : MonoBehaviour
         transform.position = m_BoardManager.CellToWorld(coord);
     }
 
-    bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
+    protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
 
-    bool IsAdjacentToPlayer(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
+    protected bool IsAdjacentToPlayer(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
     
-    void MoveTowards(Vector2Int delta)
+    protected void MoveTowards(Vector2Int delta)
     {
         Vector2Int xDirection = delta.x > 0 ? Vector2Int.right : Vector2Int.left;
         Vector2Int yDirection = delta.y > 0 ? Vector2Int.up : Vector2Int.down;
@@ -91,22 +89,19 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
+
+    protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, direction);
+
     void OnTurnHappened()
     {
         if (m_Combatant.IsStunned)
             return;
 
-        Vector2Int delta = m_PlayerController.Cell - m_Cell;
-
-        if (IsAdjacentToPlayer(delta))
-        {
-            m_Combatant.AttackTarget(m_PlayerController.Combatant, delta);
-            
-            return;
-        }
-        
-        MoveTowards(delta);
+        ResolveEnemyAction();
     }
+
+    protected abstract void ResolveEnemyAction();
 
     public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
     {
