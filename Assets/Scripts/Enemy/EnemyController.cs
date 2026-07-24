@@ -70,7 +70,9 @@ public abstract class EnemyController : MonoBehaviour
     }
 
     protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
-
+    
+    protected bool IsInLineOfSightToPlayer() => m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
+    
     protected bool IsAdjacentToPlayer(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
     
     protected void MoveTowards(Vector2Int delta)
