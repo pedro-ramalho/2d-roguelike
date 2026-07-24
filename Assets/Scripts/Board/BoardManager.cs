@@ -20,6 +20,16 @@ public class BoardManager : MonoBehaviour
     public int Width => m_Width;
     public int Height => m_Height;
 
+    private Vector2Int ComputeStepVector(Vector2Int delta)
+    {
+        if (delta.x > 0) return new Vector2Int(1, 0);
+        if (delta.x < 0) return new Vector2Int(-1, 0);
+        if (delta.y > 0) return new Vector2Int(0, 1);
+        if (delta.y < 0) return new Vector2Int(0, -1);
+
+        return new Vector2Int(0, 0);
+    }
+
     public void Init(int width, int height)
     {
         m_Tilemap = GetComponentInChildren<Tilemap>();
@@ -74,7 +84,33 @@ public class BoardManager : MonoBehaviour
     public void SetCellTile(Vector2Int cellIndex, Tile tile) => m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
     public Tile GetCellTile(Vector2Int cellIndex) => m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
-    
+
+    public bool IsCellFree(Vector2Int cellIndex) => GetCellData(cellIndex).ContainedObject == null;
+
+    public bool IsInLineOfSight(Vector2Int coordA, Vector2Int coordB)
+    {
+        Vector2Int delta = coordB - coordA;
+        
+        if (delta.x != 0 && delta.y != 0)
+            return false;
+
+        Vector2Int step = ComputeStepVector(delta);
+
+        Vector2Int cursor = coordA;
+        while (true)
+        {
+            cursor += step;
+            
+            if (cursor == coordB)
+                break;
+
+            if (!IsCellFree(cursor))
+                return false;
+        }
+
+        return true;
+    }
+
     public void Clean()
     {
         if (m_BoardData == null)
