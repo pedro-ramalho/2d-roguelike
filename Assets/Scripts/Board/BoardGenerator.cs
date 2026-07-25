@@ -72,7 +72,7 @@ public class BoardGenerator : MonoBehaviour
 
         m_BoardManager.SetCellOccupant(coord, newEnemy);
 
-        Skirmisher controller = newEnemy.GetComponent<Skirmisher>();
+        Ranged controller = newEnemy.GetComponent<Ranged>();
         controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
     }
 

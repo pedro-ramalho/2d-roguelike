@@ -15,6 +15,7 @@ public abstract class EnemyController : MonoBehaviour
 
     // Protected properties
     protected CombatantAnimator Animator => m_CombatantAnimator;
+    protected Vector2Int PlayerCell => m_PlayerController.Cell;
 
     // Public properties
     public Combatant Combatant => m_Combatant;
@@ -106,8 +107,12 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
+    protected Vector3 PlayerCellToWorld() => m_BoardManager.CellToWorld(PlayerCell);
+
     protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
 
+    protected void DealDamageToPlayer() => m_Combatant.DealDamageTo(m_PlayerController.Combatant);
+    
     protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
 
     void OnTurnHappened()

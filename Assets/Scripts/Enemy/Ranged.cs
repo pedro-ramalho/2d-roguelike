@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Ranged : EnemyController
 {
-    private bool m_IsOnCooldown;
-    private static readonly int m_AttackRange = 2;
+    [SerializeField] private Projectile m_ProjectilePrefab;
 
+    private bool m_IsOnCooldown;
+
+    private static readonly int m_AttackRange = 4;
     private static readonly int m_RetreatDistance = 2;
     private static readonly int m_RunwayScanDepth = 2;
-
-    void Awake() => m_IsOnCooldown = false;
 
     bool IsWithinRange(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) <= m_AttackRange;
 
@@ -17,7 +17,14 @@ public class Ranged : EnemyController
     {
         if (IsWithinRange(delta) && canAttack)
         {
-            AttackPlayer(delta);
+            Vector2Int targetCell = PlayerCell;
+
+            Animator.PlayProjectileAnimation(m_ProjectilePrefab, PlayerCellToWorld(), () =>
+            {
+                if (PlayerCell == targetCell)
+                    DealDamageToPlayer();
+            });
+            
             m_IsOnCooldown = true;
         }
         else

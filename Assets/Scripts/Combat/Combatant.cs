@@ -76,10 +76,12 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         StatusApplied?.Invoke(effect);
     }
 
+    public void DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
+
     public void AttackTarget(ICombatant target, Vector2Int direction)
     {
         AttackPerformed?.Invoke(direction);
-        CombatantDamage.ApplyDamage(this, target);
+        DealDamageTo(target);
     }
 
     public void Heal(int amount)
