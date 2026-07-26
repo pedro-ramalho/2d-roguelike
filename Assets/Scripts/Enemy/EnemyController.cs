@@ -115,6 +115,14 @@ public abstract class EnemyController : MonoBehaviour
     
     protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
 
+    protected void ChaseOrAttack(Vector2Int delta)
+    {
+        if (IsAdjacentToPlayer(delta))
+            AttackPlayer(delta);
+        else
+            MoveTowards(delta);
+    }
+
     void OnTurnHappened()
     {
         if (m_Combatant.IsStunned)
