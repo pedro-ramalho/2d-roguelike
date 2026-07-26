@@ -143,9 +143,7 @@ public abstract class EnemyController : MonoBehaviour
             float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * m_Level);
             if (UnityEngine.Random.value < probability)
             {
-                m_PlayerController.Combatant.ApplyStatusEffect(
-                    new StatusEffectEmpowered(roll.Duration)
-                );
+                m_PlayerController.Combatant.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));
 
                 return;
             }
