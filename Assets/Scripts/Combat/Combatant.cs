@@ -66,6 +66,33 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             StatusRemoved?.Invoke(effect);
     }
 
+    public void IncreaseMaxHP(int amount)
+    { 
+        m_MaxHP += amount;
+        m_State.IncreaseMaxHP(amount);
+    }
+
+    public void IncreaseMaxBlock(int amount)
+    {
+        m_MaxBlock += amount;
+        m_State.IncreaseMaxBlock(amount);
+    }
+
+    public void IncreaseAttack(int amount)
+    {
+        m_Attack += amount;
+        m_State.IncreaseAttack(amount);
+    }
+
+    public void ApplyStatMultiplier(float multiplier)
+    {
+        m_MaxHP = Mathf.RoundToInt(m_MaxHP * multiplier);
+        m_MaxBlock = Mathf.RoundToInt(m_MaxBlock * multiplier);
+        m_Attack = Mathf.RoundToInt(m_Attack * multiplier);
+
+        ResetState();
+    }
+
     public void AddBlock(int amount)
     {
         m_State.AddBlock(amount);

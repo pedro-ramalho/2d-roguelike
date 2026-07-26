@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+public enum PlayerStat { MaxHP, MaxBlock, Attack, MaxStamina }
+
 public class PlayerStats : MonoBehaviour
 {
     // Player-specific stats
@@ -30,4 +32,7 @@ public class PlayerStats : MonoBehaviour
     public void DecrementStamina() => ChangeStamina(-1);
 
     public void ResetState() => m_Stamina = m_MaxStamina;
+
+    public void IncreaseMaxStamina(int amount) => m_MaxStamina += amount;
+    
 }

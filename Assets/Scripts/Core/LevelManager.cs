@@ -57,7 +57,7 @@ public class LevelManager : MonoBehaviour
         m_BoardManager.Clean();
         m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
         
-        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController);
+        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel + 1);
 
         m_PlayerController.gameObject.SetActive(true);
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
@@ -88,7 +88,7 @@ public class LevelManager : MonoBehaviour
         m_BoardManager.Clean();
         m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
         
-        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController);
+        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel);
 
         m_PlayerController.Combatant.ResetState();
         m_PlayerController.PlayerStats.ResetState();
