@@ -171,4 +171,12 @@ public class PlayerController : MonoBehaviour
         else
             m_CombatantAnimator.PlayWalkAnimation(cell);
     }
+
+    public void UpgradeStat(PlayerStat stat, int amount)
+    {
+        switch (stat)
+        {
+            
+        }
+    }
 }
