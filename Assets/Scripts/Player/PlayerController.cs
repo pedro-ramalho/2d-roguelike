@@ -176,7 +176,10 @@ public class PlayerController : MonoBehaviour
     {
         switch (stat)
         {
-            
+            case PlayerStat.MaxHP: Combatant.IncreaseMaxHP(amount); break;
+            case PlayerStat.MaxBlock: Combatant.IncreaseMaxBlock(amount); break;
+            case PlayerStat.Attack: Combatant.IncreaseAttack(amount); break;
+            case PlayerStat.MaxStamina: PlayerStats.IncreaseMaxStamina(amount); break;
         }
     }
 }
