@@ -4,6 +4,13 @@ public class Tank : EnemyController
 {
     protected override void ResolveEnemyAction()
     {
-        throw new System.NotImplementedException();
+        // TODO: link block gain with the current level
+        Combatant.AddBlock(3);
+
+        Vector2Int delta = ComputeDeltaToPlayer();
+        if (IsAdjacentToPlayer(delta))
+            AttackPlayer(delta);
+        else
+            MoveTowards(delta);
     }
 }
