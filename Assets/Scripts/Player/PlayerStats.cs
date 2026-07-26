@@ -33,9 +33,6 @@ public class PlayerStats : MonoBehaviour
 
     public void ResetState() => m_Stamina = m_MaxStamina;
 
-    public void IncreaseMaxStamina(int amount)
-    {
-        m_MaxStamina += amount;
-        ResetState();
-    }
+    public void IncreaseMaxStamina(int amount) => m_MaxStamina += amount;
+    
 }

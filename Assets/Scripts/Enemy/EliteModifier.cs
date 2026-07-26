@@ -17,7 +17,11 @@ public class EliteModifier : MonoBehaviour
         m_Combatant.Defeated += OnEliteDefeated;
     }
 
-    void OnDestroy() => m_Combatant.Defeated -= OnEliteDefeated;
+    void OnDestroy()
+    { 
+        if (m_Combatant != null)
+            m_Combatant.Defeated -= OnEliteDefeated;
+    }
 
     void OnEliteDefeated()
     {

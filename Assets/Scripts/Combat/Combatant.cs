@@ -69,19 +69,19 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public void IncreaseMaxHP(int amount)
     { 
         m_MaxHP += amount;
-        ResetState();
+        m_State.IncreaseMaxHP(amount);
     }
 
     public void IncreaseMaxBlock(int amount)
     {
         m_MaxBlock += amount;
-        ResetState();
+        m_State.IncreaseMaxBlock(amount);
     }
 
     public void IncreaseAttack(int amount)
     {
         m_Attack += amount;
-        ResetState();
+        m_State.IncreaseAttack(amount);
     }
 
     public void ApplyStatMultiplier(float multiplier)

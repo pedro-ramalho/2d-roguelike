@@ -7,8 +7,8 @@ public class CombatantState
     private readonly List<StatusEffect> m_StatusEffects = new();
     
     // Stats
-    public int Attack { get; }
-    public int MaxHP { get; }
+    public int Attack { get; private set; }
+    public int MaxHP { get; private set; }
     public int HP { get; private set; }
     public int MaxBlock { get; private set; }
     public int Block { get; private set; }
@@ -76,4 +76,8 @@ public class CombatantState
         m_StatusEffects.Add(effect); 
         effect.OnApplied(owner);
     }
+
+    public void IncreaseMaxHP(int amount) => MaxHP += amount;
+    public void IncreaseMaxBlock(int amount) => MaxBlock += amount;
+    public void IncreaseAttack(int amount) => Attack += amount;
 }
