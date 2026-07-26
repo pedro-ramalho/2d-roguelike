@@ -5,7 +5,7 @@ public abstract class EnemyController : MonoBehaviour
 {
     // Serialized references
     [SerializeField] private StatusEffectRoll[] m_StatusRolls;
-    
+
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
@@ -15,6 +15,7 @@ public abstract class EnemyController : MonoBehaviour
 
     // State
     private Vector2Int m_Cell;
+    private int m_Level;
 
     // Protected properties
     protected CombatantAnimator Animator => m_CombatantAnimator;
@@ -126,6 +127,11 @@ public abstract class EnemyController : MonoBehaviour
             MoveTowards(delta);
     }
 
+    protected void TryApplyStatusToPlayer()
+    {
+        
+    }
+
     void OnTurnHappened()
     {
         if (m_Combatant.IsStunned)
@@ -136,11 +142,12 @@ public abstract class EnemyController : MonoBehaviour
 
     protected abstract void ResolveEnemyAction();
 
-    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
+    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell, int currentLevel)
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
+        m_Level = currentLevel;
 
         SnapTo(cell);
     }

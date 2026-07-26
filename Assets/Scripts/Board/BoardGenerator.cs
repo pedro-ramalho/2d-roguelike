@@ -81,7 +81,7 @@ public class BoardGenerator : MonoBehaviour
         if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
             controller.gameObject.AddComponent<EliteModifier>();
             
-        controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+        controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord, m_CurrentLevel);
     }
 
     public void GenerateBoard(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, int currentLevel)
