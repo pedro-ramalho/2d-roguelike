@@ -115,9 +115,18 @@ public abstract class EnemyController : MonoBehaviour
 
     protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
 
-    protected void DealDamageToPlayer() => m_Combatant.DealDamageTo(m_PlayerController.Combatant);
+    protected void DealDamageToPlayer() {
+        DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
+        if (result.HPLost > 0)
+            TryApplyStatusToPlayer();
+    }
     
-    protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
+    protected void AttackPlayer(Vector2Int direction)
+    {
+        DamageResult result = m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
+        if (result.HPLost > 0)
+            TryApplyStatusToPlayer();  
+    } 
 
     protected void ChaseOrAttack(Vector2Int delta)
     {
@@ -129,7 +138,18 @@ public abstract class EnemyController : MonoBehaviour
 
     protected void TryApplyStatusToPlayer()
     {
-        
+        foreach (StatusEffectRoll roll in m_StatusRolls)
+        {
+            float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * m_Level);
+            if (UnityEngine.Random.value < probability)
+            {
+                m_PlayerController.Combatant.ApplyStatusEffect(
+                    new StatusEffectEmpowered(roll.Duration)
+                );
+
+                return;
+            }
+        }
     }
 
     void OnTurnHappened()

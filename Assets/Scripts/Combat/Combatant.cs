@@ -105,12 +105,13 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         StatusApplied?.Invoke(effect);
     }
 
-    public void DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
+    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
 
-    public void AttackTarget(ICombatant target, Vector2Int direction)
+    public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
     {
         AttackPerformed?.Invoke(direction);
-        DealDamageTo(target);
+        
+        return DealDamageTo(target);
     }
 
     public void Heal(int amount)
