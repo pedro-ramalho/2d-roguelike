@@ -6,6 +6,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 {
     // Shared stats
     [SerializeField] private int m_MaxHP;
+    [SerializeField] private int m_MaxBlock;
     [SerializeField] private int m_Attack;
 
     // Private references
@@ -19,6 +20,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public int Attack => m_State.Attack;
     public int MaxHP => m_State.MaxHP;
     public int HP => m_State.HP;
+    public int MaxBlock => m_State.MaxBlock;
     public int Block => m_State.Block;
 
     // Status effects
@@ -104,5 +106,5 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         return result;
     }
 
-    public void ResetState() => m_State = new CombatantState(m_MaxHP, m_Attack);
+    public void ResetState() => m_State = new CombatantState(m_MaxHP, m_MaxBlock, m_Attack);
 }

@@ -1013,6 +1013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
   m_MaxHP: 50
+  m_MaxBlock: 20
   m_Attack: 5
 --- !u!114 &1653753620
 MonoBehaviour:
