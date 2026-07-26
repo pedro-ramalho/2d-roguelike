@@ -7,6 +7,8 @@ public class Ranged : EnemyController
 
     private bool m_IsOnCooldown;
 
+    private static readonly Vector2Int[] m_Cardinals = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+
     private static readonly int m_AttackRange = 4;
     private static readonly int m_RetreatDistance = 2;
     private static readonly int m_RunwayScanDepth = 2;
@@ -55,60 +57,23 @@ public class Ranged : EnemyController
 
     Vector2Int EvaluateRetreatDirection(Vector2Int orientation)
     {
-        if (orientation == Vector2Int.down)
+        int bestScore = 0;
+        Vector2Int bestDirection = Vector2Int.zero;
+
+        foreach (Vector2Int cardinal in m_Cardinals)
         {
-            int freeCellsLeft = CountFreeCellsInDirection(Vector2Int.left);
-            int freeCellsUp = CountFreeCellsInDirection(Vector2Int.up);
-            int freeCellsRight = CountFreeCellsInDirection(Vector2Int.right);
+            if (cardinal == orientation)
+                continue;
 
-            int maxFreeCells = Mathf.Max(freeCellsLeft, freeCellsUp, freeCellsRight);
-            
-            if (maxFreeCells == 0) return Vector2Int.zero;
-            if (maxFreeCells == freeCellsLeft) return Vector2Int.left;
-            if (maxFreeCells == freeCellsUp) return Vector2Int.up;
-            if (maxFreeCells == freeCellsRight) return Vector2Int.right;
-        }
-        else if (orientation == Vector2Int.left)
-        {
-            int freeCellsUp = CountFreeCellsInDirection(Vector2Int.up);
-            int freeCellsRight = CountFreeCellsInDirection(Vector2Int.right);
-            int freeCellsDown = CountFreeCellsInDirection(Vector2Int.down);
-
-            int maxFreeCells = Mathf.Max(freeCellsUp, freeCellsRight, freeCellsDown);
-
-            if (maxFreeCells == 0) return Vector2Int.zero;
-            if (maxFreeCells == freeCellsUp) return Vector2Int.up;
-            if (maxFreeCells == freeCellsRight) return Vector2Int.right;
-            if (maxFreeCells == freeCellsDown) return Vector2Int.down;
-        }
-        else if (orientation == Vector2Int.up)
-        {
-            int freeCellsRight = CountFreeCellsInDirection(Vector2Int.right);
-            int freeCellsDown = CountFreeCellsInDirection(Vector2Int.down);
-            int freeCellsLeft = CountFreeCellsInDirection(Vector2Int.left);
-
-            int maxFreeCells = Mathf.Max(freeCellsRight, freeCellsDown, freeCellsLeft);
-
-            if (maxFreeCells == 0) return Vector2Int.zero;
-            if (maxFreeCells == freeCellsRight) return Vector2Int.right;
-            if (maxFreeCells == freeCellsDown) return Vector2Int.down;
-            if (maxFreeCells == freeCellsLeft) return Vector2Int.left;
-        }
-        else
-        {
-            int freeCellsDown = CountFreeCellsInDirection(Vector2Int.down);
-            int freeCellsLeft = CountFreeCellsInDirection(Vector2Int.left);
-            int freeCellsUp = CountFreeCellsInDirection(Vector2Int.up);
-
-            int maxFreeCells = Mathf.Max(freeCellsDown, freeCellsLeft, freeCellsUp);
-
-            if (maxFreeCells == 0) return Vector2Int.zero;
-            if (maxFreeCells == freeCellsDown) return Vector2Int.down;
-            if (maxFreeCells == freeCellsLeft) return Vector2Int.left;
-            if (maxFreeCells == freeCellsUp) return Vector2Int.up;
+            int score = CountFreeCellsInDirection(cardinal);
+            if (score > bestScore)
+            {
+                bestDirection = cardinal;
+                bestScore = score;
+            }
         }
 
-        return Vector2Int.zero;
+        return bestDirection;
     }
 
     IEnumerator RetreatActionCoroutine()
