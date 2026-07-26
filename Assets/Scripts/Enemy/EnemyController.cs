@@ -3,7 +3,10 @@ using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    // References
+    // Serialized references
+    [SerializeField] private StatusEffectRoll[] m_StatusRolls;
+    
+    // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
