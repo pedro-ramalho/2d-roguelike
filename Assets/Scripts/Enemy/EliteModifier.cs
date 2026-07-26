@@ -2,15 +2,9 @@ using UnityEngine;
 
 public class EliteModifier : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Combatant combatant = GetComponent<Combatant>();
+        combatant.ApplyStatMultiplier(2f);
     }
 }

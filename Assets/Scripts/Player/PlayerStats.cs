@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+public enum PlayerStat { MaxHP, MaxBlock, Attack, MaxStamina }
+
 public class PlayerStats : MonoBehaviour
 {
     // Player-specific stats
