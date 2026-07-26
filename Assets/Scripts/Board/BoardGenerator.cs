@@ -28,6 +28,9 @@ public class BoardGenerator : MonoBehaviour
     // Empty cells
     private List<Vector2Int> m_EmptyCells;
 
+    // Level
+    private int m_CurrentLevel;
+
     void GenerateWall()
     {
         int wallCount = Random.Range(m_MinWallCount, m_MaxWallCount);
@@ -62,6 +65,8 @@ public class BoardGenerator : MonoBehaviour
         }
     }
 
+    bool IsEliteLevel(int level) => level % 5 == 0;
+
     void GenerateEnemy()
     {
         int randomIndex = Random.Range(0, m_EmptyCells.Count);
@@ -73,14 +78,18 @@ public class BoardGenerator : MonoBehaviour
         m_BoardManager.SetCellOccupant(coord, newEnemy);
 
         Tank controller = newEnemy.GetComponent<Tank>();
+        if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
+            controller.gameObject.AddComponent<EliteModifier>();
+            
         controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
     }
 
-    public void GenerateBoard(BoardManager boardManager, TurnManager turnManager, PlayerController playerController)
+    public void GenerateBoard(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, int currentLevel)
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
+        m_CurrentLevel = currentLevel;
 
         m_EmptyCells = new List<Vector2Int>();
 
