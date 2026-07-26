@@ -115,7 +115,8 @@ public abstract class EnemyController : MonoBehaviour
 
     protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
 
-    protected void DealDamageToPlayer() {
+    protected void DealDamageToPlayer() 
+    {
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
             TryApplyStatusToPlayer();

@@ -191,3 +191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f1263e496a40045b909779c2aebcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tank
+  m_StatusRolls:
+  - Type: 2
+    Duration: 2
+    BaseProbability: 0.25
+    PerLevelBonus: 0.05
