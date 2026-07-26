@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class CombatantAnimator : MonoBehaviour
     private readonly float m_WalkAnimationDuration = 0.25f;
     private readonly float m_HurtAnimationDuration = 0.15f;
     private readonly float m_DeathAnimationDuration = 0.3f;
+    private readonly float m_ProjectileAnimationDuration = 0.5f;
 
     public float WalkDuration => m_WalkAnimationDuration;
     public bool IsBusy => 
@@ -195,6 +197,12 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_AttackCoroutine);
 
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
+    }
+
+    public void PlayProjectileAnimation(Projectile prefab, Vector3 target, Action onArrive)
+    {
+        Projectile p = Instantiate(prefab);
+        p.Launch(transform.position, target, m_ProjectileAnimationDuration, onArrive);
     }
 
     public void Bind(ICombatant combatant, TurnManager turnManager, BoardManager boardManager)

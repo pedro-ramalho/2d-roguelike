@@ -415,7 +415,7 @@ MonoBehaviour:
   - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
   m_WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   m_ExitPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
-  m_EnemyPrefab: {fileID: 6934467402906414784, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
+  m_EnemyPrefab: {fileID: 8010968036663490579, guid: 6617ed2a45065714ea2f89e5ed2688ba, type: 3}
   m_MinFoodCount: 2
   m_MaxFoodCount: 6
   m_MinWallCount: 6

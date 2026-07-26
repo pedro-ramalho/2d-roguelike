@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
@@ -14,6 +15,7 @@ public abstract class EnemyController : MonoBehaviour
 
     // Protected properties
     protected CombatantAnimator Animator => m_CombatantAnimator;
+    protected Vector2Int PlayerCell => m_PlayerController.Cell;
 
     // Public properties
     public Combatant Combatant => m_Combatant;
@@ -69,7 +71,20 @@ public abstract class EnemyController : MonoBehaviour
         transform.position = m_BoardManager.CellToWorld(coord);
     }
 
+    protected bool CanEnterCell(Vector2Int coord)
+    {
+        BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
+
+        bool isInvalidCell = (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
+        if (isInvalidCell)
+            return false;
+
+        return true;
+    }
+
     protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
+    
+    protected bool IsInLineOfSightToPlayer() => m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
 
     protected bool IsAdjacentToPlayer(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
     
@@ -92,9 +107,13 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
+    protected Vector3 PlayerCellToWorld() => m_BoardManager.CellToWorld(PlayerCell);
+
     protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
 
-    protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, direction);
+    protected void DealDamageToPlayer() => m_Combatant.DealDamageTo(m_PlayerController.Combatant);
+    
+    protected void AttackPlayer(Vector2Int direction) => m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
 
     void OnTurnHappened()
     {
