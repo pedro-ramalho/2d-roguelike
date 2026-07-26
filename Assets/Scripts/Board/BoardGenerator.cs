@@ -72,7 +72,7 @@ public class BoardGenerator : MonoBehaviour
 
         m_BoardManager.SetCellOccupant(coord, newEnemy);
 
-        Ranged controller = newEnemy.GetComponent<Ranged>();
+        Tank controller = newEnemy.GetComponent<Tank>();
         controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
     }
 
