@@ -1,15 +1,15 @@
 using UnityEngine;
 
-public class FoodObject : CellObject
-{
-    public int Points = 5;
-    
+public abstract class FoodObject : CellObject
+{    
+    protected abstract void ApplyEffect();
+
     public override void PlayerEntered(PlayerController player)
     {
         m_Board.ClearCell(m_Cell);
         
         Destroy(gameObject);
 
-        player.PlayerStats.ChangeStamina(Points);
+        ApplyEffect();
     }
 }
