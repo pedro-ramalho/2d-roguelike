@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5145252762624273651}
   - component: {fileID: 4793276542451057425}
-  - component: {fileID: 2157873905637861852}
+  - component: {fileID: 8989629000530212592}
   m_Layer: 0
-  m_Name: SmallFood2
+  m_Name: LiquorBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &2157873905637861852
+--- !u!114 &8989629000530212592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +101,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 902617111040840357}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4baeeae6ea0379d43b2a14da9d5a4f07, type: 3}
+  m_Script: {fileID: 11500000, guid: a814c2afb8219ab44addadbfccfb4cdd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FoodObject
+  m_EditorClassIdentifier: Assembly-CSharp::LiquorBottle
