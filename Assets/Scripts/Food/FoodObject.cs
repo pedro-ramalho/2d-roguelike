@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public abstract class FoodObject : CellObject
 {    
     protected abstract void ApplyEffect(PlayerController player);
