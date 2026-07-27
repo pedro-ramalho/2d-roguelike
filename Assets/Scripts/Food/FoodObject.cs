@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class FoodObject : CellObject
 {    
-    protected abstract void ApplyEffect();
+    protected abstract void ApplyEffect(PlayerController player);
 
     public override void PlayerEntered(PlayerController player)
     {
@@ -10,6 +10,6 @@ public abstract class FoodObject : CellObject
         
         Destroy(gameObject);
 
-        ApplyEffect();
+        ApplyEffect(player);
     }
 }
