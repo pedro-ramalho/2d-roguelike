@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,7 +29,16 @@ public interface ICombatant
     // States
     bool IsStunned { get; }
 
+    // Events
+    public event Action Defeated;
+    public event Action<DamageResult> Damaged;
+    public event Action<Vector2Int> AttackPerformed;
+    public event Action<int> HealthAdded;
+    public event Action<int> BlockAdded;
+    public event Action<StatusEffect> StatusApplied;
+    public event Action<StatusEffect> StatusRemoved;
 
+    DamageResult AttackTarget(ICombatant target, Vector2Int direction);
     DamageResult TakeDamage(int amount);
     void Heal(int amount);
     void AddBlock(int amount);

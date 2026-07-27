@@ -6,18 +6,22 @@ public class CombatantState
 {
     private readonly List<StatusEffect> m_StatusEffects = new();
     
-    public int Attack { get; }
-    public int MaxHP { get; }
+    // Stats
+    public int Attack { get; private set; }
+    public int MaxHP { get; private set; }
     public int HP { get; private set; }
+    public int MaxBlock { get; private set; }
     public int Block { get; private set; }
     public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
+    // Flags
     public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
 
-    public CombatantState(int maxHP, int attack)
+    public CombatantState(int maxHP, int maxBlock, int attack)
     {
         MaxHP = maxHP;
         HP = maxHP;
+        MaxBlock = maxBlock;
         Attack = attack;
     }
 
@@ -55,7 +59,7 @@ public class CombatantState
 
     public void Heal(int amount) => HP = Mathf.Clamp(HP + amount, 0, MaxHP);
     
-    public void AddBlock(int amount) => Block = Mathf.Max(Block + amount, 0);
+    public void AddBlock(int amount) => Block = Mathf.Clamp(Block + amount, 0, MaxBlock);
 
     public void ApplyStatusEffect(StatusEffect effect, ICombatant owner) 
     {
@@ -72,4 +76,8 @@ public class CombatantState
         m_StatusEffects.Add(effect); 
         effect.OnApplied(owner);
     }
+
+    public void IncreaseMaxHP(int amount) => MaxHP += amount;
+    public void IncreaseMaxBlock(int amount) => MaxBlock += amount;
+    public void IncreaseAttack(int amount) => Attack += amount;
 }
