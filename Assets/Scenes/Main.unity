@@ -1015,6 +1015,11 @@ MonoBehaviour:
   m_MaxHP: 80
   m_MaxBlock: 20
   m_Attack: 8
+  m_StatusRolls:
+  - Type: 1
+    Duration: 2
+    BaseProbability: 0.1
+    PerLevelBonus: 0.05
 --- !u!114 &1653753620
 MonoBehaviour:
   m_ObjectHideFlags: 0
