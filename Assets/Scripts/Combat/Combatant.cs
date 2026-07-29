@@ -66,6 +66,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             StatusRemoved?.Invoke(effect);
     }
 
+    public void RemoveStatusEffect(StatusEffect effect) => m_State.RemoveStatusEffect(this, effect);
+
     public void IncreaseMaxHP(int amount)
     { 
         m_MaxHP += amount;
