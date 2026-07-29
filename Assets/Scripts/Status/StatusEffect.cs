@@ -12,11 +12,13 @@ public abstract class StatusEffect
 {
     public int Duration { get; set; }
     public StatusEffectType Type { get; }
+    public bool IsNegative { get; }
 
-    protected StatusEffect(StatusEffectType type, int duration)
+    protected StatusEffect(StatusEffectType type, int duration, bool negative)
     {
         Type = type;
         Duration = duration;
+        IsNegative = negative;
     }
     
     public bool IsDepleted => Duration <= 0;
