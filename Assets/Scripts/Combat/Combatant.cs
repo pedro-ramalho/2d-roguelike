@@ -9,6 +9,9 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     [SerializeField] private int m_MaxBlock;
     [SerializeField] private int m_Attack;
 
+    // Status rolls
+    [SerializeField] private StatusEffectRoll[] m_StatusRolls;
+
     // Private references
     private TurnManager m_TurnManager;
     private BoardManager m_BoardManager;
@@ -64,6 +67,28 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
         foreach (StatusEffect effect in removed)
             StatusRemoved?.Invoke(effect);
+    }
+
+    public void TryApplyStatus(ICombatant target)
+    {
+        int level = GameManager.Instance.LevelManager.CurrentLevel;
+
+        foreach (StatusEffectRoll roll in m_StatusRolls)
+        {
+            float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * level);
+            if (UnityEngine.Random.value < probability)
+            {
+                target.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));
+
+                return;
+            }            
+        }
+    }
+
+    public void RemoveStatusEffect(StatusEffect effect)
+    {
+        m_State.RemoveStatusEffect(this, effect);
+        StatusRemoved?.Invoke(effect);
     }
 
     public void IncreaseMaxHP(int amount)

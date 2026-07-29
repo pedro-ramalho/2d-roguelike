@@ -23,6 +23,9 @@ public class LevelManager : MonoBehaviour
     // Readonly
     private static readonly Vector2Int m_PlayerSpawnCell = new Vector2Int(1, 1);
 
+    // Properties
+    public int CurrentLevel => m_CurrentLevel;
+
     void Start()
     {   
         m_BoardManager = GameManager.Instance.BoardManager;
@@ -52,17 +55,17 @@ public class LevelManager : MonoBehaviour
     {
         m_PlayerController.gameObject.SetActive(false);
 
-        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel + 1);
+        m_CurrentLevel++;
+
+        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
         
-        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel + 1);
+        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel);
 
         m_PlayerController.gameObject.SetActive(true);
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
-
-        m_CurrentLevel++;
 
         yield return new WaitForSeconds(3f);
 

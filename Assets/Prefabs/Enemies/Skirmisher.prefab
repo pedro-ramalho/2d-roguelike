@@ -112,6 +112,15 @@ MonoBehaviour:
   m_MaxHP: 10
   m_MaxBlock: 0
   m_Attack: 2
+  m_StatusRolls:
+  - Type: 1
+    Duration: 2
+    BaseProbability: 0.2
+    PerLevelBonus: 0.05
+  - Type: 2
+    Duration: 3
+    BaseProbability: 0.2
+    PerLevelBonus: 0.05
 --- !u!114 &5923750070885935113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,15 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201edec0b260b5647aa3d1d3d5c8660e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skirmisher
-  m_StatusRolls:
-  - Type: 1
-    Duration: 2
-    BaseProbability: 0.35
-    PerLevelBonus: 0.05
-  - Type: 2
-    Duration: 0
-    BaseProbability: 0.25
-    PerLevelBonus: 0.15
 --- !u!95 &2118483306058908496
 Animator:
   serializedVersion: 7

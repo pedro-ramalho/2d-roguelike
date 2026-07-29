@@ -134,6 +134,11 @@ MonoBehaviour:
   m_MaxHP: 5
   m_MaxBlock: 0
   m_Attack: 2
+  m_StatusRolls:
+  - Type: 3
+    Duration: 1
+    BaseProbability: 0.1
+    PerLevelBonus: 0.05
 --- !u!114 &1851639081440192285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,9 +196,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849f52380171dc5428deec6b6b2d45b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ranged
-  m_StatusRolls:
-  - Type: 3
-    Duration: 1
-    BaseProbability: 0.25
-    PerLevelBonus: 0.1
   m_ProjectilePrefab: {fileID: 5165012889755492264, guid: b0d7e77b2c530794ba74d265052adeb3, type: 3}

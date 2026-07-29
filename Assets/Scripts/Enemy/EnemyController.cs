@@ -3,9 +3,6 @@ using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    // Serialized references
-    [SerializeField] private StatusEffectRoll[] m_StatusRolls;
-
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
@@ -15,7 +12,6 @@ public abstract class EnemyController : MonoBehaviour
 
     // State
     private Vector2Int m_Cell;
-    private int m_Level;
 
     // Protected properties
     protected CombatantAnimator Animator => m_CombatantAnimator;
@@ -119,14 +115,14 @@ public abstract class EnemyController : MonoBehaviour
     {
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
-            TryApplyStatusToPlayer();
+            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
     }
     
     protected void AttackPlayer(Vector2Int direction)
     {
         DamageResult result = m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
         if (result.HPLost > 0)
-            TryApplyStatusToPlayer();  
+            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
     } 
 
     protected void ChaseOrAttack(Vector2Int delta)
@@ -135,20 +131,6 @@ public abstract class EnemyController : MonoBehaviour
             AttackPlayer(delta);
         else
             MoveTowards(delta);
-    }
-
-    protected void TryApplyStatusToPlayer()
-    {
-        foreach (StatusEffectRoll roll in m_StatusRolls)
-        {
-            float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * m_Level);
-            if (UnityEngine.Random.value < probability)
-            {
-                m_PlayerController.Combatant.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));
-
-                return;
-            }
-        }
     }
 
     void OnTurnHappened()
@@ -161,12 +143,11 @@ public abstract class EnemyController : MonoBehaviour
 
     protected abstract void ResolveEnemyAction();
 
-    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell, int currentLevel)
+    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
-        m_Level = currentLevel;
 
         SnapTo(cell);
     }
