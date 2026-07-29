@@ -3,9 +3,6 @@ using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    // Serialized references
-    [SerializeField] private StatusEffectRoll[] m_StatusRolls;
-
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
@@ -119,14 +116,15 @@ public abstract class EnemyController : MonoBehaviour
     {
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
-            TryApplyStatusToPlayer();
+            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
+
     }
     
     protected void AttackPlayer(Vector2Int direction)
     {
         DamageResult result = m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
         if (result.HPLost > 0)
-            TryApplyStatusToPlayer();  
+            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
     } 
 
     protected void ChaseOrAttack(Vector2Int delta)
@@ -135,20 +133,6 @@ public abstract class EnemyController : MonoBehaviour
             AttackPlayer(delta);
         else
             MoveTowards(delta);
-    }
-
-    protected void TryApplyStatusToPlayer()
-    {
-        foreach (StatusEffectRoll roll in m_StatusRolls)
-        {
-            float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * m_Level);
-            if (UnityEngine.Random.value < probability)
-            {
-                m_PlayerController.Combatant.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));
-
-                return;
-            }
-        }
     }
 
     void OnTurnHappened()
