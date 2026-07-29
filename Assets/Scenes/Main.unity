@@ -411,8 +411,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2a5cfd588f6c97949b84505efd0ffcdd, type: 2}
   - {fileID: 11400000, guid: 60a1924b38b128f42b762c9fed106331, type: 2}
   m_FoodPrefabs:
-  - {fileID: 9043899686116351277, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
+  - {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+  - {fileID: 1901146109594894390, guid: 7de865f6015dbab4b9d0ea29704e6db4, type: 3}
+  - {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
   - {fileID: 8989629000530212592, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
+  - {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+  - {fileID: 9043899686116351277, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
   m_WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   m_ExitPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
   m_EnemyPrefab: {fileID: 9156511374086397983, guid: 27e795aff71330549b9829c6d425d85a, type: 3}
