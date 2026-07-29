@@ -25,6 +25,12 @@ public class CombatantState
         Attack = attack;
     }
 
+    public void RemoveStatusEffect(ICombatant owner, StatusEffect effect)
+    {
+        m_StatusEffects.Remove(effect);
+        effect.OnRemoved(owner);   
+    }
+
     public List<StatusEffect> TickStatusEffects(ICombatant owner)
     {
         List<StatusEffect> removed = new List<StatusEffect>();
@@ -38,8 +44,8 @@ public class CombatantState
             if (effect.IsDepleted)
             {
                 removed.Add(effect);
-                effect.OnRemoved(owner);
-                m_StatusEffects.RemoveAt(i);
+                
+                RemoveStatusEffect(owner, effect);
             }
         }
         
