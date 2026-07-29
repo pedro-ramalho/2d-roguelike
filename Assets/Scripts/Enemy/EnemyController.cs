@@ -161,12 +161,12 @@ public abstract class EnemyController : MonoBehaviour
 
     protected abstract void ResolveEnemyAction();
 
-    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell, int currentLevel)
+    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
-        m_Level = currentLevel;
+        m_Level = GameManager.Instance.LevelManager.CurrentLevel;
 
         SnapTo(cell);
     }
