@@ -12,7 +12,6 @@ public abstract class EnemyController : MonoBehaviour
 
     // State
     private Vector2Int m_Cell;
-    private int m_Level;
 
     // Protected properties
     protected CombatantAnimator Animator => m_CombatantAnimator;
@@ -117,7 +116,6 @@ public abstract class EnemyController : MonoBehaviour
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
             Combatant.TryApplyStatus(m_PlayerController.Combatant);  
-
     }
     
     protected void AttackPlayer(Vector2Int direction)
@@ -150,7 +148,6 @@ public abstract class EnemyController : MonoBehaviour
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
-        m_Level = GameManager.Instance.LevelManager.CurrentLevel;
 
         SnapTo(cell);
     }
