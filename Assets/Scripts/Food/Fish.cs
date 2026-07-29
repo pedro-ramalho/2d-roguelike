@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Fish : FoodObject
 {
-    protected override void ApplyEffect(PlayerController player)
-    {
-        throw new System.NotImplementedException();
-    }
+    [SerializeField] private int m_BlockPoints = 3;
+
+    protected override void ApplyEffect(PlayerController player) => player.Combatant.AddBlock(m_BlockPoints);
 }
