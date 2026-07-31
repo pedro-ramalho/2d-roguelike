@@ -122,7 +122,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     public void DecrementStamina() => ChangeStamina(-1);
 
-        public void TryApplyStatus(ICombatant target)
+    public void RollStatusOnHit(ICombatant target)
     {
         int level = GameManager.Instance.LevelManager.CurrentLevel;
 
@@ -137,7 +137,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             }
         }
     }
-    
+
     public void ApplyStatusEffect(StatusEffect effect)
     {
         foreach (StatusEffect sf in m_StatusEffects)
