@@ -25,9 +25,9 @@ public class EliteModifier : MonoBehaviour
 
     void OnEliteDefeated()
     {
-        PlayerStat[] stats = (PlayerStat[])Enum.GetValues(typeof(PlayerStat));
+        CombatantStat[] stats = (CombatantStat[])Enum.GetValues(typeof(CombatantStat));
     
-        PlayerStat chosen = stats[UnityEngine.Random.Range(0, stats.Length)];
-        GameManager.Instance.PlayerController.UpgradeStat(chosen, 5);
+        CombatantStat chosen = stats[UnityEngine.Random.Range(0, stats.Length)];
+        GameManager.Instance.PlayerController.Combatant.UpgradeStat(chosen, 5);
     }
 }

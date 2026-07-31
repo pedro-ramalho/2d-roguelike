@@ -1,4 +1,6 @@
-public class CombatantStats 
+public enum CombatantStat { MaxHP, MaxBlock, Attack, MaxStamina }
+
+public class CombatantStats
 {
     // Health
     public int MaxHP;

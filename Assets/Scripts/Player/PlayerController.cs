@@ -168,14 +168,4 @@ public class PlayerController : MonoBehaviour
             m_CombatantAnimator.PlayWalkAnimation(cell);
     }
 
-    public void UpgradeStat(PlayerStat stat, int amount)
-    {
-        switch (stat)
-        {
-            case PlayerStat.MaxHP: Combatant.IncreaseMaxHP(amount); break;
-            case PlayerStat.MaxBlock: Combatant.IncreaseMaxBlock(amount); break;
-            case PlayerStat.Attack: Combatant.IncreaseAttack(amount); break;
-            case PlayerStat.MaxStamina: Combatant.IncreaseMaxStamina(amount); break;
-        }
-    }
 }

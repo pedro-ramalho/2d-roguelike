@@ -170,6 +170,17 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
     public void IncreaseMaxStamina(int amount) => m_Stats.MaxStamina += amount;
 
+    public void UpgradeStat(CombatantStat stat, int amount)
+    {
+        switch (stat)
+        {
+            case CombatantStat.MaxHP: IncreaseMaxHP(amount); break;
+            case CombatantStat.MaxBlock: IncreaseMaxBlock(amount); break;
+            case CombatantStat.Attack: IncreaseAttack(amount); break;
+            case CombatantStat.MaxStamina: IncreaseMaxStamina(amount); break;
+        }
+    }
+
     public void ApplyStatMultiplier(float multiplier)
     {
         m_Stats.MaxHP = Mathf.RoundToInt(m_InitialMaxHP * multiplier);
