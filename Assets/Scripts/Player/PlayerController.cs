@@ -162,12 +162,13 @@ public class PlayerController : MonoBehaviour
 
     public void MoveTo(Vector2Int cell, bool snap)
     {
+        Vector2Int direction = cell - m_CellPosition;
         m_CellPosition = cell;
-        
+
         if (snap)
             transform.position = m_BoardManager.CellToWorld(cell);
         else
-            m_CombatantAnimator.PlayWalkAnimation(cell);
+            m_CombatantAnimator.PlayWalkAnimation(cell, direction);
     }
 
 }

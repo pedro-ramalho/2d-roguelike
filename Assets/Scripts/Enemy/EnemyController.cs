@@ -54,13 +54,15 @@ public abstract class EnemyController : MonoBehaviour
         if (isInvalidCell)
             return false;
 
+        Vector2Int direction = coord - m_Cell;
+
         BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Cell);
         currentCell.ContainedObject = null;
-        
+
         targetCell.ContainedObject = m_Combatant;
         m_Cell = coord;
 
-        m_CombatantAnimator.PlayWalkAnimation(coord);
+        m_CombatantAnimator.PlayWalkAnimation(coord, direction);
 
         return true;
     }

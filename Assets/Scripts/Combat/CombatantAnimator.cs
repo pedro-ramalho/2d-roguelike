@@ -170,11 +170,12 @@ public class CombatantAnimator : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void PlayWalkAnimation(Vector2Int targetCell)
+    public void PlayWalkAnimation(Vector2Int targetCell, Vector2Int direction)
     {
         if (m_WalkCoroutine != null)
             StopCoroutine(m_WalkCoroutine);
 
+        SetSpriteFacing(direction);
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
     }
 
@@ -206,6 +207,7 @@ public class CombatantAnimator : MonoBehaviour
         if (m_AttackCoroutine != null)
             StopCoroutine(m_AttackCoroutine);
         
+        SetSpriteFacing(direction);
         m_Animator.SetTrigger(m_AttackHash);
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
     }
