@@ -28,6 +28,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public int MaxBlock => m_Stats.MaxBlock;
     public int Block => m_Stats.Block;
     public int Attack => m_Stats.Attack;
+    public int Stamina => m_Stats.Stamina;
+    public int MaxStamina => m_Stats.MaxStamina;
 
     // Status effects
     public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
@@ -39,10 +41,12 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     // Events
     public event Action Defeated;
+    public event Action Depleted;
     public event Action<DamageResult> Damaged;
     public event Action<Vector2Int> AttackPerformed;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
+    public event Action<int> StaminaChanged;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
 
@@ -77,7 +81,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             {
                 m_StatusEffects.RemoveAt(i);
                 effect.OnRemoved(this);
-                
+
                 StatusRemoved?.Invoke(effect);
             }
         }
@@ -129,6 +133,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public void IncreaseMaxHP(int amount) => m_Stats.MaxHP += amount;
     public void IncreaseMaxBlock(int amount) => m_Stats.MaxBlock += amount;
     public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
+    public void IncreaseMaxStamina(int amount) => m_Stats.MaxStamina += amount;
 
     public void ApplyStatMultiplier(float multiplier)
     {
@@ -160,6 +165,19 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         HealthAdded?.Invoke(amount);
     }
 
+    public void ChangeStamina(int amount)
+    {
+        int previous = m_Stats.Stamina;
+
+        m_Stats.Stamina = Mathf.Clamp(m_Stats.Stamina + amount, 0, m_Stats.MaxStamina);
+        StaminaChanged?.Invoke(m_Stats.Stamina);
+
+        if (previous > 0 && m_Stats.Stamina == 0)
+            Depleted?.Invoke();
+    }
+
+    public void DecrementStamina() => ChangeStamina(-1);
+
     public DamageResult TakeDamage(int amount)
     {
         int previousHP = m_Stats.HP;
@@ -190,6 +208,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             Block = 0,
             Attack = m_InitialAttack,
             MaxStamina = m_InitialMaxStamina,
+            Stamina = m_InitialMaxStamina,
         };
 
         m_StatusEffects.Clear();

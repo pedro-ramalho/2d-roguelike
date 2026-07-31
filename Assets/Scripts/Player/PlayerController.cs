@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerInputActions m_InputActions;
-    private PlayerStats m_PlayerStats;
     private Combatant m_Combatant;
     private CombatantAnimator m_CombatantAnimator;
     private SpriteRenderer m_SpriteRenderer;
@@ -18,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private bool m_IsGameOver;
     
     public Combatant Combatant => m_Combatant;
-    public PlayerStats PlayerStats => m_PlayerStats;
     public Vector2Int Cell => m_CellPosition;
 
     void Start() 
@@ -34,8 +32,6 @@ public class PlayerController : MonoBehaviour
 
         m_Combatant = GetComponent<Combatant>();
         m_CombatantAnimator = GetComponent<CombatantAnimator>();
-
-        m_PlayerStats = GetComponent<PlayerStats>();
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
@@ -148,7 +144,7 @@ public class PlayerController : MonoBehaviour
         ResolvePlayerAction(cell, target);
     }
 
-    void TurnHappened() => m_PlayerStats.DecrementStamina();
+    void TurnHappened() => m_Combatant.DecrementStamina();
 
     public void Init() => m_IsGameOver = false;
 
@@ -179,7 +175,7 @@ public class PlayerController : MonoBehaviour
             case PlayerStat.MaxHP: Combatant.IncreaseMaxHP(amount); break;
             case PlayerStat.MaxBlock: Combatant.IncreaseMaxBlock(amount); break;
             case PlayerStat.Attack: Combatant.IncreaseAttack(amount); break;
-            case PlayerStat.MaxStamina: PlayerStats.IncreaseMaxStamina(amount); break;
+            case PlayerStat.MaxStamina: Combatant.IncreaseMaxStamina(amount); break;
         }
     }
 }
