@@ -54,13 +54,15 @@ public abstract class EnemyController : MonoBehaviour
         if (isInvalidCell)
             return false;
 
+        Vector2Int direction = coord - m_Cell;
+
         BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Cell);
         currentCell.ContainedObject = null;
-        
+
         targetCell.ContainedObject = m_Combatant;
         m_Cell = coord;
 
-        m_CombatantAnimator.PlayWalkAnimation(coord);
+        m_CombatantAnimator.PlayWalkAnimation(coord, direction);
 
         return true;
     }
@@ -115,18 +117,20 @@ public abstract class EnemyController : MonoBehaviour
     {
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
-            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
+            Combatant.RollStatusOnHit(m_PlayerController.Combatant);  
     }
     
     protected void AttackPlayer(Vector2Int direction)
     {
         DamageResult result = m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
         if (result.HPLost > 0)
-            Combatant.TryApplyStatus(m_PlayerController.Combatant);  
+            Combatant.RollStatusOnHit(m_PlayerController.Combatant);  
     } 
 
     protected void ChaseOrAttack(Vector2Int delta)
     {
+        m_CombatantAnimator.SetSpriteFacing(delta);
+        
         if (IsAdjacentToPlayer(delta))
             AttackPlayer(delta);
         else

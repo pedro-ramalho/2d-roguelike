@@ -11,6 +11,7 @@ public class CombatantAnimator : MonoBehaviour
 
     // Components
     private SpriteRenderer m_SpriteRenderer;
+    private Animator m_Animator;
 
     // Coroutines
     private Coroutine m_AttackCoroutine;
@@ -25,6 +26,8 @@ public class CombatantAnimator : MonoBehaviour
     private readonly float m_DeathAnimationDuration = 0.3f;
     private readonly float m_ProjectileAnimationDuration = 0.5f;
 
+    private static readonly int m_AttackHash = Animator.StringToHash("Attack");
+
     public float WalkDuration => m_WalkAnimationDuration;
     public bool IsBusy => 
         m_WalkCoroutine != null ||
@@ -35,6 +38,7 @@ public class CombatantAnimator : MonoBehaviour
     void Awake()
     {
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
+        m_Animator = GetComponent<Animator>();
     }
 
     void OnDisable()
@@ -166,12 +170,19 @@ public class CombatantAnimator : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void PlayWalkAnimation(Vector2Int targetCell)
+    public void PlayWalkAnimation(Vector2Int targetCell, Vector2Int direction)
     {
         if (m_WalkCoroutine != null)
             StopCoroutine(m_WalkCoroutine);
 
+        SetSpriteFacing(direction);
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
+    }
+
+    public void SetSpriteFacing(Vector2Int direction)
+    {
+        if (direction == Vector2Int.left) m_SpriteRenderer.flipX = true;
+        if (direction == Vector2Int.right) m_SpriteRenderer.flipX = false;
     }
 
     public void PlayHurtAnimation(DamageResult result)
@@ -195,7 +206,9 @@ public class CombatantAnimator : MonoBehaviour
     { 
         if (m_AttackCoroutine != null)
             StopCoroutine(m_AttackCoroutine);
-
+        
+        SetSpriteFacing(direction);
+        m_Animator.SetTrigger(m_AttackHash);
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
     }
 

@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 {
-    // Shared stats
-    [SerializeField] private int m_MaxHP;
-    [SerializeField] private int m_MaxBlock;
-    [SerializeField] private int m_Attack;
+    // Authored initial values
+    [SerializeField] private int m_InitialMaxHP;
+    [SerializeField] private int m_InitialMaxBlock;
+    [SerializeField] private int m_InitialAttack;
+    [SerializeField] private int m_InitialMaxStamina;
 
     // Status rolls
     [SerializeField] private StatusEffectRoll[] m_StatusRolls;
@@ -16,33 +18,38 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     private TurnManager m_TurnManager;
     private BoardManager m_BoardManager;
 
-    // State
-    private CombatantState m_State;
+    // Runtime state
+    private CombatantStats m_Stats = new();
+    private readonly List<StatusEffect> m_StatusEffects = new();
 
-    // Stat properties
-    public int Attack => m_State.Attack;
-    public int MaxHP => m_State.MaxHP;
-    public int HP => m_State.HP;
-    public int MaxBlock => m_State.MaxBlock;
-    public int Block => m_State.Block;
+    // Stats
+    public int MaxHP => m_Stats.MaxHP;
+    public int HP => m_Stats.HP;
+    public int MaxBlock => m_Stats.MaxBlock;
+    public int Block => m_Stats.Block;
+    public int Attack => m_Stats.Attack;
+    public int Stamina => m_Stats.Stamina;
+    public int MaxStamina => m_Stats.MaxStamina;
 
     // Status effects
-    public IReadOnlyList<StatusEffect> StatusEffects => m_State.StatusEffects;
+    public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
-    // Shared
-    public bool IsStunned => m_State.IsStunned;
+    // Flags
+    public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
 
     GameObject ICellOccupant.GameObject => gameObject;
 
-    // Shared events
+    // Events
     public event Action Defeated;
+    public event Action Depleted;
     public event Action<DamageResult> Damaged;
     public event Action<Vector2Int> AttackPerformed;
     public event Action<int> HealthAdded;
     public event Action<int> BlockAdded;
+    public event Action<int> StaminaChanged;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
-    
+
     void Awake()
     {
         ResetState();
@@ -61,15 +68,61 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             m_TurnManager.OnTick -= TickStatusEffects;
     }
 
-    void TickStatusEffects()
+    public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
     {
-        List<StatusEffect> removed = m_State.TickStatusEffects(this);
+        AttackPerformed?.Invoke(direction);
 
-        foreach (StatusEffect effect in removed)
-            StatusRemoved?.Invoke(effect);
+        return DealDamageTo(target);
     }
 
-    public void TryApplyStatus(ICombatant target)
+    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
+
+    public DamageResult TakeDamage(int amount)
+    {
+        int previousHP = m_Stats.HP;
+
+        int blockLost = Mathf.Min(m_Stats.Block, amount);
+        m_Stats.Block -= blockLost;
+
+        int hpLost = Mathf.Max(0, amount - blockLost);
+        m_Stats.HP -= hpLost;
+
+        DamageResult result = new DamageResult(blockLost, hpLost);
+
+        if (previousHP > 0 && m_Stats.HP <= 0)
+            Defeated?.Invoke();
+
+        Damaged?.Invoke(result);
+
+        return result;
+    }
+
+    public void Heal(int amount)
+    {
+        m_Stats.HP = Mathf.Clamp(m_Stats.HP + amount, 0, m_Stats.MaxHP);
+        HealthAdded?.Invoke(amount);
+    }
+
+    public void AddBlock(int amount)
+    {
+        m_Stats.Block = Mathf.Clamp(m_Stats.Block + amount, 0, m_Stats.MaxBlock);
+        BlockAdded?.Invoke(amount);
+    }
+
+    public void ChangeStamina(int amount)
+    {
+        int previous = m_Stats.Stamina;
+
+        m_Stats.Stamina = Mathf.Clamp(m_Stats.Stamina + amount, 0, m_Stats.MaxStamina);
+        StaminaChanged?.Invoke(m_Stats.Stamina);
+
+        if (previous > 0 && m_Stats.Stamina == 0)
+            Depleted?.Invoke();
+    }
+
+    public void DecrementStamina() => ChangeStamina(-1);
+
+    public void RollStatusOnHit(ICombatant target)
     {
         int level = GameManager.Instance.LevelManager.CurrentLevel;
 
@@ -81,83 +134,94 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
                 target.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));
 
                 return;
-            }            
+            }
         }
-    }
-
-    public void RemoveStatusEffect(StatusEffect effect)
-    {
-        m_State.RemoveStatusEffect(this, effect);
-        StatusRemoved?.Invoke(effect);
-    }
-
-    public void IncreaseMaxHP(int amount)
-    { 
-        m_MaxHP += amount;
-        m_State.IncreaseMaxHP(amount);
-    }
-
-    public void IncreaseMaxBlock(int amount)
-    {
-        m_MaxBlock += amount;
-        m_State.IncreaseMaxBlock(amount);
-    }
-
-    public void IncreaseAttack(int amount)
-    {
-        m_Attack += amount;
-        m_State.IncreaseAttack(amount);
-    }
-
-    public void ApplyStatMultiplier(float multiplier)
-    {
-        m_MaxHP = Mathf.RoundToInt(m_MaxHP * multiplier);
-        m_MaxBlock = Mathf.RoundToInt(m_MaxBlock * multiplier);
-        m_Attack = Mathf.RoundToInt(m_Attack * multiplier);
-
-        ResetState();
-    }
-
-    public void AddBlock(int amount)
-    {
-        m_State.AddBlock(amount);
-        BlockAdded?.Invoke(amount);
     }
 
     public void ApplyStatusEffect(StatusEffect effect)
     {
-        m_State.ApplyStatusEffect(effect, this);
+        foreach (StatusEffect sf in m_StatusEffects)
+        {
+            if (sf.Type == effect.Type)
+            {
+                sf.Duration = Mathf.Max(sf.Duration, effect.Duration);
+                StatusApplied?.Invoke(effect);
+
+                return;
+            }
+        }
+
+        m_StatusEffects.Add(effect);
+        effect.OnApplied(this);
+
         StatusApplied?.Invoke(effect);
     }
 
-    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
-
-    public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
+    public void RemoveStatusEffect(StatusEffect effect)
     {
-        AttackPerformed?.Invoke(direction);
-        
-        return DealDamageTo(target);
+        m_StatusEffects.Remove(effect);
+        effect.OnRemoved(this);
+
+        StatusRemoved?.Invoke(effect);
+    }
+    
+    public void IncreaseMaxHP(int amount) => m_Stats.MaxHP += amount;
+    public void IncreaseMaxBlock(int amount) => m_Stats.MaxBlock += amount;
+    public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
+    public void IncreaseMaxStamina(int amount) => m_Stats.MaxStamina += amount;
+
+    public void UpgradeStat(CombatantStat stat, int amount)
+    {
+        switch (stat)
+        {
+            case CombatantStat.MaxHP: IncreaseMaxHP(amount); break;
+            case CombatantStat.MaxBlock: IncreaseMaxBlock(amount); break;
+            case CombatantStat.Attack: IncreaseAttack(amount); break;
+            case CombatantStat.MaxStamina: IncreaseMaxStamina(amount); break;
+        }
     }
 
-    public void Heal(int amount)
+    public void ApplyStatMultiplier(float multiplier)
     {
-        m_State.Heal(amount);
-        HealthAdded?.Invoke(amount);
+        m_Stats.MaxHP = Mathf.RoundToInt(m_InitialMaxHP * multiplier);
+        m_Stats.MaxBlock = Mathf.RoundToInt(m_InitialMaxBlock * multiplier);
+        m_Stats.Attack = Mathf.RoundToInt(m_InitialAttack * multiplier);
+        m_Stats.HP = m_Stats.MaxHP;
+        m_Stats.Block = 0;
     }
 
-    public DamageResult TakeDamage(int amount)
+    public void ResetState()
     {
-        int previousHP = m_State.HP;
+        m_Stats = new CombatantStats
+        {
+            MaxHP = m_InitialMaxHP,
+            HP = m_InitialMaxHP,
+            MaxBlock = m_InitialMaxBlock,
+            Block = 0,
+            Attack = m_InitialAttack,
+            MaxStamina = m_InitialMaxStamina,
+            Stamina = m_InitialMaxStamina,
+        };
 
-        DamageResult result = m_State.TakeDamage(amount);
-
-        if (previousHP > 0 && m_State.HP <= 0)
-            Defeated?.Invoke();
-
-        Damaged?.Invoke(result);
-
-        return result;
+        m_StatusEffects.Clear();
     }
 
-    public void ResetState() => m_State = new CombatantState(m_MaxHP, m_MaxBlock, m_Attack);
+    void TickStatusEffects()
+    {
+        foreach (StatusEffect effect in m_StatusEffects)
+            effect.OnTurnEnd(this);
+
+        for (int i = m_StatusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = m_StatusEffects[i];
+
+            if (effect.IsDepleted)
+            {
+                m_StatusEffects.RemoveAt(i);
+                effect.OnRemoved(this);
+
+                StatusRemoved?.Invoke(effect);
+            }
+        }
+    }
 }

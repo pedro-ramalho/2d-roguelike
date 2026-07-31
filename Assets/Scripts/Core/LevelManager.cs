@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
         m_TurnManager = GameManager.Instance.TurnManager;
         m_PlayerController = GameManager.Instance.PlayerController;
 
-        m_PlayerController.PlayerStats.Depleted += OnPlayerDepleted;
+        m_PlayerController.Combatant.Depleted += OnPlayerDepleted;
         m_PlayerController.Combatant.Defeated += OnPlayerDefeated;
 
         NewLevel();
@@ -42,7 +42,7 @@ public class LevelManager : MonoBehaviour
     {
         if (m_PlayerController != null)
         {
-            m_PlayerController.PlayerStats.Depleted -= OnPlayerDepleted;
+            m_PlayerController.Combatant.Depleted -= OnPlayerDepleted;
             m_PlayerController.Combatant.Defeated -= OnPlayerDefeated;
         }
     }
@@ -94,7 +94,6 @@ public class LevelManager : MonoBehaviour
         m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel);
 
         m_PlayerController.Combatant.ResetState();
-        m_PlayerController.PlayerStats.ResetState();
 
         m_PlayerController.Init();
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);

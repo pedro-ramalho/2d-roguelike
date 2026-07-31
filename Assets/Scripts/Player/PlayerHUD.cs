@@ -5,7 +5,6 @@ public class PlayerHUD : MonoBehaviour
 {
     [SerializeField] private UIDocument m_UIDocument;
     private Combatant m_Player;
-    private PlayerStats m_PlayerStats;
 
     private VisualElement m_PlayerStatsPanel;
     private Label m_HealthLabel;
@@ -16,7 +15,6 @@ public class PlayerHUD : MonoBehaviour
     void Awake()
     {
         m_Player = GetComponent<Combatant>();
-        m_PlayerStats = GetComponent<PlayerStats>();
 
         m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");        
         m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
@@ -27,8 +25,7 @@ public class PlayerHUD : MonoBehaviour
         m_Player.Damaged += _ => Refresh();
         m_Player.HealthAdded += _ => Refresh();
         m_Player.BlockAdded += _ => Refresh();
-        
-        m_PlayerStats.StaminaChanged += _ => Refresh();
+        m_Player.StaminaChanged += _ => Refresh();
     }
 
     void Start() => Refresh();
@@ -53,15 +50,14 @@ public class PlayerHUD : MonoBehaviour
         m_Player.Damaged -= _ => Refresh();
         m_Player.HealthAdded -= _ => Refresh();
         m_Player.BlockAdded -= _ => Refresh();
-        
-        m_PlayerStats.StaminaChanged -= _ => Refresh();
+        m_Player.StaminaChanged -= _ => Refresh();
     }
 
     void Refresh()
     {
         m_HealthLabel.text = $"HP: {m_Player.HP}/{m_Player.MaxHP}";
         m_BlockLabel.text = $"Block: {m_Player.Block}";
-        m_StaminaLabel.text = $"Stamina: {m_PlayerStats.Stamina}";
+        m_StaminaLabel.text = $"Stamina: {m_Player.Stamina}";
         m_AttackLabel.text = $"Attack: {m_Player.Attack}";
     }
 }
