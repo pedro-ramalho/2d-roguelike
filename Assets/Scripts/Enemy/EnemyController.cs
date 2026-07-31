@@ -127,6 +127,8 @@ public abstract class EnemyController : MonoBehaviour
 
     protected void ChaseOrAttack(Vector2Int delta)
     {
+        m_CombatantAnimator.SetSpriteFacing(delta);
+        
         if (IsAdjacentToPlayer(delta))
             AttackPlayer(delta);
         else
