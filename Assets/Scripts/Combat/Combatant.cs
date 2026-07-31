@@ -68,26 +68,61 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             m_TurnManager.OnTick -= TickStatusEffects;
     }
 
-    void TickStatusEffects()
+    public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
     {
-        foreach (StatusEffect effect in m_StatusEffects)
-            effect.OnTurnEnd(this);
+        AttackPerformed?.Invoke(direction);
 
-        for (int i = m_StatusEffects.Count - 1; i >= 0; i--)
-        {
-            StatusEffect effect = m_StatusEffects[i];
-
-            if (effect.IsDepleted)
-            {
-                m_StatusEffects.RemoveAt(i);
-                effect.OnRemoved(this);
-
-                StatusRemoved?.Invoke(effect);
-            }
-        }
+        return DealDamageTo(target);
     }
 
-    public void TryApplyStatus(ICombatant target)
+    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
+
+    public DamageResult TakeDamage(int amount)
+    {
+        int previousHP = m_Stats.HP;
+
+        int blockLost = Mathf.Min(m_Stats.Block, amount);
+        m_Stats.Block -= blockLost;
+
+        int hpLost = Mathf.Max(0, amount - blockLost);
+        m_Stats.HP -= hpLost;
+
+        DamageResult result = new DamageResult(blockLost, hpLost);
+
+        if (previousHP > 0 && m_Stats.HP <= 0)
+            Defeated?.Invoke();
+
+        Damaged?.Invoke(result);
+
+        return result;
+    }
+
+    public void Heal(int amount)
+    {
+        m_Stats.HP = Mathf.Clamp(m_Stats.HP + amount, 0, m_Stats.MaxHP);
+        HealthAdded?.Invoke(amount);
+    }
+
+    public void AddBlock(int amount)
+    {
+        m_Stats.Block = Mathf.Clamp(m_Stats.Block + amount, 0, m_Stats.MaxBlock);
+        BlockAdded?.Invoke(amount);
+    }
+
+    public void ChangeStamina(int amount)
+    {
+        int previous = m_Stats.Stamina;
+
+        m_Stats.Stamina = Mathf.Clamp(m_Stats.Stamina + amount, 0, m_Stats.MaxStamina);
+        StaminaChanged?.Invoke(m_Stats.Stamina);
+
+        if (previous > 0 && m_Stats.Stamina == 0)
+            Depleted?.Invoke();
+    }
+
+    public void DecrementStamina() => ChangeStamina(-1);
+
+        public void TryApplyStatus(ICombatant target)
     {
         int level = GameManager.Instance.LevelManager.CurrentLevel;
 
@@ -102,7 +137,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
             }
         }
     }
-
+    
     public void ApplyStatusEffect(StatusEffect effect)
     {
         foreach (StatusEffect sf in m_StatusEffects)
@@ -129,7 +164,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
         StatusRemoved?.Invoke(effect);
     }
-
+    
     public void IncreaseMaxHP(int amount) => m_Stats.MaxHP += amount;
     public void IncreaseMaxBlock(int amount) => m_Stats.MaxBlock += amount;
     public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
@@ -142,60 +177,6 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         m_Stats.Attack = Mathf.RoundToInt(m_InitialAttack * multiplier);
         m_Stats.HP = m_Stats.MaxHP;
         m_Stats.Block = 0;
-    }
-
-    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
-
-    public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
-    {
-        AttackPerformed?.Invoke(direction);
-
-        return DealDamageTo(target);
-    }
-
-    public void AddBlock(int amount)
-    {
-        m_Stats.Block = Mathf.Clamp(m_Stats.Block + amount, 0, m_Stats.MaxBlock);
-        BlockAdded?.Invoke(amount);
-    }
-
-    public void Heal(int amount)
-    {
-        m_Stats.HP = Mathf.Clamp(m_Stats.HP + amount, 0, m_Stats.MaxHP);
-        HealthAdded?.Invoke(amount);
-    }
-
-    public void ChangeStamina(int amount)
-    {
-        int previous = m_Stats.Stamina;
-
-        m_Stats.Stamina = Mathf.Clamp(m_Stats.Stamina + amount, 0, m_Stats.MaxStamina);
-        StaminaChanged?.Invoke(m_Stats.Stamina);
-
-        if (previous > 0 && m_Stats.Stamina == 0)
-            Depleted?.Invoke();
-    }
-
-    public void DecrementStamina() => ChangeStamina(-1);
-
-    public DamageResult TakeDamage(int amount)
-    {
-        int previousHP = m_Stats.HP;
-
-        int blockLost = Mathf.Min(m_Stats.Block, amount);
-        m_Stats.Block -= blockLost;
-
-        int hpLost = Mathf.Max(0, amount - blockLost);
-        m_Stats.HP -= hpLost;
-
-        DamageResult result = new DamageResult(blockLost, hpLost);
-
-        if (previousHP > 0 && m_Stats.HP <= 0)
-            Defeated?.Invoke();
-
-        Damaged?.Invoke(result);
-
-        return result;
     }
 
     public void ResetState()
@@ -212,5 +193,24 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         };
 
         m_StatusEffects.Clear();
+    }
+
+    void TickStatusEffects()
+    {
+        foreach (StatusEffect effect in m_StatusEffects)
+            effect.OnTurnEnd(this);
+
+        for (int i = m_StatusEffects.Count - 1; i >= 0; i--)
+        {
+            StatusEffect effect = m_StatusEffects[i];
+
+            if (effect.IsDepleted)
+            {
+                m_StatusEffects.RemoveAt(i);
+                effect.OnRemoved(this);
+
+                StatusRemoved?.Invoke(effect);
+            }
+        }
     }
 }
