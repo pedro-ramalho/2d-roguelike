@@ -131,9 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_MaxHP: 5
-  m_MaxBlock: 0
-  m_Attack: 2
+  m_InitialMaxHP: 5
+  m_InitialMaxBlock: 0
+  m_InitialAttack: 2
+  m_InitialMaxStamina: 0
   m_StatusRolls:
   - Type: 3
     Duration: 1

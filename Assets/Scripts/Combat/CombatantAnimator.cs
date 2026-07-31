@@ -174,6 +174,12 @@ public class CombatantAnimator : MonoBehaviour
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
     }
 
+    public void SetSpriteFacing(Vector2Int direction)
+    {
+        if (direction == Vector2Int.left) m_SpriteRenderer.flipX = true;
+        if (direction == Vector2Int.right) m_SpriteRenderer.flipX = false;
+    }
+
     public void PlayHurtAnimation(DamageResult result)
     {
         if (m_HurtCoroutine != null)

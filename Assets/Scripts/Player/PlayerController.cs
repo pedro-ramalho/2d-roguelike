@@ -135,6 +135,8 @@ public class PlayerController : MonoBehaviour
         if (direction == Vector2Int.zero) 
             return;
 
+        m_CombatantAnimator.SetSpriteFacing(direction);
+
         Vector2Int target = m_CellPosition + direction;
 
         BoardManager.CellData cell = m_BoardManager.GetCellData(target);
