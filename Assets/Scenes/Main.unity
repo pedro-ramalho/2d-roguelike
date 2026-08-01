@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bda8fcf7df2ba439978f72b0c525db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  m_ProgressionSettings: {fileID: 11400000, guid: 0af0cffd3f92ce24fb1f64e9fb43a234, type: 2}
   BoardManager: {fileID: 1160969521}
   LevelManager: {fileID: 1339684672}
   PlayerController: {fileID: 1653753611}

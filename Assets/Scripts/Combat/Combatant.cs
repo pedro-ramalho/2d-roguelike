@@ -137,7 +137,11 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
         foreach (StatusEffectRoll roll in m_StatusRolls)
         {
-            float probability = Mathf.Clamp01(roll.BaseProbability + roll.PerLevelBonus * level);
+            float probability = Mathf.Clamp(
+                roll.BaseProbability + roll.PerLevelBonus * level,
+                0,
+                GameManager.Instance.ProgressionSettings.MaxStatusChance
+            );
             if (UnityEngine.Random.value < probability)
             {
                 target.ApplyStatusEffect(StatusEffectFactory.FromType(roll.Type, roll.Duration));

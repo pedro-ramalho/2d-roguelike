@@ -10,6 +10,9 @@ public enum GameOverReason
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private LevelProgressionSettings m_ProgressionSettings;
+
     public static GameManager Instance { get; private set; }
 
     public TurnManager TurnManager { get; private set; }
@@ -17,6 +20,7 @@ public class GameManager : MonoBehaviour
     public LevelManager LevelManager;
     public PlayerController PlayerController;
     public UIDocument UIDoc;
+    public LevelProgressionSettings ProgressionSettings => m_ProgressionSettings;
 
     void Awake()
     {
