@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
 
     // Properties
     public int CurrentLevel => m_CurrentLevel;
+    public LevelConfig CurrentConfig { get; private set; }
 
     void Start()
     {
@@ -60,6 +61,8 @@ public class LevelManager : MonoBehaviour
         m_PlayerController.gameObject.SetActive(false);
 
         m_CurrentLevel++;
+
+        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel);
 
@@ -114,5 +117,18 @@ public class LevelManager : MonoBehaviour
         m_PlayerController.Init();
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
         m_PlayerController.SetVisible(true);
+    }
+
+    LevelConfig ResolveLevelConfig(int level)
+    {
+        foreach (LevelBand band in GameManager.Instance.ProgressionSettings.LevelBands)
+        {
+            if (level >= band.MinLevel && level <= band.MaxLevel)
+                return band.DefaultConfig;
+        }
+
+        Debug.LogWarning($"No band matched level {level}, reusing last config");
+
+        return CurrentConfig;
     }
 }
