@@ -6,13 +6,21 @@ using UnityEngine;
 public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 {
     // Authored initial values
-    [SerializeField] private int m_InitialMaxHP;
-    [SerializeField] private int m_InitialMaxBlock;
-    [SerializeField] private int m_InitialAttack;
-    [SerializeField] private int m_InitialMaxStamina;
+    [SerializeField]
+    private int m_InitialMaxHP;
+
+    [SerializeField]
+    private int m_InitialMaxBlock;
+
+    [SerializeField]
+    private int m_InitialAttack;
+
+    [SerializeField]
+    private int m_InitialMaxStamina;
 
     // Status rolls
-    [SerializeField] private StatusEffectRoll[] m_StatusRolls;
+    [SerializeField]
+    private StatusEffectRoll[] m_StatusRolls;
 
     // Private references
     private TurnManager m_TurnManager;
@@ -75,7 +83,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         return DealDamageTo(target);
     }
 
-    public DamageResult DealDamageTo(ICombatant target) => CombatantDamage.ApplyDamage(this, target);
+    public DamageResult DealDamageTo(ICombatant target) =>
+        CombatantDamage.ApplyDamage(this, target);
 
     public DamageResult TakeDamage(int amount)
     {
@@ -164,20 +173,31 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
         StatusRemoved?.Invoke(effect);
     }
-    
+
     public void IncreaseMaxHP(int amount) => m_Stats.MaxHP += amount;
+
     public void IncreaseMaxBlock(int amount) => m_Stats.MaxBlock += amount;
+
     public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
+
     public void IncreaseMaxStamina(int amount) => m_Stats.MaxStamina += amount;
 
     public void UpgradeStat(CombatantStat stat, int amount)
     {
         switch (stat)
         {
-            case CombatantStat.MaxHP: IncreaseMaxHP(amount); break;
-            case CombatantStat.MaxBlock: IncreaseMaxBlock(amount); break;
-            case CombatantStat.Attack: IncreaseAttack(amount); break;
-            case CombatantStat.MaxStamina: IncreaseMaxStamina(amount); break;
+            case CombatantStat.MaxHP:
+                IncreaseMaxHP(amount);
+                break;
+            case CombatantStat.MaxBlock:
+                IncreaseMaxBlock(amount);
+                break;
+            case CombatantStat.Attack:
+                IncreaseAttack(amount);
+                break;
+            case CombatantStat.MaxStamina:
+                IncreaseMaxStamina(amount);
+                break;
         }
     }
 

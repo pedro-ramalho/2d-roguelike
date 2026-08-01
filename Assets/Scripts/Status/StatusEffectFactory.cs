@@ -10,7 +10,7 @@ public static class StatusEffectFactory
             StatusEffectType.Weak => new StatusEffectWeak(duration),
             StatusEffectType.Vulnerable => new StatusEffectVulnerable(duration),
             StatusEffectType.Empowered => new StatusEffectEmpowered(duration),
-            _ => throw new System.ArgumentException($"Unknown status type: {type}")
+            _ => throw new System.ArgumentException($"Unknown status type: {type}"),
         };
     }
 }

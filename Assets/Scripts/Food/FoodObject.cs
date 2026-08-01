@@ -1,5 +1,5 @@
 public abstract class FoodObject : CellObject
-{    
+{
     protected abstract void ApplyEffect(PlayerController player);
 
     public override void PlayerEntered(PlayerController player)
@@ -7,7 +7,7 @@ public abstract class FoodObject : CellObject
         m_Board.ClearCell(m_Cell);
 
         ApplyEffect(player);
-        
+
         Destroy(gameObject);
     }
 }

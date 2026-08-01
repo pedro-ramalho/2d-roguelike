@@ -15,16 +15,16 @@ public class PlayerController : MonoBehaviour
     // State
     private Vector2Int m_CellPosition;
     private bool m_IsGameOver;
-    
+
     public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_CellPosition;
 
-    void Start() 
+    void Start()
     {
         m_TurnManager = GameManager.Instance.TurnManager;
         m_TurnManager.OnTick += TurnHappened;
     }
-    
+
     void Awake()
     {
         m_InputActions = new PlayerInputActions();
@@ -35,25 +35,26 @@ public class PlayerController : MonoBehaviour
     }
 
     void OnEnable() => m_InputActions.Player.Enable();
+
     void OnDisable() => m_InputActions.Player.Disable();
-     
+
     void OnDestroy()
     {
         m_InputActions.Dispose();
 
         if (m_TurnManager != null)
-            m_TurnManager.OnTick -= TurnHappened;        
-    } 
+            m_TurnManager.OnTick -= TurnHappened;
+    }
 
     void Update()
     {
-        if (m_IsGameOver) 
-        { 
-            HandleRestartInput(); 
-            
-            return; 
+        if (m_IsGameOver)
+        {
+            HandleRestartInput();
+
+            return;
         }
-        
+
         // Temporary debug logs (should be removed later)
         if (Keyboard.current.vKey.wasPressedThisFrame)
             m_Combatant.ApplyStatusEffect(new StatusEffectEmpowered(2));
@@ -78,16 +79,20 @@ public class PlayerController : MonoBehaviour
 
     void HandleRestartInput()
     {
-        if (m_InputActions.Player.Restart.WasPressedThisFrame()) 
+        if (m_InputActions.Player.Restart.WasPressedThisFrame())
             GameManager.Instance.LevelManager.StartNewGame();
     }
 
     Vector2Int GetInputDirection()
     {
-        if (m_InputActions.Player.MoveUp.WasPressedThisFrame()) return Vector2Int.up;
-        if (m_InputActions.Player.MoveDown.WasPressedThisFrame()) return Vector2Int.down;
-        if (m_InputActions.Player.MoveLeft.WasPressedThisFrame()) return Vector2Int.left;
-        if (m_InputActions.Player.MoveRight.WasPressedThisFrame()) return Vector2Int.right;
+        if (m_InputActions.Player.MoveUp.WasPressedThisFrame())
+            return Vector2Int.up;
+        if (m_InputActions.Player.MoveDown.WasPressedThisFrame())
+            return Vector2Int.down;
+        if (m_InputActions.Player.MoveLeft.WasPressedThisFrame())
+            return Vector2Int.left;
+        if (m_InputActions.Player.MoveRight.WasPressedThisFrame())
+            return Vector2Int.right;
 
         return Vector2Int.zero;
     }
@@ -97,9 +102,9 @@ public class PlayerController : MonoBehaviour
         m_Combatant.AttackTarget(enemy, target - m_CellPosition);
 
         if (enemy.HP <= 0)
-        {            
+        {
             cell.ContainedObject = null;
-            
+
             MoveTo(target, false);
         }
     }
@@ -109,12 +114,12 @@ public class PlayerController : MonoBehaviour
         if (m_Combatant.IsStunned)
         {
             m_TurnManager.BeginTurn();
-            
+
             return;
         }
 
         if (cell.ContainedObject == null)
-            MoveTo(target,false);
+            MoveTo(target, false);
         else if (cell.ContainedObject is ICombatant enemy)
             HandleEnemyDamage(enemy, target, cell);
         else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
@@ -130,9 +135,9 @@ public class PlayerController : MonoBehaviour
     {
         if (m_TurnManager.IsProcessingTurn)
             return;
-            
+
         Vector2Int direction = GetInputDirection();
-        if (direction == Vector2Int.zero) 
+        if (direction == Vector2Int.zero)
             return;
 
         m_CombatantAnimator.SetSpriteFacing(direction);
@@ -140,7 +145,7 @@ public class PlayerController : MonoBehaviour
         Vector2Int target = m_CellPosition + direction;
 
         BoardManager.CellData cell = m_BoardManager.GetCellData(target);
-        if (cell == null || !cell.Passable) 
+        if (cell == null || !cell.Passable)
             return;
 
         ResolvePlayerAction(cell, target);
@@ -170,5 +175,4 @@ public class PlayerController : MonoBehaviour
         else
             m_CombatantAnimator.PlayWalkAnimation(cell, direction);
     }
-
 }

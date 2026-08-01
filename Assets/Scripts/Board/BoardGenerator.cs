@@ -5,20 +5,37 @@ using UnityEngine.Tilemaps;
 public class BoardGenerator : MonoBehaviour
 {
     // Tiles
-    [SerializeField] private Tile[] m_GroundTiles;
-    [SerializeField] private Tile[] m_WallTiles;
+    [SerializeField]
+    private Tile[] m_GroundTiles;
+
+    [SerializeField]
+    private Tile[] m_WallTiles;
 
     // Prefabs
-    [SerializeField] private FoodObject[] m_FoodPrefabs;
-    [SerializeField] private WallObject m_WallPrefab;
-    [SerializeField] private ExitCellObject m_ExitPrefab;
-    [SerializeField] private Combatant m_EnemyPrefab;
+    [SerializeField]
+    private FoodObject[] m_FoodPrefabs;
+
+    [SerializeField]
+    private WallObject m_WallPrefab;
+
+    [SerializeField]
+    private ExitCellObject m_ExitPrefab;
+
+    [SerializeField]
+    private Combatant m_EnemyPrefab;
 
     // Board object counts
-    [SerializeField] private int m_MinFoodCount = 2;
-    [SerializeField] private int m_MaxFoodCount = 6;
-    [SerializeField] private int m_MinWallCount = 6;
-    [SerializeField] private int m_MaxWallCount = 10;
+    [SerializeField]
+    private int m_MinFoodCount = 2;
+
+    [SerializeField]
+    private int m_MaxFoodCount = 6;
+
+    [SerializeField]
+    private int m_MinWallCount = 6;
+
+    [SerializeField]
+    private int m_MaxWallCount = 10;
 
     // Private references
     private BoardManager m_BoardManager;
@@ -80,11 +97,16 @@ public class BoardGenerator : MonoBehaviour
         Tank controller = newEnemy.GetComponent<Tank>();
         if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
             controller.gameObject.AddComponent<EliteModifier>();
-            
+
         controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
     }
 
-    public void GenerateBoard(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, int currentLevel)
+    public void GenerateBoard(
+        BoardManager boardManager,
+        TurnManager turnManager,
+        PlayerController playerController,
+        int currentLevel
+    )
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
@@ -100,9 +122,10 @@ public class BoardGenerator : MonoBehaviour
                 Tile tile;
                 Vector2Int coord = new Vector2Int(x, y);
 
-                bool isBorder = x == 0 || y == 0 || x == boardManager.Width - 1 || y == boardManager.Height - 1;
+                bool isBorder =
+                    x == 0 || y == 0 || x == boardManager.Width - 1 || y == boardManager.Height - 1;
                 if (isBorder)
-                {   
+                {
                     tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
                     m_BoardManager.SetCellPassable(coord, false);
                 }

@@ -8,12 +8,12 @@ public class WallObject : CellObject
 
     public Tile[] ObstacleTiles;
     public int MaxHealth = 3;
-    
+
     Tile GetTileByHealthPoint()
     {
         if (m_HealthPoint <= 0)
             return null;
-        
+
         return ObstacleTiles[MaxHealth - m_HealthPoint];
     }
 
@@ -34,13 +34,13 @@ public class WallObject : CellObject
         if (m_HealthPoint > 0)
         {
             m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
-            
+
             return false;
         }
 
         m_Board.SetCellTile(m_Cell, m_OriginalTile);
         m_Board.ClearCell(m_Cell);
-        
+
         Destroy(gameObject);
 
         return true;

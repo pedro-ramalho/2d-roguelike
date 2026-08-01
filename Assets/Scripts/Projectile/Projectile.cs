@@ -3,13 +3,18 @@ using System.Collections;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
-{    
+{
     public void Launch(Vector3 startWorldPos, Vector3 endWorldPos, float duration, Action onArrive)
     {
         StartCoroutine(LaunchCoroutine(startWorldPos, endWorldPos, duration, onArrive));
     }
 
-    public IEnumerator LaunchCoroutine(Vector3 startWorldPos, Vector3 endWorldPos, float duration, Action onArrive)
+    public IEnumerator LaunchCoroutine(
+        Vector3 startWorldPos,
+        Vector3 endWorldPos,
+        float duration,
+        Action onArrive
+    )
     {
         float elapsed = 0;
 
@@ -21,7 +26,7 @@ public class Projectile : MonoBehaviour
 
             transform.position = Vector3.Lerp(startWorldPos, endWorldPos, t);
 
-            yield return null;    
+            yield return null;
         }
 
         transform.position = endWorldPos;

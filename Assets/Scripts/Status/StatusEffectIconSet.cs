@@ -11,13 +11,15 @@ public class StatusEffectIconSet : ScriptableObject
         public Sprite Icon;
     }
 
-    [SerializeField] private Entry[] m_Entries;
+    [SerializeField]
+    private Entry[] m_Entries;
 
     public Sprite For(StatusEffectType type)
     {
         foreach (Entry e in m_Entries)
-            if (e.Type == type) return e.Icon;
-        
+            if (e.Type == type)
+                return e.Icon;
+
         return null;
     }
 }
