@@ -82,7 +82,8 @@ public class BoardGenerator : MonoBehaviour
         }
     }
 
-    bool IsEliteLevel(int level) => level % 5 == 0;
+    bool IsEliteLevel(int level) =>
+        level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
 
     void GenerateEnemy()
     {
