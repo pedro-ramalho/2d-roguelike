@@ -29,5 +29,5 @@ MonoBehaviour:
     DefaultConfig: {fileID: 11400000, guid: 7648ee2693d85b64c8fc848a1d02e38e, type: 2}
   - Name: Late
     MinLevel: 16
-    MaxLevel: -1
+    MaxLevel: 1000
     DefaultConfig: {fileID: 11400000, guid: ff3b36940a2b84a4f987223864666ab5, type: 2}
