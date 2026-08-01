@@ -21,7 +21,7 @@ public class LevelProgressionSettings : ScriptableObject
 
     [Header("Status Rolls")]
     [Range(0f, 1f)]
-    public float MaxStatusChance;
+    public float MaxStatusChance = 1f;
 
     [Header("Level Bands")]
     public LevelBand[] LevelBands;
