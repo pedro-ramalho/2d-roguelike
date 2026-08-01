@@ -20,19 +20,22 @@ public class TurnManager : MonoBehaviour
         IsProcessingTurn = true;
 
         // wait until the Player becomes idle
-        while (AnyBusy()) yield return null;
+        while (AnyBusy())
+            yield return null;
 
         Tick();
 
         // wait until Enemies become idle
-        while (AnyBusy()) yield return null;
- 
+        while (AnyBusy())
+            yield return null;
+
         IsProcessingTurn = false;
     }
 
     public void Register(CombatantAnimator animator) => m_Animators.Add(animator);
+
     public void Unregister(CombatantAnimator animator) => m_Animators.Remove(animator);
-    
+
     public void Tick()
     {
         m_TurnCount++;

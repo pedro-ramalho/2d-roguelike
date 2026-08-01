@@ -2,7 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum GameOverReason { Depleted, Defeated }
+public enum GameOverReason
+{
+    Depleted,
+    Defeated,
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -24,7 +28,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        
+
         TurnManager = GetComponent<TurnManager>();
     }
 }

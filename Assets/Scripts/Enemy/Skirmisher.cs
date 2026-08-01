@@ -9,7 +9,7 @@ public class Skirmisher : EnemyController
     {
         for (int i = 0; i < m_SkirmisherTurns; i++)
         {
-            Vector2Int delta = ComputeDeltaToPlayer();    
+            Vector2Int delta = ComputeDeltaToPlayer();
             if (IsAdjacentToPlayer(delta))
             {
                 AttackPlayer(delta);
@@ -23,7 +23,6 @@ public class Skirmisher : EnemyController
                 yield return new WaitUntil(() => !Animator.IsBusy);
             }
         }
-
     }
 
     protected override void ResolveEnemyAction() => StartCoroutine(ResolveSkirmisherAction());

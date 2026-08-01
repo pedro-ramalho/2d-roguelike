@@ -3,17 +3,25 @@ using UnityEngine;
 
 public class Ranged : EnemyController
 {
-    [SerializeField] private Projectile m_ProjectilePrefab;
+    [SerializeField]
+    private Projectile m_ProjectilePrefab;
 
     private bool m_IsOnCooldown;
 
-    private static readonly Vector2Int[] m_Cardinals = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+    private static readonly Vector2Int[] m_Cardinals =
+    {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+    };
 
     private static readonly int m_AttackRange = 4;
     private static readonly int m_RetreatDistance = 2;
     private static readonly int m_RunwayScanDepth = 2;
 
-    bool IsWithinRange(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) <= m_AttackRange;
+    bool IsWithinRange(Vector2Int delta) =>
+        Mathf.Abs(delta.x) + Mathf.Abs(delta.y) <= m_AttackRange;
 
     void HandleWithinLineOfSightAction(Vector2Int delta, bool canAttack)
     {
@@ -21,12 +29,16 @@ public class Ranged : EnemyController
         {
             Vector2Int targetCell = PlayerCell;
 
-            Animator.PlayProjectileAnimation(m_ProjectilePrefab, PlayerCellToWorld(), () =>
-            {
-                if (PlayerCell == targetCell)
-                    DealDamageToPlayer();
-            });
-            
+            Animator.PlayProjectileAnimation(
+                m_ProjectilePrefab,
+                PlayerCellToWorld(),
+                () =>
+                {
+                    if (PlayerCell == targetCell)
+                        DealDamageToPlayer();
+                }
+            );
+
             m_IsOnCooldown = true;
         }
         else
@@ -46,7 +58,7 @@ public class Ranged : EnemyController
 
             if (!CanEnterCell(cursor))
                 break;
-            
+
             freeCells++;
 
             count++;
@@ -77,7 +89,7 @@ public class Ranged : EnemyController
     }
 
     IEnumerator RetreatActionCoroutine()
-    {  
+    {
         // This works because we only call this routine when the Enemy is adjacent
         Vector2Int orientation = ComputeDeltaToPlayer();
         Vector2Int direction = EvaluateRetreatDirection(orientation);

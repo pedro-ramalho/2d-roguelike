@@ -20,7 +20,7 @@ public abstract class EnemyController : MonoBehaviour
     // Public properties
     public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_Cell;
-    
+
     void Awake()
     {
         m_Combatant = GetComponent<Combatant>();
@@ -30,12 +30,12 @@ public abstract class EnemyController : MonoBehaviour
     }
 
     void Start() => m_TurnManager.OnTick += OnTurnHappened;
-    
+
     void OnDestroy()
     {
         if (m_TurnManager != null)
             m_TurnManager.OnTick -= OnTurnHappened;
-        
+
         if (m_Combatant != null)
             m_Combatant.Defeated -= OnDefeated;
     }
@@ -50,7 +50,8 @@ public abstract class EnemyController : MonoBehaviour
     {
         BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
 
-        bool isInvalidCell = (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
+        bool isInvalidCell =
+            (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
         if (isInvalidCell)
             return false;
 
@@ -77,7 +78,8 @@ public abstract class EnemyController : MonoBehaviour
     {
         BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
 
-        bool isInvalidCell = (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
+        bool isInvalidCell =
+            (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
         if (isInvalidCell)
             return false;
 
@@ -85,11 +87,13 @@ public abstract class EnemyController : MonoBehaviour
     }
 
     protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
-    
-    protected bool IsInLineOfSightToPlayer() => m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
 
-    protected bool IsAdjacentToPlayer(Vector2Int delta) => Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
-    
+    protected bool IsInLineOfSightToPlayer() =>
+        m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
+
+    protected bool IsAdjacentToPlayer(Vector2Int delta) =>
+        Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
+
     protected void MoveTowards(Vector2Int delta)
     {
         Vector2Int xDirection = delta.x > 0 ? Vector2Int.right : Vector2Int.left;
@@ -113,24 +117,27 @@ public abstract class EnemyController : MonoBehaviour
 
     protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
 
-    protected void DealDamageToPlayer() 
+    protected void DealDamageToPlayer()
     {
         DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         if (result.HPLost > 0)
-            Combatant.RollStatusOnHit(m_PlayerController.Combatant);  
+            Combatant.RollStatusOnHit(m_PlayerController.Combatant);
     }
-    
+
     protected void AttackPlayer(Vector2Int direction)
     {
-        DamageResult result = m_Combatant.AttackTarget(m_PlayerController.Combatant, new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y)));
+        DamageResult result = m_Combatant.AttackTarget(
+            m_PlayerController.Combatant,
+            new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y))
+        );
         if (result.HPLost > 0)
-            Combatant.RollStatusOnHit(m_PlayerController.Combatant);  
-    } 
+            Combatant.RollStatusOnHit(m_PlayerController.Combatant);
+    }
 
     protected void ChaseOrAttack(Vector2Int delta)
     {
         m_CombatantAnimator.SetSpriteFacing(delta);
-        
+
         if (IsAdjacentToPlayer(delta))
             AttackPlayer(delta);
         else
@@ -147,7 +154,12 @@ public abstract class EnemyController : MonoBehaviour
 
     protected abstract void ResolveEnemyAction();
 
-    public void Spawn(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, Vector2Int cell)
+    public void Spawn(
+        BoardManager boardManager,
+        TurnManager turnManager,
+        PlayerController playerController,
+        Vector2Int cell
+    )
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;

@@ -12,13 +12,13 @@ public class EliteModifier : MonoBehaviour
 
         // Update the tint
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.color = new Color(138f/255f, 43f/255f, 226f/255f);
+        sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
 
         m_Combatant.Defeated += OnEliteDefeated;
     }
 
     void OnDestroy()
-    { 
+    {
         if (m_Combatant != null)
             m_Combatant.Defeated -= OnEliteDefeated;
     }
@@ -26,7 +26,7 @@ public class EliteModifier : MonoBehaviour
     void OnEliteDefeated()
     {
         CombatantStat[] stats = (CombatantStat[])Enum.GetValues(typeof(CombatantStat));
-    
+
         CombatantStat chosen = stats[UnityEngine.Random.Range(0, stats.Length)];
         GameManager.Instance.PlayerController.Combatant.UpgradeStat(chosen, 5);
     }

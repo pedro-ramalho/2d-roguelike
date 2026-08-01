@@ -3,7 +3,8 @@ using UnityEngine.UIElements;
 
 public class PlayerHUD : MonoBehaviour
 {
-    [SerializeField] private UIDocument m_UIDocument;
+    [SerializeField]
+    private UIDocument m_UIDocument;
     private Combatant m_Player;
 
     private VisualElement m_PlayerStatsPanel;
@@ -16,7 +17,7 @@ public class PlayerHUD : MonoBehaviour
     {
         m_Player = GetComponent<Combatant>();
 
-        m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");        
+        m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");
         m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
         m_BlockLabel = m_PlayerStatsPanel.Q<Label>("BlockLabel");
         m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
@@ -34,7 +35,6 @@ public class PlayerHUD : MonoBehaviour
     {
         if (m_PlayerStatsPanel != null)
             m_PlayerStatsPanel.style.display = DisplayStyle.None;
-
     }
 
     void OnEnable()
@@ -45,8 +45,9 @@ public class PlayerHUD : MonoBehaviour
 
     void OnDestroy()
     {
-        if (m_Player == null) return;
-        
+        if (m_Player == null)
+            return;
+
         m_Player.Damaged -= _ => Refresh();
         m_Player.HealthAdded -= _ => Refresh();
         m_Player.BlockAdded -= _ => Refresh();

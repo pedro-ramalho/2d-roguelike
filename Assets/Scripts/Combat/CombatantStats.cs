@@ -1,4 +1,10 @@
-public enum CombatantStat { MaxHP, MaxBlock, Attack, MaxStamina }
+public enum CombatantStat
+{
+    MaxHP,
+    MaxBlock,
+    Attack,
+    MaxStamina,
+}
 
 public class CombatantStats
 {

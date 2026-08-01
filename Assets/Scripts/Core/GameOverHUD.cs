@@ -7,8 +7,11 @@ public class GameOverHUD : MonoBehaviour
     private Label m_GameOverMessage;
 
     // UI document
-    [SerializeField] private UIDocument m_UIDocument;
-    [SerializeField] private LevelManager m_LevelManager;
+    [SerializeField]
+    private UIDocument m_UIDocument;
+
+    [SerializeField]
+    private LevelManager m_LevelManager;
 
     void Start()
     {
@@ -18,7 +21,7 @@ public class GameOverHUD : MonoBehaviour
         m_GameOverMessage = m_GameOverPanel.Q<Label>("GameOverMessage");
 
         m_GameOverPanel.style.visibility = Visibility.Hidden;
-        
+
         m_LevelManager.GameOverTriggered += OnGameOver;
         m_LevelManager.GameStartTriggered += OnGameStart;
     }
@@ -35,10 +38,12 @@ public class GameOverHUD : MonoBehaviour
     void OnGameOver(GameOverReason reason, int levels)
     {
         string levelString = levels > 1 ? "levels" : "level";
-        string reasonString = reason == GameOverReason.Depleted ? "You ran out of stamina!" : "You were defeated!";
+        string reasonString =
+            reason == GameOverReason.Depleted ? "You ran out of stamina!" : "You were defeated!";
 
         m_GameOverPanel.style.visibility = Visibility.Visible;
-        m_GameOverMessage.text = $"Game Over! {reasonString}\n\nYou traveled through {levels} {levelString}.\n\nPress Enter to restart.";
+        m_GameOverMessage.text =
+            $"Game Over! {reasonString}\n\nYou traveled through {levels} {levelString}.\n\nPress Enter to restart.";
     }
 
     public void OnGameStart() => m_GameOverPanel.style.visibility = Visibility.Hidden;

@@ -8,10 +8,13 @@ public class LevelManager : MonoBehaviour
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
-    
+
     // Serialized references
-    [SerializeField] private LevelTransitionManager m_LevelTransitionManager;
-    [SerializeField] private BoardGenerator m_BoardGenerator;
+    [SerializeField]
+    private LevelTransitionManager m_LevelTransitionManager;
+
+    [SerializeField]
+    private BoardGenerator m_BoardGenerator;
 
     // Events
     public event Action<GameOverReason, int> GameOverTriggered;
@@ -27,7 +30,7 @@ public class LevelManager : MonoBehaviour
     public int CurrentLevel => m_CurrentLevel;
 
     void Start()
-    {   
+    {
         m_BoardManager = GameManager.Instance.BoardManager;
         m_TurnManager = GameManager.Instance.TurnManager;
         m_PlayerController = GameManager.Instance.PlayerController;
@@ -46,9 +49,10 @@ public class LevelManager : MonoBehaviour
             m_PlayerController.Combatant.Defeated -= OnPlayerDefeated;
         }
     }
-    
+
     // Placeholders, will be implemented properly in the future
     int ComputeWidthForLevel() => 8;
+
     int ComputeHeightForLevel() => 8;
 
     IEnumerator NewLevelCoroutine()
@@ -61,8 +65,13 @@ public class LevelManager : MonoBehaviour
 
         m_BoardManager.Clean();
         m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
-        
-        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel);
+
+        m_BoardGenerator.GenerateBoard(
+            m_BoardManager,
+            m_TurnManager,
+            m_PlayerController,
+            m_CurrentLevel
+        );
 
         m_PlayerController.gameObject.SetActive(true);
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
@@ -73,7 +82,9 @@ public class LevelManager : MonoBehaviour
     }
 
     void OnPlayerDefeated() => TriggerGameOver(GameOverReason.Defeated);
+
     void OnPlayerDepleted() => TriggerGameOver(GameOverReason.Depleted);
+
     void TriggerGameOver(GameOverReason reason)
     {
         m_PlayerController.GameOver();
@@ -90,8 +101,13 @@ public class LevelManager : MonoBehaviour
 
         m_BoardManager.Clean();
         m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
-        
-        m_BoardGenerator.GenerateBoard(m_BoardManager, m_TurnManager, m_PlayerController, m_CurrentLevel);
+
+        m_BoardGenerator.GenerateBoard(
+            m_BoardManager,
+            m_TurnManager,
+            m_PlayerController,
+            m_CurrentLevel
+        );
 
         m_PlayerController.Combatant.ResetState();
 
