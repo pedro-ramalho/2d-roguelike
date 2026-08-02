@@ -25,9 +25,26 @@ public class EliteModifier : MonoBehaviour
 
     void OnEliteDefeated()
     {
-        CombatantStat[] stats = (CombatantStat[])Enum.GetValues(typeof(CombatantStat));
+        var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
+        if (pool.Length == 0)
+            return;
 
-        CombatantStat chosen = stats[UnityEngine.Random.Range(0, stats.Length)];
-        GameManager.Instance.PlayerController.Combatant.UpgradeStat(chosen, 5);
+        float totalWeight = 0f;
+        foreach (var entry in pool)
+            totalWeight += entry.Weight;
+
+        float roll = UnityEngine.Random.value * totalWeight;
+        float acc = 0f;
+
+        foreach (var entry in pool)
+        {
+            acc += entry.Weight;
+            if (roll <= acc)
+            {
+                m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+
+                return;
+            }
+        }
     }
 }
