@@ -74,10 +74,10 @@ public class BoardGenerator : MonoBehaviour
     bool IsEliteLevel(int level) =>
         level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
 
-    void SpawnEnemy(EnemyController prefab)
+    EnemyController SpawnEnemy(EnemyController prefab)
     {
         if (m_EmptyCells.Count == 0)
-            return;
+            return null;
 
         int randomIndex = Random.Range(0, m_EmptyCells.Count);
         Vector2Int coord = m_EmptyCells[randomIndex];
@@ -86,14 +86,15 @@ public class BoardGenerator : MonoBehaviour
         EnemyController newEnemy = Instantiate(prefab);
         m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
 
-        if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
-            newEnemy.gameObject.AddComponent<EliteModifier>();
-
         newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+
+        return newEnemy;
     }
 
     void GenerateEnemy()
     {
+        List<EnemyController> spawned = new List<EnemyController>();
+
         foreach (var entry in m_CurrentConfig.EnemyEntries)
         {
             if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
@@ -102,7 +103,11 @@ public class BoardGenerator : MonoBehaviour
             int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
             for (int i = 0; i < count; i++)
-                SpawnEnemy(entry.Prefab);
+            {
+                EnemyController e = SpawnEnemy(entry.Prefab);
+                if (e != null)
+                    spawned.Add(e);
+            }
         }
 
         foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
@@ -110,7 +115,15 @@ public class BoardGenerator : MonoBehaviour
             if (prefab.FirstAllowedLevel > m_CurrentLevel)
                 continue;
 
-            SpawnEnemy(prefab);
+            EnemyController e = SpawnEnemy(prefab);
+            if (e != null)
+                spawned.Add(e);
+        }
+
+        if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
+        {
+            EnemyController chosen = spawned[Random.Range(0, spawned.Count)];
+            chosen.gameObject.AddComponent<EliteModifier>();
         }
     }
 
