@@ -25,4 +25,7 @@ public class LevelProgressionSettings : ScriptableObject
 
     [Header("Level Bands")]
     public LevelBand[] LevelBands;
+
+    [Header("Elite Rewards")]
+    public EliteRewardEntry[] EliteRewardPool;
 }
