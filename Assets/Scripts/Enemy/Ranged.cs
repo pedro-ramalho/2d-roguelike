@@ -4,6 +4,9 @@ using UnityEngine;
 public class Ranged : EnemyController
 {
     [SerializeField]
+    private int m_FirstAllowedLevel = 1;
+
+    [SerializeField]
     private Projectile m_ProjectilePrefab;
 
     private bool m_IsOnCooldown;
