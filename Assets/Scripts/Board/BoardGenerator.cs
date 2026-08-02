@@ -13,34 +13,16 @@ public class BoardGenerator : MonoBehaviour
 
     // Prefabs
     [SerializeField]
-    private FoodObject[] m_FoodPrefabs;
-
-    [SerializeField]
     private WallObject m_WallPrefab;
 
     [SerializeField]
     private ExitCellObject m_ExitPrefab;
 
-    [SerializeField]
-    private Combatant m_EnemyPrefab;
-
-    // Board object counts
-    [SerializeField]
-    private int m_MinFoodCount = 2;
-
-    [SerializeField]
-    private int m_MaxFoodCount = 6;
-
-    [SerializeField]
-    private int m_MinWallCount = 6;
-
-    [SerializeField]
-    private int m_MaxWallCount = 10;
-
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
+    private LevelConfig m_CurrentConfig;
 
     // Empty cells
     private List<Vector2Int> m_EmptyCells;
@@ -50,7 +32,10 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateWall()
     {
-        int wallCount = Random.Range(m_MinWallCount, m_MaxWallCount);
+        int wallCount = Random.Range(
+            m_CurrentConfig.MinWallCount,
+            m_CurrentConfig.MaxWallCount + 1
+        );
 
         for (int i = 0; i < wallCount; i++)
         {
@@ -66,40 +51,67 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateFood()
     {
-        int foodCount = Random.Range(m_MinFoodCount, m_MaxFoodCount);
-
-        for (int i = 0; i < foodCount; i++)
+        foreach (var entry in m_CurrentConfig.FoodEntries)
         {
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
+            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
 
-            m_EmptyCells.RemoveAt(randomIndex);
+            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
-            int randomFoodIndex = Random.Range(0, m_FoodPrefabs.Length);
-            FoodObject newFood = Instantiate(m_FoodPrefabs[randomFoodIndex]);
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(0, m_EmptyCells.Count);
+                Vector2Int coord = m_EmptyCells[randomIndex];
 
-            m_BoardManager.AddObject(newFood, coord);
+                m_EmptyCells.RemoveAt(randomIndex);
+
+                FoodObject newFood = Instantiate(entry.Prefab);
+                m_BoardManager.AddObject(newFood, coord);
+            }
         }
     }
 
     bool IsEliteLevel(int level) =>
         level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
 
-    void GenerateEnemy()
+    void SpawnEnemy(EnemyController prefab)
     {
+        if (m_EmptyCells.Count == 0)
+            return;
+
         int randomIndex = Random.Range(0, m_EmptyCells.Count);
         Vector2Int coord = m_EmptyCells[randomIndex];
-
         m_EmptyCells.RemoveAt(randomIndex);
-        Combatant newEnemy = Instantiate(m_EnemyPrefab);
 
-        m_BoardManager.SetCellOccupant(coord, newEnemy);
+        EnemyController newEnemy = Instantiate(prefab);
+        m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
 
-        Tank controller = newEnemy.GetComponent<Tank>();
         if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
-            controller.gameObject.AddComponent<EliteModifier>();
+            newEnemy.gameObject.AddComponent<EliteModifier>();
 
-        controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+        newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+    }
+
+    void GenerateEnemy()
+    {
+        foreach (var entry in m_CurrentConfig.EnemyEntries)
+        {
+            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
+
+            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
+
+            for (int i = 0; i < count; i++)
+                SpawnEnemy(entry.Prefab);
+        }
+
+        foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
+        {
+            if (prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
+
+            SpawnEnemy(prefab);
+        }
     }
 
     public void GenerateBoard(
@@ -112,7 +124,11 @@ public class BoardGenerator : MonoBehaviour
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
+        m_CurrentConfig = GameManager.Instance.LevelManager.CurrentConfig;
         m_CurrentLevel = currentLevel;
+
+        if (m_CurrentConfig.UseSeed)
+            Random.InitState(m_CurrentConfig.Seed + m_CurrentLevel);
 
         m_EmptyCells = new List<Vector2Int>();
 

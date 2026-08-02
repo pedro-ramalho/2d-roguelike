@@ -3,6 +3,9 @@ using UnityEngine;
 
 public abstract class EnemyController : MonoBehaviour
 {
+    [SerializeField]
+    private int m_FirstAllowedLevel = 1;
+
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
@@ -20,6 +23,7 @@ public abstract class EnemyController : MonoBehaviour
     // Public properties
     public Combatant Combatant => m_Combatant;
     public Vector2Int Cell => m_Cell;
+    public int FirstAllowedLevel => m_FirstAllowedLevel;
 
     void Awake()
     {
