@@ -31,3 +31,16 @@ MonoBehaviour:
     MinLevel: 16
     MaxLevel: 1000
     DefaultConfig: {fileID: 11400000, guid: ff3b36940a2b84a4f987223864666ab5, type: 2}
+  EliteRewardPool:
+  - Stat: 0
+    Amount: 5
+    Weight: 4
+  - Stat: 1
+    Amount: 3
+    Weight: 2
+  - Stat: 2
+    Amount: 2
+    Weight: 1
+  - Stat: 3
+    Amount: 10
+    Weight: 3
