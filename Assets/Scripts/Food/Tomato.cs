@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Tomato : FoodObject
 {
-    [SerializeField]
-    private int m_FirstAllowedLevel = 1;
-
     protected override void ApplyEffect(PlayerController player)
     {
         List<StatusEffect> negativeStatuses = player

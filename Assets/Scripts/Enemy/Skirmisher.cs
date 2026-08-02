@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Skirmisher : EnemyController
 {
-    [SerializeField]
-    private int m_FirstAllowedLevel = 1;
     private static readonly int m_SkirmisherTurns = 2;
 
     IEnumerator ResolveSkirmisherAction()
