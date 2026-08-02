@@ -6,8 +6,8 @@ public class Tank : EnemyController
     {
         // TODO: link block gain with the current level
         Combatant.AddBlock(3);
-        
+
         Vector2Int delta = ComputeDeltaToPlayer();
-        ChaseOrAttack(delta); 
+        ChaseOrAttack(delta);
     }
 }

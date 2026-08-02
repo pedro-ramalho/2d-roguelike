@@ -1,3 +1,6 @@
 using UnityEngine;
 
-public interface ICellOccupant { GameObject GameObject { get; } }
+public interface ICellOccupant
+{
+    GameObject GameObject { get; }
+}

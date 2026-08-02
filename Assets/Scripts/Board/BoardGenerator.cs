@@ -5,25 +5,24 @@ using UnityEngine.Tilemaps;
 public class BoardGenerator : MonoBehaviour
 {
     // Tiles
-    [SerializeField] private Tile[] m_GroundTiles;
-    [SerializeField] private Tile[] m_WallTiles;
+    [SerializeField]
+    private Tile[] m_GroundTiles;
+
+    [SerializeField]
+    private Tile[] m_WallTiles;
 
     // Prefabs
-    [SerializeField] private FoodObject[] m_FoodPrefabs;
-    [SerializeField] private WallObject m_WallPrefab;
-    [SerializeField] private ExitCellObject m_ExitPrefab;
-    [SerializeField] private Combatant m_EnemyPrefab;
+    [SerializeField]
+    private WallObject m_WallPrefab;
 
-    // Board object counts
-    [SerializeField] private int m_MinFoodCount = 2;
-    [SerializeField] private int m_MaxFoodCount = 6;
-    [SerializeField] private int m_MinWallCount = 6;
-    [SerializeField] private int m_MaxWallCount = 10;
+    [SerializeField]
+    private ExitCellObject m_ExitPrefab;
 
     // Private references
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
+    private LevelConfig m_CurrentConfig;
 
     // Empty cells
     private List<Vector2Int> m_EmptyCells;
@@ -33,7 +32,10 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateWall()
     {
-        int wallCount = Random.Range(m_MinWallCount, m_MaxWallCount);
+        int wallCount = Random.Range(
+            m_CurrentConfig.MinWallCount,
+            m_CurrentConfig.MaxWallCount + 1
+        );
 
         for (int i = 0; i < wallCount; i++)
         {
@@ -49,47 +51,97 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateFood()
     {
-        int foodCount = Random.Range(m_MinFoodCount, m_MaxFoodCount);
-
-        for (int i = 0; i < foodCount; i++)
+        foreach (var entry in m_CurrentConfig.FoodEntries)
         {
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
+            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
 
-            m_EmptyCells.RemoveAt(randomIndex);
+            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
-            int randomFoodIndex = Random.Range(0, m_FoodPrefabs.Length);
-            FoodObject newFood = Instantiate(m_FoodPrefabs[randomFoodIndex]);
+            for (int i = 0; i < count; i++)
+            {
+                int randomIndex = Random.Range(0, m_EmptyCells.Count);
+                Vector2Int coord = m_EmptyCells[randomIndex];
 
-            m_BoardManager.AddObject(newFood, coord);
+                m_EmptyCells.RemoveAt(randomIndex);
+
+                FoodObject newFood = Instantiate(entry.Prefab);
+                m_BoardManager.AddObject(newFood, coord);
+            }
         }
     }
 
-    bool IsEliteLevel(int level) => level % 5 == 0;
+    bool IsEliteLevel(int level) =>
+        level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
+
+    EnemyController SpawnEnemy(EnemyController prefab)
+    {
+        if (m_EmptyCells.Count == 0)
+            return null;
+
+        int randomIndex = Random.Range(0, m_EmptyCells.Count);
+        Vector2Int coord = m_EmptyCells[randomIndex];
+        m_EmptyCells.RemoveAt(randomIndex);
+
+        EnemyController newEnemy = Instantiate(prefab);
+        m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
+
+        newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+
+        return newEnemy;
+    }
 
     void GenerateEnemy()
     {
-        int randomIndex = Random.Range(0, m_EmptyCells.Count);
-        Vector2Int coord = m_EmptyCells[randomIndex];
+        List<EnemyController> spawned = new List<EnemyController>();
 
-        m_EmptyCells.RemoveAt(randomIndex);
-        Combatant newEnemy = Instantiate(m_EnemyPrefab);
+        foreach (var entry in m_CurrentConfig.EnemyEntries)
+        {
+            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
 
-        m_BoardManager.SetCellOccupant(coord, newEnemy);
+            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
-        Tank controller = newEnemy.GetComponent<Tank>();
-        if (IsEliteLevel(m_CurrentLevel) && Random.value < 0.25f)
-            controller.gameObject.AddComponent<EliteModifier>();
-            
-        controller.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord, m_CurrentLevel);
+            for (int i = 0; i < count; i++)
+            {
+                EnemyController e = SpawnEnemy(entry.Prefab);
+                if (e != null)
+                    spawned.Add(e);
+            }
+        }
+
+        foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
+        {
+            if (prefab.FirstAllowedLevel > m_CurrentLevel)
+                continue;
+
+            EnemyController e = SpawnEnemy(prefab);
+            if (e != null)
+                spawned.Add(e);
+        }
+
+        if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
+        {
+            EnemyController chosen = spawned[Random.Range(0, spawned.Count)];
+            chosen.gameObject.AddComponent<EliteModifier>();
+        }
     }
 
-    public void GenerateBoard(BoardManager boardManager, TurnManager turnManager, PlayerController playerController, int currentLevel)
+    public void GenerateBoard(
+        BoardManager boardManager,
+        TurnManager turnManager,
+        PlayerController playerController,
+        int currentLevel
+    )
     {
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
+        m_CurrentConfig = GameManager.Instance.LevelManager.CurrentConfig;
         m_CurrentLevel = currentLevel;
+
+        if (m_CurrentConfig.UseSeed)
+            Random.InitState(m_CurrentConfig.Seed + m_CurrentLevel);
 
         m_EmptyCells = new List<Vector2Int>();
 
@@ -100,9 +152,10 @@ public class BoardGenerator : MonoBehaviour
                 Tile tile;
                 Vector2Int coord = new Vector2Int(x, y);
 
-                bool isBorder = x == 0 || y == 0 || x == boardManager.Width - 1 || y == boardManager.Height - 1;
+                bool isBorder =
+                    x == 0 || y == 0 || x == boardManager.Width - 1 || y == boardManager.Height - 1;
                 if (isBorder)
-                {   
+                {
                     tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
                     m_BoardManager.SetCellPassable(coord, false);
                 }

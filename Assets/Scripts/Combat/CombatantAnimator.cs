@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 public class CombatantAnimator : MonoBehaviour
-{      
+{
     // Private references
     private ICombatant m_Combatant;
     private TurnManager m_TurnManager;
@@ -11,11 +11,12 @@ public class CombatantAnimator : MonoBehaviour
 
     // Components
     private SpriteRenderer m_SpriteRenderer;
+    private Animator m_Animator;
 
     // Coroutines
     private Coroutine m_AttackCoroutine;
     private Coroutine m_WalkCoroutine;
-    private Coroutine m_HurtCoroutine;  
+    private Coroutine m_HurtCoroutine;
     private Coroutine m_DeathCoroutine;
 
     private readonly float m_AttackNudgeDistance = 0.3f;
@@ -25,16 +26,19 @@ public class CombatantAnimator : MonoBehaviour
     private readonly float m_DeathAnimationDuration = 0.3f;
     private readonly float m_ProjectileAnimationDuration = 0.5f;
 
+    private static readonly int m_AttackHash = Animator.StringToHash("Attack");
+
     public float WalkDuration => m_WalkAnimationDuration;
-    public bool IsBusy => 
-        m_WalkCoroutine != null ||
-        m_AttackCoroutine != null ||
-        m_HurtCoroutine != null ||
-        m_DeathCoroutine != null;
+    public bool IsBusy =>
+        m_WalkCoroutine != null
+        || m_AttackCoroutine != null
+        || m_HurtCoroutine != null
+        || m_DeathCoroutine != null;
 
     void Awake()
     {
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
+        m_Animator = GetComponent<Animator>();
     }
 
     void OnDisable()
@@ -79,13 +83,14 @@ public class CombatantAnimator : MonoBehaviour
 
         transform.position = endPos;
 
-        m_WalkCoroutine = null;    
+        m_WalkCoroutine = null;
     }
 
     IEnumerator AttackNudgeCoroutine(Vector2Int direction)
     {
         Vector3 startPos = transform.position;
-        Vector3 endPos = startPos + new Vector3(direction.x, direction.y, 0) * m_AttackNudgeDistance;
+        Vector3 endPos =
+            startPos + new Vector3(direction.x, direction.y, 0) * m_AttackNudgeDistance;
 
         float elapsed = 0;
         float t = 0;
@@ -105,7 +110,7 @@ public class CombatantAnimator : MonoBehaviour
 
         // Ascent phase complete, set position and reset elapsed & t
         transform.position = endPos;
-        
+
         elapsed = 0f;
         t = 0f;
 
@@ -132,7 +137,7 @@ public class CombatantAnimator : MonoBehaviour
         Color startColor = m_SpriteRenderer.color;
 
         m_SpriteRenderer.color = Color.red;
-        
+
         yield return new WaitForSeconds(m_HurtAnimationDuration);
 
         m_SpriteRenderer.color = startColor;
@@ -149,7 +154,7 @@ public class CombatantAnimator : MonoBehaviour
         while (elapsed <= m_DeathAnimationDuration)
         {
             Color c = startColor;
-            
+
             float t = elapsed / m_DeathAnimationDuration;
 
             c.a = 1 - t;
@@ -166,12 +171,21 @@ public class CombatantAnimator : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void PlayWalkAnimation(Vector2Int targetCell)
+    public void PlayWalkAnimation(Vector2Int targetCell, Vector2Int direction)
     {
         if (m_WalkCoroutine != null)
             StopCoroutine(m_WalkCoroutine);
 
+        SetSpriteFacing(direction);
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
+    }
+
+    public void SetSpriteFacing(Vector2Int direction)
+    {
+        if (direction == Vector2Int.left)
+            m_SpriteRenderer.flipX = true;
+        if (direction == Vector2Int.right)
+            m_SpriteRenderer.flipX = false;
     }
 
     public void PlayHurtAnimation(DamageResult result)
@@ -183,7 +197,7 @@ public class CombatantAnimator : MonoBehaviour
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
     }
 
-    public void PlayDeathAnimation() 
+    public void PlayDeathAnimation()
     {
         if (m_DeathCoroutine != null)
             StopCoroutine(m_DeathCoroutine);
@@ -192,11 +206,13 @@ public class CombatantAnimator : MonoBehaviour
     }
 
     public void PlayAttackAnimation(Vector2Int direction)
-    { 
+    {
         if (m_AttackCoroutine != null)
             StopCoroutine(m_AttackCoroutine);
 
-        m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction)); 
+        SetSpriteFacing(direction);
+        m_Animator.SetTrigger(m_AttackHash);
+        m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction));
     }
 
     public void PlayProjectileAnimation(Projectile prefab, Vector3 target, Action onArrive)

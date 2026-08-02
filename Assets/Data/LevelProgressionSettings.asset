@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 739b43967650bce44a51538b73d5788e, type: 3}
+  m_Name: LevelProgressionSettings
+  m_EditorClassIdentifier: Assembly-CSharp::LevelProgressionSettings
+  EliteCadence: 3
+  MaxStatusChance: 1
+  LevelBands:
+  - Name: Tutorial
+    MinLevel: 1
+    MaxLevel: 3
+    DefaultConfig: {fileID: 11400000, guid: d1a3879833662be46816b4f80e02ed50, type: 2}
+  - Name: Early
+    MinLevel: 4
+    MaxLevel: 8
+    DefaultConfig: {fileID: 11400000, guid: e07368c170342d644a77ef291b61f790, type: 2}
+  - Name: Mid
+    MinLevel: 9
+    MaxLevel: 15
+    DefaultConfig: {fileID: 11400000, guid: 7648ee2693d85b64c8fc848a1d02e38e, type: 2}
+  - Name: Late
+    MinLevel: 16
+    MaxLevel: 1000
+    DefaultConfig: {fileID: 11400000, guid: ff3b36940a2b84a4f987223864666ab5, type: 2}
+  EliteRewardPool:
+  - Stat: 0
+    Amount: 5
+    Weight: 4
+  - Stat: 1
+    Amount: 3
+    Weight: 2
+  - Stat: 2
+    Amount: 2
+    Weight: 1
+  - Stat: 3
+    Amount: 10
+    Weight: 3

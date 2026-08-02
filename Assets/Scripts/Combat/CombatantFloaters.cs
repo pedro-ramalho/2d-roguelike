@@ -5,10 +5,17 @@ using UnityEngine.UIElements;
 
 public class CombatantFloaters : MonoBehaviour
 {
-    [SerializeField] private VisualTreeAsset m_FloaterTemplate;
-    [SerializeField] private Vector3 m_WorldOffset = new Vector3(0, 0.5f, 0);
-    [SerializeField] private float m_Duration = 0.5f;
-    [SerializeField] private float m_RisePixels = 50f;
+    [SerializeField]
+    private VisualTreeAsset m_FloaterTemplate;
+
+    [SerializeField]
+    private Vector3 m_WorldOffset = new Vector3(0, 0.5f, 0);
+
+    [SerializeField]
+    private float m_Duration = 0.5f;
+
+    [SerializeField]
+    private float m_RisePixels = 50f;
 
     private static readonly Color BlockLostColor = new Color(0.05f, 0.10f, 0.31f);
     private static readonly Color HealthLostColor = new Color(0.62f, 0f, 0f);
@@ -24,12 +31,13 @@ public class CombatantFloaters : MonoBehaviour
     void Start()
     {
         UIDocument doc = GameManager.Instance.UIDoc;
-        
+
         m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
         m_Camera = Camera.main;
 
         ICombatant combatant = GetComponent<ICombatant>();
-        if (combatant != null) Bind(combatant);
+        if (combatant != null)
+            Bind(combatant);
     }
 
     void OnDestroy()
@@ -53,15 +61,17 @@ public class CombatantFloaters : MonoBehaviour
 
     void OnDamaged(DamageResult result)
     {
-        if (result.BlockLost > 0) 
+        if (result.BlockLost > 0)
             Spawn($"-{result.BlockLost}", BlockLostColor);
-        
-        if (result.HPLost > 0) 
+
+        if (result.HPLost > 0)
             Spawn($"-{result.HPLost}", HealthLostColor);
     }
 
     void OnHealthAdded(int amount) => Spawn($"+{amount}", HealthAddedColor);
+
     void OnBlockAdded(int amount) => Spawn($"+{amount}", BlockAddedColor);
+
     void OnStatusApplied(StatusEffect effect) => Spawn($"+{effect}", StatusAppliedColor);
 
     void Spawn(string text, Color color)
@@ -71,7 +81,10 @@ public class CombatantFloaters : MonoBehaviour
         floater.style.color = color;
 
         Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(
-            m_ParentLayer.panel, transform.position + m_WorldOffset, m_Camera);
+            m_ParentLayer.panel,
+            transform.position + m_WorldOffset,
+            m_Camera
+        );
         floater.style.left = panelPos.x;
         floater.style.top = panelPos.y;
 
@@ -94,9 +107,9 @@ public class CombatantFloaters : MonoBehaviour
             yield return null;
         }
 
-        if (m_ParentLayer != null) 
+        if (m_ParentLayer != null)
             m_ParentLayer.Remove(floater);
-        
+
         m_Active.Remove(floater);
     }
 

@@ -12,22 +12,39 @@ public class EliteModifier : MonoBehaviour
 
         // Update the tint
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.color = new Color(138f/255f, 43f/255f, 226f/255f);
+        sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
 
         m_Combatant.Defeated += OnEliteDefeated;
     }
 
     void OnDestroy()
-    { 
+    {
         if (m_Combatant != null)
             m_Combatant.Defeated -= OnEliteDefeated;
     }
 
     void OnEliteDefeated()
     {
-        PlayerStat[] stats = (PlayerStat[])Enum.GetValues(typeof(PlayerStat));
-    
-        PlayerStat chosen = stats[UnityEngine.Random.Range(0, stats.Length)];
-        GameManager.Instance.PlayerController.UpgradeStat(chosen, 5);
+        var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
+        if (pool.Length == 0)
+            return;
+
+        float totalWeight = 0f;
+        foreach (var entry in pool)
+            totalWeight += entry.Weight;
+
+        float roll = UnityEngine.Random.value * totalWeight;
+        float acc = 0f;
+
+        foreach (var entry in pool)
+        {
+            acc += entry.Weight;
+            if (roll <= acc)
+            {
+                m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+
+                return;
+            }
+        }
     }
 }

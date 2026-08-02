@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bda8fcf7df2ba439978f72b0c525db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  m_ProgressionSettings: {fileID: 11400000, guid: 0af0cffd3f92ce24fb1f64e9fb43a234, type: 2}
   BoardManager: {fileID: 1160969521}
   LevelManager: {fileID: 1339684672}
   PlayerController: {fileID: 1653753611}
@@ -410,16 +411,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f7a8f287480e4045af04f0d1c669a6e, type: 2}
   - {fileID: 11400000, guid: 2a5cfd588f6c97949b84505efd0ffcdd, type: 2}
   - {fileID: 11400000, guid: 60a1924b38b128f42b762c9fed106331, type: 2}
-  m_FoodPrefabs:
-  - {fileID: -2554186031408535444, guid: beb79fad4ee1c5d489c42fbda9046ca3, type: 3}
-  - {fileID: 2157873905637861852, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
   m_WallPrefab: {fileID: 1912943880808450418, guid: 53f2f8993ccde3b4f916966a8c1f4264, type: 3}
   m_ExitPrefab: {fileID: 4393251279927158862, guid: 6125ad20497ecf3439029e17e1c9b8af, type: 3}
-  m_EnemyPrefab: {fileID: 9156511374086397983, guid: 27e795aff71330549b9829c6d425d85a, type: 3}
-  m_MinFoodCount: 2
-  m_MaxFoodCount: 6
-  m_MinWallCount: 6
-  m_MaxWallCount: 10
 --- !u!1 &1198043205
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +816,6 @@ GameObject:
   - component: {fileID: 1653753616}
   - component: {fileID: 1653753615}
   - component: {fileID: 1653753618}
-  - component: {fileID: 1653753620}
   - component: {fileID: 1653753611}
   - component: {fileID: 1653753614}
   - component: {fileID: 1653753612}
@@ -1012,23 +1004,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_MaxHP: 80
-  m_MaxBlock: 20
-  m_Attack: 8
---- !u!114 &1653753620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653753608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12219cbe4fa765b43a82431ea36dc502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  m_Stamina: 50
-  m_MaxStamina: 50
+  m_InitialMaxHP: 30
+  m_InitialMaxBlock: 10
+  m_InitialAttack: 5
+  m_InitialMaxStamina: 50
+  m_StatusRolls:
+  - Type: 1
+    Duration: 2
+    BaseProbability: 0.1
+    PerLevelBonus: 0.05
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

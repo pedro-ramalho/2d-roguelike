@@ -9,11 +9,11 @@ public class CellObject : MonoBehaviour, ICellOccupant
 
     public virtual void Init(BoardManager board, Vector2Int cell)
     {
-        m_Board = board; 
+        m_Board = board;
         m_Cell = cell;
     }
-    
-    public virtual void PlayerEntered(PlayerController player) {}
+
+    public virtual void PlayerEntered(PlayerController player) { }
 
     public virtual bool PlayerWantsToEnter() => true;
 }

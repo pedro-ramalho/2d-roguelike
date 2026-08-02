@@ -13,7 +13,7 @@ public static class CombatantDamage
             damage = status.ModifyIncomingDamage(damage);
 
         int finalDamage = Mathf.Max(0, Mathf.FloorToInt(damage));
-        
+
         return defender.TakeDamage(finalDamage);
     }
 }

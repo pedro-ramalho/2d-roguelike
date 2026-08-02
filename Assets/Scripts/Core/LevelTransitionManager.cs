@@ -4,7 +4,8 @@ using UnityEngine.UIElements;
 
 public class LevelTransitionManager : MonoBehaviour
 {
-    [SerializeField] private UIDocument m_UIDocument;
+    [SerializeField]
+    private UIDocument m_UIDocument;
 
     // UI Elements
     private VisualElement m_LevelTransitionPanel;
@@ -34,7 +35,7 @@ public class LevelTransitionManager : MonoBehaviour
 
             m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 0, elapsed / m_FadeDuration);
 
-            yield return null;    
+            yield return null;
         }
     }
 
@@ -51,7 +52,7 @@ public class LevelTransitionManager : MonoBehaviour
 
             m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 1, elapsed / m_FadeDuration);
 
-            yield return null;    
+            yield return null;
         }
     }
 }
