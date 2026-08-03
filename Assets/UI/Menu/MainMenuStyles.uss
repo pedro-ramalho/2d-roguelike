@@ -1,0 +1,13 @@
+.button-container {
+    flex-grow: 1;
+    background-color: rgb(36, 36, 36);
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-button {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    width: 264px;
+    height: 32px;
+    margin-bottom: 8px;
+}
