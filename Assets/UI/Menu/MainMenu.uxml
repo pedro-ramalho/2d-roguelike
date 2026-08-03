@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="ButtonContainer" style="flex-grow: 1; background-color: rgb(36, 36, 36);">
-        <ui:Button text="Start Run" name="StartButton"/>
-        <ui:Button text="Settings" name="SettingsButton"/>
-        <ui:Button text="Credits" name="CreditsButton"/>
-        <ui:Button text="Quit" name="QuitButton"/>
+    <ui:VisualElement name="ButtonContainer" style="flex-grow: 1; background-color: rgb(36, 36, 36); -unity-text-align: middle-center; justify-content: center; align-content: auto; align-self: auto; align-items: center; position: relative;">
+        <ui:Button text="Start Run" name="StartButton" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); background-size: 100% 100%; width: 264px; height: 32px; align-content: auto; justify-content: flex-start; align-items: auto; margin-bottom: 8px;"/>
+        <ui:Button text="Settings" name="SettingsButton" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); width: 264px; height: 32px; margin-bottom: 8px;"/>
+        <ui:Button text="Credits" name="CreditsButton" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); width: 264px; height: 32px; margin-bottom: 8px;"/>
+        <ui:Button text="Quit" name="QuitButton" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); width: 264px; height: 32px; margin-left: 8px;"/>
     </ui:VisualElement>
 </ui:UXML>
