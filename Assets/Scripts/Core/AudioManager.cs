@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
+    [Header("Audio Mixer and Sources")]
     [SerializeField]
     private AudioMixer m_AudioMixer;
 
@@ -28,7 +29,19 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void PlayMusic(AudioClip clip) { }
+    public void PlayMusic(AudioClip track)
+    {
+        if (track == null)
+            return;
+
+        if (m_MusicSource.clip == track && m_MusicSource.isPlaying)
+            return;
+
+        m_MusicSource.clip = track;
+        m_MusicSource.loop = true;
+
+        m_MusicSource.Play();
+    }
 
     public void StopMusic() { }
 
