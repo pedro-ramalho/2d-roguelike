@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="ButtonContainer" style="flex-grow: 1; background-color: rgb(36, 36, 36);">
+        <ui:Button text="Start Run" name="StartButton"/>
+        <ui:Button text="Settings" name="SettingsButton"/>
+        <ui:Button text="Credits" name="CreditsButton"/>
+        <ui:Button text="Quit" name="QuitButton"/>
+    </ui:VisualElement>
+</ui:UXML>
