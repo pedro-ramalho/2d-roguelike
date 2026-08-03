@@ -43,9 +43,20 @@ public class AudioManager : MonoBehaviour
         m_MusicSource.Play();
     }
 
-    public void StopMusic() { }
+    public void StopMusic() => m_MusicSource.Stop();
 
-    public void PlaySFX(AudioClip clip, float volume = 1f) { }
+    public void PlaySFX(AudioClip clip, float volume = 1f)
+    {
+        if (clip == null)
+            return;
 
-    public void SetVolume(string parameter, float linear) { }
+        m_SFXSource.PlayOneShot(clip, volume);
+    }
+
+    public void SetVolume(string parameter, float linear)
+    {
+        float dB = linear > 0.0001f ? Mathf.Log10(linear) * 20f : -80f;
+
+        m_AudioMixer.SetFloat(parameter, dB);
+    }
 }
