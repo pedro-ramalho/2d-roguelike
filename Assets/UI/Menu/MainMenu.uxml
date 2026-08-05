@@ -3,8 +3,8 @@
     <ui:VisualElement name="MainMenuPanel" style="flex-grow: 1; background-color: rgb(36, 36, 36); align-items: center; justify-content: center; align-self: auto;">
         <ui:VisualElement name="ButtonsPanel" class="button-container" style="align-items: auto; justify-content: center;">
             <ui:Button text="Start Run" name="StartRunButton" class="menu-button"/>
-            <ui:Button text="Settings" name="SettingsButton" class="menu-button"/>
             <ui:Button text="Credits" name="CreditsButton" class="menu-button"/>
+            <ui:Button text="Settings" name="SettingsButton" class="menu-button"/>
             <ui:Button text="Quit" name="QuitButton" class="menu-button"/>
         </ui:VisualElement>
         <ui:VisualElement name="CreditsPanel" style="flex-grow: 1; display: none; justify-content: center; align-items: center;">
