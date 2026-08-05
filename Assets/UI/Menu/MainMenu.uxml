@@ -1,9 +1,19 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Menu/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=7092ed0d9a2219e43b511b70a9033ac7&amp;type=3#MainMenuStyles"/>
-    <ui:VisualElement name="ButtonContainer" class="button-container">
-        <ui:Button text="Start Run" name="StartButton" class="menu-button"/>
-        <ui:Button text="Settings"  name="SettingsButton" class="menu-button"/>
-        <ui:Button text="Credits"   name="CreditsButton" class="menu-button"/>
-        <ui:Button text="Quit"      name="QuitButton" class="menu-button"/>
+    <ui:VisualElement name="MainMenuPanel" style="flex-grow: 1; background-color: rgb(36, 36, 36); align-items: center; justify-content: center; align-self: auto;">
+        <ui:VisualElement name="ButtonsPanel" class="button-container" style="align-items: auto; justify-content: center;">
+            <ui:Button text="Start Run" name="StartRunButton" class="menu-button"/>
+            <ui:Button text="Settings" name="SettingsButton" class="menu-button"/>
+            <ui:Button text="Credits" name="CreditsButton" class="menu-button"/>
+            <ui:Button text="Quit" name="QuitButton" class="menu-button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="CreditsPanel" style="flex-grow: 1; display: none; justify-content: center; align-items: center;">
+            <ui:Label text="Credits go here..." name="CreditsLabel"/>
+            <ui:Button text="Back" name="CreditsBackButton" class="menu-button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="SettingsPanel" style="flex-grow: 1; display: none; align-items: center; justify-content: center;">
+            <ui:Label text="Settings go here..." name="SettingsLabel"/>
+            <ui:Button text="Back" name="SettingsBackButton" class="menu-button"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

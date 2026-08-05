@@ -33,10 +33,17 @@ public class MainMenuHUD : MonoBehaviour
 
     void OnDestroy()
     {
-        m_StartRunButton.clicked -= OnStartRunButtonPress;
-        m_SettingsButton.clicked -= OnSettingsButtonPress;
-        m_CreditsButton.clicked -= OnCreditsButtonPress;
-        m_QuitButton.clicked -= OnQuitButtonPress;
+        if (m_StartRunButton != null)
+            m_StartRunButton.clicked -= OnStartRunButtonPress;
+
+        if (m_SettingsButton != null)
+            m_SettingsButton.clicked -= OnSettingsButtonPress;
+
+        if (m_CreditsButton != null)
+            m_CreditsButton.clicked -= OnCreditsButtonPress;
+
+        if (m_QuitButton != null)
+            m_QuitButton.clicked -= OnQuitButtonPress;
     }
 
     void OnStartRunButtonPress()
