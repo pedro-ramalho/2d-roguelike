@@ -1,5 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class MainMenuHUD : MonoBehaviour
 {
@@ -20,16 +24,38 @@ public class MainMenuHUD : MonoBehaviour
         m_SettingsButton = buttonContainer.Q<Button>("SettingsButton");
         m_CreditsButton = buttonContainer.Q<Button>("CreditsButton");
         m_QuitButton = buttonContainer.Q<Button>("QuitButton");
+
+        m_StartRunButton.clicked += OnStartRunButtonPress;
+        m_SettingsButton.clicked += OnSettingsButtonPress;
+        m_CreditsButton.clicked += OnCreditsButtonPress;
+        m_QuitButton.clicked += OnQuitButtonPress;
     }
 
-    void OnStartRunButtonPress() { }
+    void OnDestroy()
+    {
+        m_StartRunButton.clicked -= OnStartRunButtonPress;
+        m_SettingsButton.clicked -= OnSettingsButtonPress;
+        m_CreditsButton.clicked -= OnCreditsButtonPress;
+        m_QuitButton.clicked -= OnQuitButtonPress;
+    }
 
-    void OnSettingsButtonPress() { }
+    void OnStartRunButtonPress()
+    {
+        SceneManager.LoadScene("Main");
+    }
 
-    void OnCreditsButtonPress() { }
+    void OnSettingsButtonPress() { /* TBD */
+    }
+
+    void OnCreditsButtonPress() { /* TBD */
+    }
 
     void OnQuitButtonPress()
     {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
         Application.Quit();
+#endif
     }
 }
