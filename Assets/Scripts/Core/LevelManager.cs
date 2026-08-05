@@ -16,6 +16,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private BoardGenerator m_BoardGenerator;
 
+    [SerializeField]
+    private AudioClip m_LevelTransitionSFX;
+
+    [SerializeField]
+    private AudioClip m_GameOverSFX;
+
     // Events
     public event Action<GameOverReason, int> GameOverTriggered;
     public event Action GameStartTriggered;
@@ -64,6 +70,8 @@ public class LevelManager : MonoBehaviour
 
         CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
+        AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
+
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel);
 
         m_BoardManager.Clean();
@@ -91,6 +99,7 @@ public class LevelManager : MonoBehaviour
     void TriggerGameOver(GameOverReason reason)
     {
         m_PlayerController.GameOver();
+        AudioManager.Instance.PlaySFX(m_GameOverSFX);
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 

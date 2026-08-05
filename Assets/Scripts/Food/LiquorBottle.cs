@@ -10,6 +10,7 @@ public class LiquorBottle : FoodObject
 
     protected override void ApplyEffect(PlayerController player)
     {
+        AudioManager.Instance.PlaySFX(m_ConsumeSFX);
         player.Combatant.IncreaseMaxHP(m_MaxHealthPoints);
         player.Combatant.Heal(m_HealthPoints);
     }
