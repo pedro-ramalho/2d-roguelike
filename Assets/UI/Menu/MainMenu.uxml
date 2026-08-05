@@ -8,11 +8,11 @@
             <ui:Button text="Quit" name="QuitButton" class="menu-button"/>
         </ui:VisualElement>
         <ui:VisualElement name="CreditsPanel" style="flex-grow: 1; display: none; justify-content: center; align-items: center;">
-            <ui:Label text="Credits go here..." name="CreditsLabel"/>
+            <ui:Label text="Credits go here..." name="CreditsLabel" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); color: rgb(255, 255, 255);"/>
             <ui:Button text="Back" name="CreditsBackButton" class="menu-button"/>
         </ui:VisualElement>
         <ui:VisualElement name="SettingsPanel" style="flex-grow: 1; display: none; align-items: center; justify-content: center;">
-            <ui:Label text="Settings go here..." name="SettingsLabel"/>
+            <ui:Label text="Settings go here..." name="SettingsLabel" style="-unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); color: rgb(255, 255, 255);"/>
             <ui:Button text="Back" name="SettingsBackButton" class="menu-button"/>
         </ui:VisualElement>
     </ui:VisualElement>
