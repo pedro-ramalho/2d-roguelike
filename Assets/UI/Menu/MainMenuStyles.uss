@@ -1,8 +1,21 @@
-.button-container {
+.menu-panel {
     flex-grow: 1;
     background-color: rgb(36, 36, 36);
     justify-content: center;
     align-items: center;
+}
+
+.overlay-panel {
+    flex-grow: 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-label {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
 }
 
 .menu-button {

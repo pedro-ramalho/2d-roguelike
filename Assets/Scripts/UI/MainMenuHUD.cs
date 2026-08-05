@@ -89,10 +89,7 @@ public class MainMenuHUD : MonoBehaviour
             panel == PanelType.Credits ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    void OnStartRunButtonPress()
-    {
-        SceneManager.LoadScene("Main");
-    }
+    void OnStartRunButtonPress() => SceneManager.LoadScene("Main");
 
     void OnCreditsButtonPress() => ShowPanel(PanelType.Credits);
 
