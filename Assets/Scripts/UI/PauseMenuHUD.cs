@@ -36,6 +36,10 @@ public class PauseMenuHUD : MonoBehaviour
         m_QuitButton.clicked += OnQuitButtonPress;
     }
 
+    void OnEnable() => m_InputActions.Enable();
+
+    void OnDisable() => m_InputActions.Disable();
+
     void OnDestroy()
     {
         if (m_ResumeButton != null)
