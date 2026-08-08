@@ -152,6 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
+  m_AttackSFX: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  m_StepSFX: {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
 --- !u!114 &3438537907659785350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,4 +201,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849f52380171dc5428deec6b6b2d45b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ranged
+  m_FirstAllowedLevel: 1
   m_ProjectilePrefab: {fileID: 5165012889755492264, guid: b0d7e77b2c530794ba74d265052adeb3, type: 3}

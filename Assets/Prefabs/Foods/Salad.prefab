@@ -104,4 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477fd2e72bf605543a7a7ea211a709f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Salad
+  m_ConsumeSFX: {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  m_FirstAllowedLevel: 1
   m_HealthPoints: 3

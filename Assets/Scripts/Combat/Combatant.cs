@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 {
+    [Header("Initial Stats")]
     // Authored initial values
     [SerializeField]
     private int m_InitialMaxHP;
@@ -19,6 +20,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     private int m_InitialMaxStamina;
 
     // Status rolls
+    [Header("Status Effects")]
     [SerializeField]
     private StatusEffectRoll[] m_StatusRolls;
 

@@ -17,6 +17,9 @@ public class MainMenuHUD : MonoBehaviour
     [SerializeField]
     private UIDocument m_UIDocument;
 
+    [SerializeField]
+    private AudioClip m_ClickSFX;
+
     // Buttons Panel
     private VisualElement m_ButtonsPanel;
     private Button m_StartRunButton;
@@ -89,18 +92,41 @@ public class MainMenuHUD : MonoBehaviour
             panel == PanelType.Credits ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    void OnStartRunButtonPress() => SceneManager.LoadScene("Main");
+    void PlayClickSFX() => AudioManager.Instance.PlaySFX(m_ClickSFX);
 
-    void OnCreditsButtonPress() => ShowPanel(PanelType.Credits);
+    void OnStartRunButtonPress()
+    {
+        PlayClickSFX();
+        SceneManager.LoadScene("Main");
+    }
 
-    void OnCreditsBackButtonPress() => ShowPanel(PanelType.Buttons);
+    void OnCreditsButtonPress()
+    {
+        PlayClickSFX();
+        ShowPanel(PanelType.Credits);
+    }
 
-    void OnSettingsButtonPress() => ShowPanel(PanelType.Settings);
+    void OnCreditsBackButtonPress()
+    {
+        PlayClickSFX();
+        ShowPanel(PanelType.Buttons);
+    }
 
-    void OnSettingsBackButtonPress() => ShowPanel(PanelType.Buttons);
+    void OnSettingsButtonPress()
+    {
+        PlayClickSFX();
+        ShowPanel(PanelType.Settings);
+    }
+
+    void OnSettingsBackButtonPress()
+    {
+        PlayClickSFX();
+        ShowPanel(PanelType.Buttons);
+    }
 
     void OnQuitButtonPress()
     {
+        PlayClickSFX();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
