@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 152573811}
   m_Layer: 0
-  m_Name: -- EVENT SYSTEM --
+  m_Name: "\u2501\u2501\u2501 EVENT SYSTEM \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,7 +423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 939603748}
   m_Layer: 0
-  m_Name: -- PLAYER --
+  m_Name: "\u2501\u2501\u2501 PLAYER \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1105129793}
   m_Layer: 0
-  m_Name: -- MANAGERS --
+  m_Name: "\u2501\u2501\u2501 MANAGERS \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -695,7 +695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1215784290}
   m_Layer: 0
-  m_Name: -- UI DOCUMENTS --
+  m_Name: "\u2501\u2501\u2501 UI DOCUMENTS \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,7 +911,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1398898542}
   m_Layer: 0
-  m_Name: -- CAMERAS --
+  m_Name: "\u2501\u2501\u2501 CAMERAS \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1329,7 +1329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1691645436}
   m_Layer: 0
-  m_Name: -- HUD --
+  m_Name: "\u2501\u2501\u2501 HUD \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
