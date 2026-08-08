@@ -140,6 +140,9 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.15
     PerLevelBonus: 0.05
+  m_AttackSFX: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
 --- !u!114 &5161219471131270738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,3 +200,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f1263e496a40045b909779c2aebcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tank
+  m_FirstAllowedLevel: 1

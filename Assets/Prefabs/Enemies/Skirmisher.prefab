@@ -109,9 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_MaxHP: 10
-  m_MaxBlock: 0
-  m_Attack: 2
+  m_InitialMaxHP: 0
+  m_InitialMaxBlock: 0
+  m_InitialAttack: 0
+  m_InitialMaxStamina: 0
   m_StatusRolls:
   - Type: 1
     Duration: 2
@@ -121,6 +122,9 @@ MonoBehaviour:
     Duration: 3
     BaseProbability: 0.2
     PerLevelBonus: 0.05
+  m_AttackSFX: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
 --- !u!114 &5923750070885935113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201edec0b260b5647aa3d1d3d5c8660e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skirmisher
+  m_FirstAllowedLevel: 1
 --- !u!95 &2118483306058908496
 Animator:
   serializedVersion: 7
