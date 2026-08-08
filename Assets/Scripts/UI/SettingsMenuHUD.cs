@@ -53,5 +53,8 @@ public class SettingsMenuHUD : MonoBehaviour
     void OnSFXVolumeChanged(ChangeEvent<float> evt) =>
         AudioManager.Instance.SetVolume("SFXVolume", evt.newValue);
 
-    void OnBackButtonPress() => m_SettingsMenuPanel.style.display = DisplayStyle.None;
+    void OnBackButtonPress() => Show(false);
+
+    public void Show(bool show) =>
+        m_SettingsMenuPanel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
 }
