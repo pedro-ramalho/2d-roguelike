@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class CombatantAnimator : MonoBehaviour
 {
+    [Header("SFX Clips")]
+    [SerializeField]
+    private AudioClip m_AttackSFX;
+
+    [SerializeField]
+    private AudioClip m_HurtSFX;
+
+    [SerializeField]
+    private AudioClip m_DeathSFX;
+
+    [SerializeField]
+    private AudioClip m_StepSFX;
+
     // Private references
     private ICombatant m_Combatant;
     private TurnManager m_TurnManager;
@@ -177,6 +190,7 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_WalkCoroutine);
 
         SetSpriteFacing(direction);
+        AudioManager.Instance.PlaySFX(m_StepSFX);
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
     }
 
@@ -194,7 +208,10 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_HurtCoroutine);
 
         if (result.HPLost > 0)
+        {
+            AudioManager.Instance.PlaySFX(m_HurtSFX);
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
+        }
     }
 
     public void PlayDeathAnimation()
@@ -202,6 +219,7 @@ public class CombatantAnimator : MonoBehaviour
         if (m_DeathCoroutine != null)
             StopCoroutine(m_DeathCoroutine);
 
+        AudioManager.Instance.PlaySFX(m_DeathSFX);
         m_DeathCoroutine = StartCoroutine(DeathAnimationCoroutine());
     }
 
@@ -211,6 +229,7 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_AttackCoroutine);
 
         SetSpriteFacing(direction);
+        AudioManager.Instance.PlaySFX(m_AttackSFX);
         m_Animator.SetTrigger(m_AttackHash);
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction));
     }

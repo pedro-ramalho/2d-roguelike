@@ -24,16 +24,6 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     [SerializeField]
     private StatusEffectRoll[] m_StatusRolls;
 
-    [Header("SFX Clips")]
-    [SerializeField]
-    private AudioClip m_AttackSFX;
-
-    [SerializeField]
-    private AudioClip m_HurtSFX;
-
-    [SerializeField]
-    private AudioClip m_DeathSFX;
-
     // Private references
     private TurnManager m_TurnManager;
     private BoardManager m_BoardManager;
@@ -95,12 +85,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         return DealDamageTo(target);
     }
 
-    public DamageResult DealDamageTo(ICombatant target)
-    {
-        AudioManager.Instance.PlaySFX(m_AttackSFX);
-
-        return CombatantDamage.ApplyDamage(this, target);
-    }
+    public DamageResult DealDamageTo(ICombatant target) =>
+        CombatantDamage.ApplyDamage(this, target);
 
     public DamageResult TakeDamage(int amount)
     {
@@ -115,13 +101,9 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         DamageResult result = new DamageResult(blockLost, hpLost);
 
         if (previousHP > 0 && m_Stats.HP <= 0)
-        {
             Defeated?.Invoke();
-            AudioManager.Instance.PlaySFX(m_DeathSFX);
-        }
 
         Damaged?.Invoke(result);
-        AudioManager.Instance.PlaySFX(m_HurtSFX);
 
         return result;
     }

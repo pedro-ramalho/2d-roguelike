@@ -4,9 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip m_StepSFX;
-
     // References
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
@@ -174,13 +171,8 @@ public class PlayerController : MonoBehaviour
         m_CellPosition = cell;
 
         if (snap)
-        {
             transform.position = m_BoardManager.CellToWorld(cell);
-        }
         else
-        {
             m_CombatantAnimator.PlayWalkAnimation(cell, direction);
-            AudioManager.Instance.PlaySFX(m_StepSFX);
-        }
     }
 }

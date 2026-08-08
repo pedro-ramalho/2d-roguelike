@@ -959,7 +959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8b4587051593547a45a9966ebc6792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  m_StepSFX: {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
 --- !u!95 &1653753612
 Animator:
   serializedVersion: 7
@@ -1007,6 +1006,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
+  m_AttackSFX: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  m_StepSFX: {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
 --- !u!114 &1653753616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,9 +1064,6 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.1
     PerLevelBonus: 0.05
-  m_AttackSFX: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
-  m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
-  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
 --- !u!1 &2048853691
 GameObject:
   m_ObjectHideFlags: 0
