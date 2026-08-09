@@ -9,6 +9,9 @@ public class PauseMenuHUD : MonoBehaviour
     [SerializeField]
     private UIDocument m_UIDocument;
 
+    [SerializeField]
+    private SettingsMenuHUD m_SettingsMenuHUD;
+
     private VisualElement m_PauseMenuPanel;
     private Button m_ResumeButton;
     private Button m_SettingsButton;
@@ -68,10 +71,7 @@ public class PauseMenuHUD : MonoBehaviour
 
     void OnResumeButtonPress() => Pause(false);
 
-    void OnSettingsButtonPress()
-    {
-        // TODO: For now, this does nothing since there is no settings panel.
-    }
+    void OnSettingsButtonPress() => m_SettingsMenuHUD.Show(true);
 
     void OnQuitButtonPress()
     {

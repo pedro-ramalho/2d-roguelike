@@ -12,7 +12,7 @@ public class SettingsMenuHUD : MonoBehaviour
     private Slider m_SFXVolumeSlider;
     private Button m_BackButton;
 
-    void Awake()
+    void Start()
     {
         VisualElement root = m_UIDocument.rootVisualElement;
 

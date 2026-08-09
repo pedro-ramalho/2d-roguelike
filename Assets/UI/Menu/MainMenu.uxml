@@ -11,9 +11,5 @@
             <ui:Label text="Credits go here..." name="CreditsLabel" class="panel-label"/>
             <ui:Button text="Back" name="CreditsBackButton" class="menu-button"/>
         </ui:VisualElement>
-        <ui:VisualElement name="SettingsPanel" class="overlay-panel">
-            <ui:Label text="Settings go here..." name="SettingsLabel" class="panel-label"/>
-            <ui:Button text="Back" name="SettingsBackButton" class="menu-button"/>
-        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
