@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,6 +12,8 @@ public class SettingsMenuHUD : MonoBehaviour
     private Slider m_MusicVolumeSlider;
     private Slider m_SFXVolumeSlider;
     private Button m_BackButton;
+
+    public event Action Closed;
 
     void Start()
     {
@@ -53,7 +56,11 @@ public class SettingsMenuHUD : MonoBehaviour
     void OnSFXVolumeChanged(ChangeEvent<float> evt) =>
         AudioManager.Instance.SetVolume("SFXVolume", evt.newValue);
 
-    void OnBackButtonPress() => Show(false);
+    void OnBackButtonPress()
+    {
+        Show(false);
+        Closed?.Invoke();
+    }
 
     public void Show(bool show) =>
         m_SettingsMenuPanel.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;

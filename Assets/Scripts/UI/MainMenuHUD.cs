@@ -55,6 +55,8 @@ public class MainMenuHUD : MonoBehaviour
         m_QuitButton.clicked += OnQuitButtonPress;
 
         m_CreditsBackButton.clicked += OnCreditsBackButtonPress;
+
+        m_SettingsMenuHUD.Closed += OnSettingsMenuClosed;
     }
 
     void OnDestroy()
@@ -73,6 +75,9 @@ public class MainMenuHUD : MonoBehaviour
 
         if (m_CreditsBackButton != null)
             m_CreditsBackButton.clicked -= OnCreditsBackButtonPress;
+
+        if (m_SettingsMenuHUD != null)
+            m_SettingsMenuHUD.Closed -= OnSettingsMenuClosed;
     }
 
     void ShowPanel(PanelType panel)
@@ -111,6 +116,8 @@ public class MainMenuHUD : MonoBehaviour
         PlayClickSFX();
         ShowPanel(PanelType.Settings);
     }
+
+    void OnSettingsMenuClosed() => ShowPanel(PanelType.Buttons);
 
     void OnQuitButtonPress()
     {
