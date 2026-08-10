@@ -16,6 +16,14 @@ public class SettingsMenuHUD : MonoBehaviour
     private Slider m_SFXVolumeSlider;
     private Button m_BackButton;
 
+    private static readonly string m_MasterVolumeMixerParam = "MasterVolume";
+    private static readonly string m_MusicVolumeMixerParam = "MusicVolume";
+    private static readonly string m_SFXVolumeMixerParam = "SFXVolume";
+
+    private static readonly float m_MasterVolumeDefaultValue = 1.0f;
+    private static readonly float m_MusicVolumeDefaultValue = 0.8f;
+    private static readonly float m_SFXVolumeDefaultValue = 0.6f;
+
     public event Action Closed;
 
     void Start()
@@ -28,11 +36,34 @@ public class SettingsMenuHUD : MonoBehaviour
         m_SFXVolumeSlider = m_SettingsMenuPanel.Q<Slider>("SFXVolumeSlider");
         m_BackButton = m_SettingsMenuPanel.Q<Button>("BackButton");
 
+        LoadSliderSettings();
+
         m_MasterVolumeSlider.RegisterValueChangedCallback(OnMasterVolumeChanged);
         m_MusicVolumeSlider.RegisterValueChangedCallback(OnMusicVolumeChanged);
         m_SFXVolumeSlider.RegisterValueChangedCallback(OnSFXVolumeChanged);
 
         m_BackButton.clicked += OnBackButtonPress;
+    }
+
+    void LoadSliderSettings()
+    {
+        float masterVolumeValue = PlayerPrefs.GetFloat(
+            m_MasterVolumeMixerParam,
+            m_MasterVolumeDefaultValue
+        );
+        float musicVolumeValue = PlayerPrefs.GetFloat(
+            m_MusicVolumeMixerParam,
+            m_MusicVolumeDefaultValue
+        );
+        float sfxVolumeValue = PlayerPrefs.GetFloat(m_SFXVolumeMixerParam, m_SFXVolumeDefaultValue);
+
+        m_MasterVolumeSlider.value = masterVolumeValue;
+        m_MusicVolumeSlider.value = musicVolumeValue;
+        m_SFXVolumeSlider.value = sfxVolumeValue;
+
+        AudioManager.Instance.SetVolume(m_MasterVolumeMixerParam, masterVolumeValue);
+        AudioManager.Instance.SetVolume(m_MusicVolumeMixerParam, musicVolumeValue);
+        AudioManager.Instance.SetVolume(m_SFXVolumeMixerParam, sfxVolumeValue);
     }
 
     void OnDestroy()
@@ -50,20 +81,29 @@ public class SettingsMenuHUD : MonoBehaviour
             m_BackButton.clicked -= OnBackButtonPress;
     }
 
-    void OnMasterVolumeChanged(ChangeEvent<float> evt) =>
-        AudioManager.Instance.SetVolume("MasterVolume", evt.newValue);
+    void OnMasterVolumeChanged(ChangeEvent<float> evt)
+    {
+        PlayerPrefs.SetFloat(m_MasterVolumeMixerParam, evt.newValue);
+        AudioManager.Instance.SetVolume(m_MasterVolumeMixerParam, evt.newValue);
+    }
 
-    void OnMusicVolumeChanged(ChangeEvent<float> evt) =>
-        AudioManager.Instance.SetVolume("MusicVolume", evt.newValue);
+    void OnMusicVolumeChanged(ChangeEvent<float> evt)
+    {
+        PlayerPrefs.SetFloat(m_MusicVolumeMixerParam, evt.newValue);
+        AudioManager.Instance.SetVolume(m_MusicVolumeMixerParam, evt.newValue);
+    }
 
-    void OnSFXVolumeChanged(ChangeEvent<float> evt) =>
-        AudioManager.Instance.SetVolume("SFXVolume", evt.newValue);
+    void OnSFXVolumeChanged(ChangeEvent<float> evt)
+    {
+        PlayerPrefs.SetFloat(m_SFXVolumeMixerParam, evt.newValue);
+        AudioManager.Instance.SetVolume(m_SFXVolumeMixerParam, evt.newValue);
+    }
 
     void OnBackButtonPress()
     {
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
         Show(false);
         Closed?.Invoke();
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
     }
 
     public void Show(bool show) =>
