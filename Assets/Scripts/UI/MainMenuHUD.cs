@@ -18,6 +18,9 @@ public class MainMenuHUD : MonoBehaviour
     private UIDocument m_UIDocument;
 
     [SerializeField]
+    private SettingsMenuHUD m_SettingsMenuHUD;
+
+    [SerializeField]
     private AudioClip m_ClickSFX;
 
     // Buttons Panel
@@ -31,10 +34,6 @@ public class MainMenuHUD : MonoBehaviour
     private VisualElement m_CreditsPanel;
     private Button m_CreditsBackButton;
 
-    // Settings Panel
-    private VisualElement m_SettingsPanel;
-    private Button m_SettingsBackButton;
-
     void Start()
     {
         VisualElement root = m_UIDocument.rootVisualElement;
@@ -42,7 +41,6 @@ public class MainMenuHUD : MonoBehaviour
 
         m_ButtonsPanel = mainMenuPanel.Q<VisualElement>("ButtonsPanel");
         m_CreditsPanel = mainMenuPanel.Q<VisualElement>("CreditsPanel");
-        m_SettingsPanel = mainMenuPanel.Q<VisualElement>("SettingsPanel");
 
         m_StartRunButton = m_ButtonsPanel.Q<Button>("StartRunButton");
         m_CreditsButton = m_ButtonsPanel.Q<Button>("CreditsButton");
@@ -50,7 +48,6 @@ public class MainMenuHUD : MonoBehaviour
         m_QuitButton = m_ButtonsPanel.Q<Button>("QuitButton");
 
         m_CreditsBackButton = m_CreditsPanel.Q<Button>("CreditsBackButton");
-        m_SettingsBackButton = m_SettingsPanel.Q<Button>("SettingsBackButton");
 
         m_StartRunButton.clicked += OnStartRunButtonPress;
         m_CreditsButton.clicked += OnCreditsButtonPress;
@@ -58,7 +55,8 @@ public class MainMenuHUD : MonoBehaviour
         m_QuitButton.clicked += OnQuitButtonPress;
 
         m_CreditsBackButton.clicked += OnCreditsBackButtonPress;
-        m_SettingsBackButton.clicked += OnSettingsBackButtonPress;
+
+        m_SettingsMenuHUD.Closed += OnSettingsMenuClosed;
     }
 
     void OnDestroy()
@@ -78,16 +76,17 @@ public class MainMenuHUD : MonoBehaviour
         if (m_CreditsBackButton != null)
             m_CreditsBackButton.clicked -= OnCreditsBackButtonPress;
 
-        if (m_SettingsBackButton != null)
-            m_SettingsBackButton.clicked -= OnSettingsBackButtonPress;
+        if (m_SettingsMenuHUD != null)
+            m_SettingsMenuHUD.Closed -= OnSettingsMenuClosed;
     }
 
     void ShowPanel(PanelType panel)
     {
         m_ButtonsPanel.style.display =
             panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
-        m_SettingsPanel.style.display =
-            panel == PanelType.Settings ? DisplayStyle.Flex : DisplayStyle.None;
+
+        m_SettingsMenuHUD.Show(panel == PanelType.Settings);
+
         m_CreditsPanel.style.display =
             panel == PanelType.Credits ? DisplayStyle.Flex : DisplayStyle.None;
     }
@@ -118,11 +117,7 @@ public class MainMenuHUD : MonoBehaviour
         ShowPanel(PanelType.Settings);
     }
 
-    void OnSettingsBackButtonPress()
-    {
-        PlayClickSFX();
-        ShowPanel(PanelType.Buttons);
-    }
+    void OnSettingsMenuClosed() => ShowPanel(PanelType.Buttons);
 
     void OnQuitButtonPress()
     {
