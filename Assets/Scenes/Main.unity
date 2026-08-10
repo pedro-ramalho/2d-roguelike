@@ -497,6 +497,10 @@ PrefabInstance:
       value: SettingsMenuHUD
       objectReference: {fileID: 0}
     - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+      propertyPath: m_ClickSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
+    - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
       propertyPath: m_UIDocument
       value: 
       objectReference: {fileID: 2019273667}

@@ -7,6 +7,9 @@ public class SettingsMenuHUD : MonoBehaviour
     [SerializeField]
     private UIDocument m_UIDocument;
 
+    [SerializeField]
+    private AudioClip m_ClickSFX;
+
     private VisualElement m_SettingsMenuPanel;
     private Slider m_MasterVolumeSlider;
     private Slider m_MusicVolumeSlider;
@@ -60,6 +63,7 @@ public class SettingsMenuHUD : MonoBehaviour
     {
         Show(false);
         Closed?.Invoke();
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
     }
 
     public void Show(bool show) =>

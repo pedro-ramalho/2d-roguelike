@@ -846,10 +846,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsMenuHUD
       objectReference: {fileID: 0}
-    - target: {fileID: 2318094904047327488, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
       propertyPath: m_UIDocument
       value: 
