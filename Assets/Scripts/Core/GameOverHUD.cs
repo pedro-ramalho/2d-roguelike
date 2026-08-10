@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class GameOverHUD : MonoBehaviour
@@ -8,6 +9,7 @@ public class GameOverHUD : MonoBehaviour
     private VisualElement m_GameOverPanel;
     private Label m_GameOverMessage;
     private Button m_RestartRunButton;
+    private Button m_ReturnToMenuButton;
 
     private bool m_IsGameOver;
 
@@ -32,6 +34,7 @@ public class GameOverHUD : MonoBehaviour
         m_GameOverPanel = root.Q<VisualElement>("GameOverPanel");
         m_GameOverMessage = m_GameOverPanel.Q<Label>("GameOverMessage");
         m_RestartRunButton = m_GameOverPanel.Q<Button>("RestartRunButton");
+        m_ReturnToMenuButton = m_GameOverPanel.Q<Button>("ReturnToMenuButton");
 
         m_GameOverPanel.style.visibility = Visibility.Hidden;
 
@@ -39,6 +42,7 @@ public class GameOverHUD : MonoBehaviour
         m_LevelManager.GameStartTriggered += OnGameStart;
 
         m_RestartRunButton.clicked += OnRestartRunButtonPress;
+        m_ReturnToMenuButton.clicked += OnReturnToMenuButtonPress;
     }
 
     void Update()
@@ -63,6 +67,9 @@ public class GameOverHUD : MonoBehaviour
 
         if (m_RestartRunButton != null)
             m_RestartRunButton.clicked -= OnRestartRunButtonPress;
+
+        if (m_ReturnToMenuButton != null)
+            m_ReturnToMenuButton.clicked -= OnReturnToMenuButtonPress;
     }
 
     void OnGameOver(GameOverReason reason, int levels)
@@ -82,6 +89,13 @@ public class GameOverHUD : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX(m_ClickSFX);
         GameManager.Instance.LevelManager.StartNewGame();
+    }
+
+    void OnReturnToMenuButtonPress()
+    {
+        Time.timeScale = 1f;
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
+        SceneManager.LoadScene("Menu");
     }
 
     void OnGameStart()
