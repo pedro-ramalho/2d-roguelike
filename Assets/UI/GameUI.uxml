@@ -12,6 +12,7 @@
     <ui:VisualElement name="GameOverPanel" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: space-around;">
         <ui:Label text="Game Over" name="GameOverMessage" style="align-items: center; justify-content: space-around; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;);"/>
         <ui:Button text="Restart" name="RestartRunButton" class="menu-button"/>
+        <ui:Button text="Return to Menu" name="ReturnToMenuButton" class="menu-button"/>
     </ui:VisualElement>
     <ui:VisualElement name="LevelTransitionPanel" picking-mode="Ignore" style="flex-grow: 1; width: 100%; position: absolute; height: 100%; background-color: rgb(0, 0, 0); opacity: 1; justify-content: center;">
         <ui:Label text="Level:" name="NewLevelLabel" style="color: rgb(255, 255, 255); align-items: center; justify-content: flex-start; align-self: center; align-content: center; top: auto; -unity-font-definition: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&amp;guid=b284a6525342f44599e9ce79e37c2d61&amp;type=3#PressStart2P-Regular&quot;); font-size: 18px;"/>
