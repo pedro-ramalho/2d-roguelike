@@ -49,11 +49,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (m_IsGameOver)
-        {
-            HandleRestartInput();
-
             return;
-        }
 
         // Temporary debug logs (should be removed later)
         if (Keyboard.current.vKey.wasPressedThisFrame)
@@ -75,12 +71,6 @@ public class PlayerController : MonoBehaviour
             m_Combatant.Heal(1);
 
         HandleMovementInput();
-    }
-
-    void HandleRestartInput()
-    {
-        if (m_InputActions.Player.Restart.WasPressedThisFrame())
-            GameManager.Instance.LevelManager.StartNewGame();
     }
 
     Vector2Int GetInputDirection()
