@@ -1381,6 +1381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuHUD
   m_UIDocument: {fileID: 394013677}
   m_SettingsMenuHUD: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+  m_ClickSFX: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
 --- !u!1 &1691645435
 GameObject:
   m_ObjectHideFlags: 0

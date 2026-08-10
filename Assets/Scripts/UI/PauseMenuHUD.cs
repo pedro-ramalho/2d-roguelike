@@ -12,6 +12,9 @@ public class PauseMenuHUD : MonoBehaviour
     [SerializeField]
     private SettingsMenuHUD m_SettingsMenuHUD;
 
+    [SerializeField]
+    private AudioClip m_ClickSFX;
+
     private VisualElement m_PauseMenuPanel;
     private Button m_ResumeButton;
     private Button m_SettingsButton;
@@ -69,12 +72,23 @@ public class PauseMenuHUD : MonoBehaviour
             Pause(!m_IsPaused);
     }
 
-    void OnResumeButtonPress() => Pause(false);
+    void PlayClickSFX() => AudioManager.Instance.PlaySFX(m_ClickSFX);
 
-    void OnSettingsButtonPress() => m_SettingsMenuHUD.Show(true);
+    void OnResumeButtonPress()
+    {
+        PlayClickSFX();
+        Pause(false);
+    }
+
+    void OnSettingsButtonPress()
+    {
+        PlayClickSFX();
+        m_SettingsMenuHUD.Show(true);
+    }
 
     void OnQuitButtonPress()
     {
+        PlayClickSFX();
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
