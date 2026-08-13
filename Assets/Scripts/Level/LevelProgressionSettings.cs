@@ -7,6 +7,8 @@ public class LevelBand
     public string Name;
     public int MinLevel;
     public int MaxLevel;
+    public int BoardWidth;
+    public int BoardHeight;
     public LevelConfig DefaultConfig;
 }
 
