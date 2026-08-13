@@ -109,6 +109,7 @@ public class LevelManager : MonoBehaviour
         GameStartTriggered?.Invoke();
 
         m_CurrentLevel = 1;
+        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
