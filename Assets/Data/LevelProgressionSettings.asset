@@ -18,18 +18,26 @@ MonoBehaviour:
   - Name: Tutorial
     MinLevel: 1
     MaxLevel: 3
+    BoardWidth: 8
+    BoardHeight: 8
     DefaultConfig: {fileID: 11400000, guid: d1a3879833662be46816b4f80e02ed50, type: 2}
   - Name: Early
     MinLevel: 4
     MaxLevel: 8
+    BoardWidth: 10
+    BoardHeight: 10
     DefaultConfig: {fileID: 11400000, guid: e07368c170342d644a77ef291b61f790, type: 2}
   - Name: Mid
     MinLevel: 9
     MaxLevel: 15
+    BoardWidth: 12
+    BoardHeight: 12
     DefaultConfig: {fileID: 11400000, guid: 7648ee2693d85b64c8fc848a1d02e38e, type: 2}
   - Name: Late
     MinLevel: 16
     MaxLevel: 1000
+    BoardWidth: 16
+    BoardHeight: 16
     DefaultConfig: {fileID: 11400000, guid: ff3b36940a2b84a4f987223864666ab5, type: 2}
   EliteRewardPool:
   - Stat: 0
