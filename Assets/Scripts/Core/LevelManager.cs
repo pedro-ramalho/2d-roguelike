@@ -29,6 +29,10 @@ public class LevelManager : MonoBehaviour
     // State
     private int m_CurrentLevel = 0;
 
+    // Board dimensions
+    private int m_BoardWidth = 8;
+    private int m_BoardHeight = 8;
+
     // Readonly
     private static readonly Vector2Int m_PlayerSpawnCell = new Vector2Int(1, 1);
 
@@ -57,11 +61,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // Placeholders, will be implemented properly in the future
-    int ComputeWidthForLevel() => 8;
-
-    int ComputeHeightForLevel() => 8;
-
     IEnumerator NewLevelCoroutine()
     {
         m_PlayerController.gameObject.SetActive(false);
@@ -75,7 +74,7 @@ public class LevelManager : MonoBehaviour
         yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel);
 
         m_BoardManager.Clean();
-        m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
+        m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
 
         m_BoardGenerator.GenerateBoard(
             m_BoardManager,
@@ -110,9 +109,10 @@ public class LevelManager : MonoBehaviour
         GameStartTriggered?.Invoke();
 
         m_CurrentLevel = 1;
+        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
         m_BoardManager.Clean();
-        m_BoardManager.Init(ComputeWidthForLevel(), ComputeHeightForLevel());
+        m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
 
         m_BoardGenerator.GenerateBoard(
             m_BoardManager,
@@ -133,7 +133,12 @@ public class LevelManager : MonoBehaviour
         foreach (LevelBand band in GameManager.Instance.ProgressionSettings.LevelBands)
         {
             if (level >= band.MinLevel && level <= band.MaxLevel)
+            {
+                m_BoardWidth = band.BoardWidth;
+                m_BoardHeight = band.BoardHeight;
+
                 return band.DefaultConfig;
+            }
         }
 
         Debug.LogWarning($"No band matched level {level}, reusing last config");
