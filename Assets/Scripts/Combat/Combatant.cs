@@ -232,6 +232,12 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         m_StatusEffects.Clear();
     }
 
+    public void RefreshStats()
+    {
+        m_Stats.HP = MaxHP;
+        m_Stats.Stamina = MaxStamina;
+    }
+
     void TickStatusEffects()
     {
         foreach (StatusEffect effect in m_StatusEffects)

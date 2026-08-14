@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
 
+    private LevelBand m_CurrentBand;
+
     // Serialized references
     [SerializeField]
     private LevelTransitionManager m_LevelTransitionManager;
@@ -117,6 +119,7 @@ public class LevelManager : MonoBehaviour
     {
         GameStartTriggered?.Invoke();
 
+        m_CurrentBand = null;
         m_CurrentLevel = 1;
         CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
@@ -159,6 +162,11 @@ public class LevelManager : MonoBehaviour
             {
                 m_BoardWidth = band.BoardWidth;
                 m_BoardHeight = band.BoardHeight;
+
+                if (m_CurrentBand != null && m_CurrentBand != band)
+                    m_PlayerController.Combatant.RefreshStats();
+
+                m_CurrentBand = band;
 
                 return band.DefaultConfig;
             }
