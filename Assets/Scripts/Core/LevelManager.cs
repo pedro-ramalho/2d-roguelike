@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -21,6 +22,12 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private AudioClip m_GameOverSFX;
+
+    [SerializeField]
+    private BoxCollider2D m_ConfinerBounds;
+
+    [SerializeField]
+    private CinemachineConfiner2D m_Confiner;
 
     // Events
     public event Action<GameOverReason, int> GameOverTriggered;
@@ -76,6 +83,8 @@ public class LevelManager : MonoBehaviour
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
 
+        UpdateConfiner();
+
         m_BoardGenerator.GenerateBoard(
             m_BoardManager,
             m_TurnManager,
@@ -114,6 +123,8 @@ public class LevelManager : MonoBehaviour
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
 
+        UpdateConfiner();
+
         m_BoardGenerator.GenerateBoard(
             m_BoardManager,
             m_TurnManager,
@@ -126,6 +137,18 @@ public class LevelManager : MonoBehaviour
         m_PlayerController.Init();
         m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
         m_PlayerController.SetVisible(true);
+    }
+
+    void UpdateConfiner()
+    {
+        const float k_Padding = 1f;
+
+        m_ConfinerBounds.offset = new Vector2(m_BoardWidth * 0.5f, m_BoardHeight * 0.5f);
+        m_ConfinerBounds.size = new Vector2(
+            m_BoardWidth + k_Padding * 2f,
+            m_BoardHeight + k_Padding * 2f
+        );
+        m_Confiner.InvalidateBoundingShapeCache();
     }
 
     LevelConfig ResolveLevelConfig(int level)

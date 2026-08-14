@@ -68,7 +68,23 @@
     color: rgb(255, 255, 255);
 }
 
+.player-stats-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(20, 20, 20, 0.95);
+    padding: 8px 12px;
+}
 
+.player-stats-label {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-text-align: middle-left;
+}
 
 Label {
     -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&guid=b284a6525342f44599e9ce79e37c2d61&type=3#PressStart2P-Regular");
