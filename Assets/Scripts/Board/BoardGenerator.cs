@@ -53,9 +53,6 @@ public class BoardGenerator : MonoBehaviour
     {
         foreach (var entry in m_CurrentConfig.FoodEntries)
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
             int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
             for (int i = 0; i < count; i++)
@@ -97,9 +94,6 @@ public class BoardGenerator : MonoBehaviour
 
         foreach (var entry in m_CurrentConfig.EnemyEntries)
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
             int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
             for (int i = 0; i < count; i++)
@@ -108,16 +102,6 @@ public class BoardGenerator : MonoBehaviour
                 if (e != null)
                     spawned.Add(e);
             }
-        }
-
-        foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
-        {
-            if (prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
-            EnemyController e = SpawnEnemy(prefab);
-            if (e != null)
-                spawned.Add(e);
         }
 
         if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
@@ -139,9 +123,6 @@ public class BoardGenerator : MonoBehaviour
         m_PlayerController = playerController;
         m_CurrentConfig = GameManager.Instance.LevelManager.CurrentConfig;
         m_CurrentLevel = currentLevel;
-
-        if (m_CurrentConfig.UseSeed)
-            Random.InitState(m_CurrentConfig.Seed + m_CurrentLevel);
 
         m_EmptyCells = new List<Vector2Int>();
 

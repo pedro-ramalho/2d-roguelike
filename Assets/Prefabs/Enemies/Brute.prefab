@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_InitialMaxHP: 15
+  m_InitialMaxHP: 12
   m_InitialMaxBlock: 5
   m_InitialAttack: 2
   m_InitialMaxStamina: 0

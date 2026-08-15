@@ -21,11 +21,4 @@ public class LevelConfig : ScriptableObject
 
     [Header("Enemies")]
     public LevelEntry<EnemyController>[] EnemyEntries;
-
-    [Header("Guaranteed Enemies (optional)")]
-    public EnemyController[] GuaranteedEnemies;
-
-    [Header("Seed")]
-    public bool UseSeed;
-    public int Seed;
 }

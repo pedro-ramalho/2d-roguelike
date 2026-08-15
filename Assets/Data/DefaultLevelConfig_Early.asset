@@ -12,15 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60aa61fe95ef9e94c9c6fd0ecac31c58, type: 3}
   m_Name: DefaultLevelConfig_Early
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  MinWallCount: 2
-  MaxWallCount: 4
+  MinWallCount: 10
+  MaxWallCount: 15
   FoodEntries:
+  - Prefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
+    MinCount: 3
+    MaxCount: 6
   - Prefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
-    MinCount: 1
-    MaxCount: 2
+    MinCount: 0
+    MaxCount: 3
+  - Prefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    MinCount: 2
+    MaxCount: 3
   EnemyEntries:
   - Prefab: {fileID: 7905232947335659139, guid: 50519bc32474670408738a752f910956, type: 3}
-    MinCount: 1
+    MinCount: 2
+    MaxCount: 4
+  - Prefab: {fileID: 6146092015076375650, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
+    MinCount: 0
     MaxCount: 2
   GuaranteedEnemies: []
   UseSeed: 0
