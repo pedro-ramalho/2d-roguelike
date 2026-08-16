@@ -47,7 +47,6 @@ public class LevelManager : MonoBehaviour
 
     // Properties
     public int CurrentLevel => m_CurrentLevel;
-    public LevelConfig CurrentConfig { get; private set; }
     public LevelBand CurrentBand => m_CurrentBand;
 
     void Start()
@@ -77,7 +76,7 @@ public class LevelManager : MonoBehaviour
 
         m_CurrentLevel = level;
 
-        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
+        ResolveBand(m_CurrentLevel);
 
         AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
 
@@ -126,7 +125,7 @@ public class LevelManager : MonoBehaviour
 
         m_CurrentBand = null;
         m_CurrentLevel = 1;
-        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
+        ResolveBand(m_CurrentLevel);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
@@ -159,9 +158,9 @@ public class LevelManager : MonoBehaviour
         m_Confiner.InvalidateBoundingShapeCache();
     }
 
-    LevelConfig ResolveLevelConfig(int level)
+    LevelBand ResolveBand(int level)
     {
-        foreach (LevelBand band in GameManager.Instance.ProgressionSettings.LevelBands)
+        foreach (LevelBand band in GameManager.Instance.ProgressionSettings.Bands)
         {
             if (level >= band.MinLevel && level <= band.MaxLevel)
             {
@@ -173,12 +172,12 @@ public class LevelManager : MonoBehaviour
 
                 m_CurrentBand = band;
 
-                return band.DefaultConfig;
+                return band;
             }
         }
 
-        Debug.LogWarning($"No band matched level {level}, reusing last config");
+        Debug.LogWarning($"No band matched level {level}, reusing last band");
 
-        return CurrentConfig;
+        return m_CurrentBand;
     }
 }
