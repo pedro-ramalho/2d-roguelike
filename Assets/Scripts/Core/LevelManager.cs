@@ -48,6 +48,7 @@ public class LevelManager : MonoBehaviour
     // Properties
     public int CurrentLevel => m_CurrentLevel;
     public LevelConfig CurrentConfig { get; private set; }
+    public LevelBand CurrentBand => m_CurrentBand;
 
     void Start()
     {
@@ -70,11 +71,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    IEnumerator NewLevelCoroutine()
+    IEnumerator GoToLevelCoroutine(int level)
     {
         m_PlayerController.gameObject.SetActive(false);
 
-        m_CurrentLevel++;
+        m_CurrentLevel = level;
 
         CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
 
@@ -113,7 +114,11 @@ public class LevelManager : MonoBehaviour
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 
-    public void NewLevel() => StartCoroutine(NewLevelCoroutine());
+    public void GoToLevel(int level) => StartCoroutine(GoToLevelCoroutine(level));
+
+    public void NewLevel() => GoToLevel(m_CurrentLevel + 1);
+
+    public void ReloadCurrentLevel() => GoToLevel(m_CurrentLevel);
 
     public void StartNewGame()
     {

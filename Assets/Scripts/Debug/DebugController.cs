@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class DebugController : MonoBehaviour
 {
-    [SerializeReference]
+    [SerializeField]
     private Combatant m_Player;
 
     void Update()
