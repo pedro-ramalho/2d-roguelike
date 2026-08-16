@@ -81,6 +81,7 @@ public class BoardGenerator : MonoBehaviour
         m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
 
         newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+        newEnemy.Combatant.ApplyBandStats();
 
         return newEnemy;
     }

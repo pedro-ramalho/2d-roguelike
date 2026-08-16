@@ -24,6 +24,10 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     [SerializeField]
     private StatusEffectRoll[] m_StatusRolls;
 
+    [Header("Band Stats")]
+    [SerializeField]
+    private BandStats[] m_BandStats;
+
     // Private references
     private TurnManager m_TurnManager;
     private BoardManager m_BoardManager;
@@ -240,6 +244,24 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     {
         m_Stats.HP = MaxHP;
         m_Stats.Stamina = MaxStamina;
+    }
+
+    public void ApplyBandStats()
+    {
+        BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+
+        foreach (BandStats entry in m_BandStats)
+        {
+            if (entry.Band == current)
+            {
+                m_Stats.MaxHP = entry.MaxHP;
+                m_Stats.HP = entry.MaxHP;
+                m_Stats.Attack = entry.Attack;
+                m_Stats.MaxBlock = entry.MaxBlock;
+
+                return;
+            }
+        }
     }
 
     void TickStatusEffects()
