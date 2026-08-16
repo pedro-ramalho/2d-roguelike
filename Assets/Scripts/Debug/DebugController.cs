@@ -30,6 +30,7 @@ public class DebugController : MonoBehaviour
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
             // Jump forward one level
+            GameManager.Instance.LevelManager.NewLevel();
         }
 
         if (Keyboard.current.hKey.wasPressedThisFrame)
@@ -47,6 +48,8 @@ public class DebugController : MonoBehaviour
             // Reload current level
         }
     }
+
+    void SkipToNextBand() { }
 }
 
 #endif
