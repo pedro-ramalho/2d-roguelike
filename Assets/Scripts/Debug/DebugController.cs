@@ -28,28 +28,26 @@ public class DebugController : MonoBehaviour
             m_Player.Heal(1);
 
         if (Keyboard.current.gKey.wasPressedThisFrame)
-        {
-            // Jump forward one level
             GameManager.Instance.LevelManager.NewLevel();
-        }
 
         if (Keyboard.current.hKey.wasPressedThisFrame)
-        {
-            // Skip to next band
-        }
+            SkipToNextBand();
 
         if (Keyboard.current.jKey.wasPressedThisFrame)
-        {
-            // Toggle god mode
-        }
+            m_Player.IsGodMode = !m_Player.IsGodMode;
 
         if (Keyboard.current.lKey.wasPressedThisFrame)
-        {
-            // Reload current level
-        }
+            GameManager.Instance.LevelManager.ReloadCurrentLevel();
     }
 
-    void SkipToNextBand() { }
+    void SkipToNextBand()
+    {
+        LevelBand currentBand = GameManager.Instance.LevelManager.CurrentBand;
+        if (currentBand == null)
+            return;
+
+        GameManager.Instance.LevelManager.GoToLevel(currentBand.MaxLevel + 1);
+    }
 }
 
 #endif

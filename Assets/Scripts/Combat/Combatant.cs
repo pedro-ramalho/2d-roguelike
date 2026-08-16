@@ -46,6 +46,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     // Flags
     public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
+    public bool IsGodMode { get; set; }
 
     GameObject ICellOccupant.GameObject => gameObject;
 
@@ -90,6 +91,9 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     public DamageResult TakeDamage(int amount)
     {
+        if (IsGodMode)
+            return new DamageResult(0, 0);
+
         int previousHP = m_Stats.HP;
 
         int blockLost = Mathf.Min(m_Stats.Block, amount);
