@@ -9,6 +9,19 @@ public class DebugController : MonoBehaviour
 
     void Update()
     {
+        /*
+            -- KEYS EXPLANATION --
+            -> V: apply EMPOWERED with duration of 2
+            -> B: apply VULNERABLE with duration of 3
+            -> N: apply WEAK with duration of 4
+            -> M: apply STUNNED with duration of 1
+            -> O: take 1 damage
+            -> P: heal 1 point
+            -> G: skip to the next level
+            -> H: skip to the next band
+            -> J: toggle God mode (no damage)
+            -> L: reload current level
+        */
         if (Keyboard.current.vKey.wasPressedThisFrame)
             m_Player.ApplyStatusEffect(new StatusEffectEmpowered(2));
 
