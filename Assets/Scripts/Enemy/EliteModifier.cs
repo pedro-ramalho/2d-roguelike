@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class EliteModifier : MonoBehaviour
@@ -29,22 +28,7 @@ public class EliteModifier : MonoBehaviour
         if (pool.Length == 0)
             return;
 
-        float totalWeight = 0f;
-        foreach (var entry in pool)
-            totalWeight += entry.Weight;
-
-        float roll = UnityEngine.Random.value * totalWeight;
-        float acc = 0f;
-
-        foreach (var entry in pool)
-        {
-            acc += entry.Weight;
-            if (roll <= acc)
-            {
-                m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
-
-                return;
-            }
-        }
+        EliteRewardEntry entry = WeightedPool.PickRandom(pool, e => e.Weight);
+        m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
     }
 }

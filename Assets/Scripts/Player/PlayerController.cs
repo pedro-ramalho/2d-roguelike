@@ -51,25 +51,6 @@ public class PlayerController : MonoBehaviour
         if (m_IsGameOver)
             return;
 
-        // Temporary debug logs (should be removed later)
-        if (Keyboard.current.vKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectEmpowered(2));
-
-        if (Keyboard.current.bKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectVulnerable(3));
-
-        if (Keyboard.current.nKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectWeak(4));
-
-        if (Keyboard.current.mKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectStunned(1));
-
-        if (Keyboard.current.oKey.wasPressedThisFrame)
-            m_Combatant.TakeDamage(1);
-
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-            m_Combatant.Heal(1);
-
         HandleMovementInput();
     }
 
@@ -93,9 +74,12 @@ public class PlayerController : MonoBehaviour
 
         if (enemy.HP <= 0)
         {
-            cell.ContainedObject = null;
+            if (cell.ContainedObject == (ICellOccupant)enemy)
+                cell.ContainedObject = null;
 
             MoveTo(target, false);
+            if (cell.ContainedObject is FoodObject food)
+                food.PlayerEntered(this);
         }
     }
 
