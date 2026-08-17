@@ -140,6 +140,23 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.15
     PerLevelBonus: 0.05
+  m_BandStats:
+  - Band: 0
+    MaxHP: 6
+    Attack: 1
+    MaxBlock: 4
+  - Band: 1
+    MaxHP: 10
+    Attack: 2
+    MaxBlock: 6
+  - Band: 2
+    MaxHP: 16
+    Attack: 3
+    MaxBlock: 9
+  - Band: 3
+    MaxHP: 24
+    Attack: 4
+    MaxBlock: 12
 --- !u!114 &5161219471131270738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,4 +218,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f1263e496a40045b909779c2aebcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tank
-  m_FirstAllowedLevel: 1

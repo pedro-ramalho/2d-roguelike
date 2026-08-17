@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 739b43967650bce44a51538b73d5788e, type: 3}
+  m_Name: ProgressionSettings
+  m_EditorClassIdentifier: Assembly-CSharp::LevelProgressionSettings
+  Bands:
+  - {fileID: 11400000, guid: 44f5871cea140f14a904f6fec879c22d, type: 2}
+  - {fileID: 11400000, guid: 9fc4a14b513b8624588c3b4e8804bca6, type: 2}
+  - {fileID: 11400000, guid: 0969e1479a4cbaf4f9d1614864e7b015, type: 2}
+  - {fileID: 11400000, guid: 05cf019aa81865745ad7845d0e82e566, type: 2}
+  EliteCadence: 3
+  EliteRewardPool:
+  - Stat: 0
+    Amount: 5
+    Weight: 3
+  - Stat: 3
+    Amount: 5
+    Weight: 3
+  - Stat: 2
+    Amount: 2
+    Weight: 2
+  - Stat: 1
+    Amount: 2
+    Weight: 2
+  MaxStatusChance: 1

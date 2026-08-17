@@ -114,6 +114,23 @@ MonoBehaviour:
   m_InitialAttack: 2
   m_InitialMaxStamina: 0
   m_StatusRolls: []
+  m_BandStats:
+  - Band: 0
+    MaxHP: 5
+    Attack: 2
+    MaxBlock: 0
+  - Band: 1
+    MaxHP: 8
+    Attack: 3
+    MaxBlock: 0
+  - Band: 2
+    MaxHP: 12
+    Attack: 4
+    MaxBlock: 0
+  - Band: 3
+    MaxHP: 18
+    Attack: 6
+    MaxBlock: 0
 --- !u!114 &4943251867301102487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73096ac11ff05474eb551223d9498892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brute
-  m_FirstAllowedLevel: 1
 --- !u!95 &5227256866594031395
 Animator:
   serializedVersion: 7

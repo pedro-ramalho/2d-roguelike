@@ -115,7 +115,11 @@ public class LevelManager : MonoBehaviour
 
     public void GoToLevel(int level) => StartCoroutine(GoToLevelCoroutine(level));
 
-    public void NewLevel() => GoToLevel(m_CurrentLevel + 1);
+    public void NewLevel()
+    {
+        // Should restore stamina here...
+        GoToLevel(m_CurrentLevel + 1);
+    }
 
     public void ReloadCurrentLevel() => GoToLevel(m_CurrentLevel);
 
