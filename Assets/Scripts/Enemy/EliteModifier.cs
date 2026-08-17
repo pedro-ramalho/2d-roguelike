@@ -8,7 +8,7 @@ public class EliteModifier : MonoBehaviour
     void Awake()
     {
         m_Combatant = GetComponent<Combatant>();
-        m_Combatant.ApplyStatMultiplier(2f);
+        m_Combatant.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
 
         // Update the tint
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();

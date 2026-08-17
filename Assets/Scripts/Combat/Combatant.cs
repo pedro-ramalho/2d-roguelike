@@ -215,11 +215,11 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         }
     }
 
-    public void ApplyStatMultiplier(float multiplier)
+    public void ApplyStatMultiplier(float hpMult, float blockMult, float attackMult)
     {
-        m_Stats.MaxHP = Mathf.RoundToInt(m_InitialMaxHP * multiplier);
-        m_Stats.MaxBlock = Mathf.RoundToInt(m_InitialMaxBlock * multiplier);
-        m_Stats.Attack = Mathf.RoundToInt(m_InitialAttack * multiplier);
+        m_Stats.MaxHP = Mathf.RoundToInt(m_Stats.MaxHP * hpMult);
+        m_Stats.MaxBlock = Mathf.RoundToInt(m_Stats.MaxBlock * blockMult);
+        m_Stats.Attack = Mathf.RoundToInt(m_Stats.Attack * attackMult);
         m_Stats.HP = m_Stats.MaxHP;
         m_Stats.Block = 0;
     }

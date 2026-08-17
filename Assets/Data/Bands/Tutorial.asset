@@ -32,4 +32,4 @@ MonoBehaviour:
   EnemyEntries:
   - Prefab: {fileID: 7905232947335659139, guid: 50519bc32474670408738a752f910956, type: 3}
     MinCount: 1
-    MaxCount: 3
+    MaxCount: 2
