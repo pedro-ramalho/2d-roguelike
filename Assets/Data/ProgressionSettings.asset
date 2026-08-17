@@ -23,11 +23,11 @@ MonoBehaviour:
     Amount: 5
     Weight: 3
   - Stat: 3
-    Amount: 5
-    Weight: 3
+    Amount: 10
+    Weight: 4
   - Stat: 2
     Amount: 2
-    Weight: 2
+    Weight: 1
   - Stat: 1
     Amount: 2
     Weight: 2

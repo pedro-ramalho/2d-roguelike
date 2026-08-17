@@ -21,10 +21,10 @@ MonoBehaviour:
   MaxWallCount: 16
   FoodEntries:
   - Prefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
-    MinCount: 1
-    MaxCount: 2
+    MinCount: 2
+    MaxCount: 3
   - Prefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
-    MinCount: 1
+    MinCount: 2
     MaxCount: 3
   - Prefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
     MinCount: 0

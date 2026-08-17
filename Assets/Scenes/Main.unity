@@ -8513,14 +8513,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_InitialMaxHP: 12
+  m_InitialMaxHP: 15
   m_InitialMaxBlock: 6
   m_InitialAttack: 2
   m_InitialMaxStamina: 25
   m_StatusRolls:
   - Type: 1
     Duration: 2
-    BaseProbability: 0.1
+    BaseProbability: 0.15
+    PerLevelBonus: 0.05
+  - Type: 2
+    Duration: 2
+    BaseProbability: 0.2
     PerLevelBonus: 0.05
   m_BandStats: []
 --- !u!1 &1680459596

@@ -72,15 +72,8 @@ public class PlayerController : MonoBehaviour
     {
         m_Combatant.AttackTarget(enemy, target - m_CellPosition);
 
-        if (enemy.HP <= 0)
-        {
-            if (cell.ContainedObject == (ICellOccupant)enemy)
-                cell.ContainedObject = null;
-
-            MoveTo(target, false);
-            if (cell.ContainedObject is FoodObject food)
-                food.PlayerEntered(this);
-        }
+        if (enemy.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
+            cell.ContainedObject = null;
     }
 
     void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)

@@ -117,7 +117,7 @@ MonoBehaviour:
   m_StatusRolls: []
   m_BandStats:
   - Band: 0
-    MaxHP: 5
+    MaxHP: 4
     Attack: 2
     MaxBlock: 0
   - Band: 1
