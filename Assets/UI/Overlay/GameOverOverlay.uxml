@@ -5,5 +5,11 @@
     xmlns:uie="UnityEditor.UIElements"
     xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
 >
-    
+    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
+    <Style src="project://database/Assets/UI/Menu/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=7092ed0d9a2219e43b511b70a9033ac7&amp;type=3#MainMenuStyles"/>
+    <ui:VisualElement name="GameOverPanel" style="display: none; flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: space-around;">
+        <ui:Label text="Game Over" name="GameOverMessage" style="color: rgb(255, 255, 255);"/>
+        <ui:Button text="Restart" name="RestartRunButton" class="menu-button"/>
+        <ui:Button text="Return to Menu" name="ReturnToMenuButton" class="menu-button"/>
+    </ui:VisualElement>
 </ui:UXML>

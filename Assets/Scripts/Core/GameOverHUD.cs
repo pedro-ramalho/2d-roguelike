@@ -36,7 +36,7 @@ public class GameOverHUD : MonoBehaviour
         m_RestartRunButton = m_GameOverPanel.Q<Button>("RestartRunButton");
         m_ReturnToMenuButton = m_GameOverPanel.Q<Button>("ReturnToMenuButton");
 
-        m_GameOverPanel.style.visibility = Visibility.Hidden;
+        m_GameOverPanel.style.display = DisplayStyle.None;
 
         m_LevelManager.GameOverTriggered += OnGameOver;
         m_LevelManager.GameStartTriggered += OnGameStart;
@@ -80,7 +80,7 @@ public class GameOverHUD : MonoBehaviour
         string reasonString =
             reason == GameOverReason.Depleted ? "You ran out of stamina!" : "You were defeated!";
 
-        m_GameOverPanel.style.visibility = Visibility.Visible;
+        m_GameOverPanel.style.display = DisplayStyle.Flex;
         m_GameOverMessage.text =
             $"Game Over! {reasonString}\n\nYou traveled through {levels} {levelString}.\n\nPress Enter to restart.";
     }
@@ -101,6 +101,6 @@ public class GameOverHUD : MonoBehaviour
     void OnGameStart()
     {
         m_IsGameOver = false;
-        m_GameOverPanel.style.visibility = Visibility.Hidden;
+        m_GameOverPanel.style.display = DisplayStyle.None;
     }
 }
