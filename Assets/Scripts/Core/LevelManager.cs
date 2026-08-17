@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
 
+    private LevelBand m_CurrentBand;
+
     // Serialized references
     [SerializeField]
     private LevelTransitionManager m_LevelTransitionManager;
@@ -45,7 +47,7 @@ public class LevelManager : MonoBehaviour
 
     // Properties
     public int CurrentLevel => m_CurrentLevel;
-    public LevelConfig CurrentConfig { get; private set; }
+    public LevelBand CurrentBand => m_CurrentBand;
 
     void Start()
     {
@@ -68,13 +70,13 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    IEnumerator NewLevelCoroutine()
+    IEnumerator GoToLevelCoroutine(int level)
     {
         m_PlayerController.gameObject.SetActive(false);
 
-        m_CurrentLevel++;
+        m_CurrentLevel = level;
 
-        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
+        ResolveBand(m_CurrentLevel);
 
         AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
 
@@ -111,14 +113,24 @@ public class LevelManager : MonoBehaviour
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 
-    public void NewLevel() => StartCoroutine(NewLevelCoroutine());
+    public void GoToLevel(int level) => StartCoroutine(GoToLevelCoroutine(level));
+
+    public void NewLevel()
+    {
+        int amount = Mathf.RoundToInt(m_PlayerController.Combatant.MaxStamina * 0.25f);
+        m_PlayerController.Combatant.ChangeStamina(amount);
+        GoToLevel(m_CurrentLevel + 1);
+    }
+
+    public void ReloadCurrentLevel() => GoToLevel(m_CurrentLevel);
 
     public void StartNewGame()
     {
         GameStartTriggered?.Invoke();
 
+        m_CurrentBand = null;
         m_CurrentLevel = 1;
-        CurrentConfig = ResolveLevelConfig(m_CurrentLevel);
+        ResolveBand(m_CurrentLevel);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
@@ -151,21 +163,26 @@ public class LevelManager : MonoBehaviour
         m_Confiner.InvalidateBoundingShapeCache();
     }
 
-    LevelConfig ResolveLevelConfig(int level)
+    LevelBand ResolveBand(int level)
     {
-        foreach (LevelBand band in GameManager.Instance.ProgressionSettings.LevelBands)
+        foreach (LevelBand band in GameManager.Instance.ProgressionSettings.Bands)
         {
             if (level >= band.MinLevel && level <= band.MaxLevel)
             {
                 m_BoardWidth = band.BoardWidth;
                 m_BoardHeight = band.BoardHeight;
 
-                return band.DefaultConfig;
+                if (m_CurrentBand != null && m_CurrentBand != band)
+                    m_PlayerController.Combatant.RefreshStats();
+
+                m_CurrentBand = band;
+
+                return band;
             }
         }
 
-        Debug.LogWarning($"No band matched level {level}, reusing last config");
+        Debug.LogWarning($"No band matched level {level}, reusing last band");
 
-        return CurrentConfig;
+        return m_CurrentBand;
     }
 }

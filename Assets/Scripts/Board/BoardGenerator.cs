@@ -22,7 +22,7 @@ public class BoardGenerator : MonoBehaviour
     private BoardManager m_BoardManager;
     private TurnManager m_TurnManager;
     private PlayerController m_PlayerController;
-    private LevelConfig m_CurrentConfig;
+    private LevelBand m_CurrentBand;
 
     // Empty cells
     private List<Vector2Int> m_EmptyCells;
@@ -32,10 +32,7 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateWall()
     {
-        int wallCount = Random.Range(
-            m_CurrentConfig.MinWallCount,
-            m_CurrentConfig.MaxWallCount + 1
-        );
+        int wallCount = Random.Range(m_CurrentBand.MinWallCount, m_CurrentBand.MaxWallCount + 1);
 
         for (int i = 0; i < wallCount; i++)
         {
@@ -51,11 +48,8 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateFood()
     {
-        foreach (var entry in m_CurrentConfig.FoodEntries)
+        foreach (var entry in m_CurrentBand.FoodEntries)
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
             int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
             for (int i = 0; i < count; i++)
@@ -87,6 +81,7 @@ public class BoardGenerator : MonoBehaviour
         m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
 
         newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
+        newEnemy.Combatant.ApplyBandStats();
 
         return newEnemy;
     }
@@ -95,11 +90,8 @@ public class BoardGenerator : MonoBehaviour
     {
         List<EnemyController> spawned = new List<EnemyController>();
 
-        foreach (var entry in m_CurrentConfig.EnemyEntries)
+        foreach (var entry in m_CurrentBand.EnemyEntries)
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
             int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
             for (int i = 0; i < count; i++)
@@ -108,16 +100,6 @@ public class BoardGenerator : MonoBehaviour
                 if (e != null)
                     spawned.Add(e);
             }
-        }
-
-        foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
-        {
-            if (prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
-            EnemyController e = SpawnEnemy(prefab);
-            if (e != null)
-                spawned.Add(e);
         }
 
         if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
@@ -137,11 +119,8 @@ public class BoardGenerator : MonoBehaviour
         m_BoardManager = boardManager;
         m_TurnManager = turnManager;
         m_PlayerController = playerController;
-        m_CurrentConfig = GameManager.Instance.LevelManager.CurrentConfig;
+        m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
         m_CurrentLevel = currentLevel;
-
-        if (m_CurrentConfig.UseSeed)
-            Random.InitState(m_CurrentConfig.Seed + m_CurrentLevel);
 
         m_EmptyCells = new List<Vector2Int>();
 

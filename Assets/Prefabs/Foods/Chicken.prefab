@@ -104,6 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a2754176ed6614ab8217f179d8ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chicken
+  m_BandAmounts:
+  - Band: 0
+    Amount: 1
+  - Band: 1
+    Amount: 1
+  - Band: 2
+    Amount: 2
+  - Band: 3
+    Amount: 2
   m_ConsumeSFX: {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
-  m_FirstAllowedLevel: 1
-  m_AttackPoints: 1

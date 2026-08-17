@@ -24,6 +24,10 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     [SerializeField]
     private StatusEffectRoll[] m_StatusRolls;
 
+    [Header("Band Stats")]
+    [SerializeField]
+    private BandStats[] m_BandStats;
+
     // Private references
     private TurnManager m_TurnManager;
     private BoardManager m_BoardManager;
@@ -46,6 +50,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     // Flags
     public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
+    public bool IsGodMode { get; set; }
 
     GameObject ICellOccupant.GameObject => gameObject;
 
@@ -90,6 +95,9 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
 
     public DamageResult TakeDamage(int amount)
     {
+        if (IsGodMode)
+            return new DamageResult(0, 0);
+
         int previousHP = m_Stats.HP;
 
         int blockLost = Mathf.Min(m_Stats.Block, amount);
@@ -207,11 +215,11 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         }
     }
 
-    public void ApplyStatMultiplier(float multiplier)
+    public void ApplyStatMultiplier(float hpMult, float blockMult, float attackMult)
     {
-        m_Stats.MaxHP = Mathf.RoundToInt(m_InitialMaxHP * multiplier);
-        m_Stats.MaxBlock = Mathf.RoundToInt(m_InitialMaxBlock * multiplier);
-        m_Stats.Attack = Mathf.RoundToInt(m_InitialAttack * multiplier);
+        m_Stats.MaxHP = Mathf.RoundToInt(m_Stats.MaxHP * hpMult);
+        m_Stats.MaxBlock = Mathf.RoundToInt(m_Stats.MaxBlock * blockMult);
+        m_Stats.Attack = Mathf.RoundToInt(m_Stats.Attack * attackMult);
         m_Stats.HP = m_Stats.MaxHP;
         m_Stats.Block = 0;
     }
@@ -230,6 +238,30 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         };
 
         m_StatusEffects.Clear();
+    }
+
+    public void RefreshStats()
+    {
+        m_Stats.HP = MaxHP;
+        m_Stats.Stamina = MaxStamina;
+    }
+
+    public void ApplyBandStats()
+    {
+        BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+
+        foreach (BandStats entry in m_BandStats)
+        {
+            if (entry.Band == current)
+            {
+                m_Stats.MaxHP = entry.MaxHP;
+                m_Stats.HP = entry.MaxHP;
+                m_Stats.Attack = entry.Attack;
+                m_Stats.MaxBlock = entry.MaxBlock;
+
+                return;
+            }
+        }
     }
 
     void TickStatusEffects()

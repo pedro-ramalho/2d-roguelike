@@ -7,7 +7,7 @@ public class WallObject : CellObject
     private Tile m_OriginalTile;
 
     public Tile[] ObstacleTiles;
-    public int MaxHealth = 3;
+    public int MaxHealth = 2;
 
     Tile GetTileByHealthPoint()
     {

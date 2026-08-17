@@ -104,6 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e15514d415de946a7e6fbe1428265f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hamburger
+  m_BandAmounts:
+  - Band: 0
+    Amount: 8
+  - Band: 1
+    Amount: 12
+  - Band: 2
+    Amount: 14
+  - Band: 3
+    Amount: 16
   m_ConsumeSFX: {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
-  m_FirstAllowedLevel: 1
-  m_StaminaPoints: 5
