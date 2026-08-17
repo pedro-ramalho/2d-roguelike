@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3438537907659785350}
   - component: {fileID: 5746855764516760052}
   - component: {fileID: 5592293915065310830}
+  - component: {fileID: 6207777834255469980}
   m_Layer: 0
   m_Name: Ranged
   m_TagString: Untagged
@@ -219,3 +220,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ranged
   m_ProjectilePrefab: {fileID: 5165012889755492264, guid: b0d7e77b2c530794ba74d265052adeb3, type: 3}
+--- !u!114 &6207777834255469980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838354821000031303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111cd4f2e9901b04ca60906accf47f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  m_LootTable:
+  - Kind: 0
+    Weight: 30
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 0
+  - Kind: 2
+    Weight: 25
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 2
+  - Kind: 1
+    Weight: 20
+    FoodPrefab: {fileID: 1901146109594894390, guid: 7de865f6015dbab4b9d0ea29704e6db4, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 10
+    FoodPrefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    StaminaAmount: 0

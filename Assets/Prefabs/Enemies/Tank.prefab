@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7805228552613659918}
   - component: {fileID: 39791499197184293}
   - component: {fileID: 4574097391474534851}
+  - component: {fileID: 1067346110860324081}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -218,3 +219,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f1263e496a40045b909779c2aebcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tank
+--- !u!114 &1067346110860324081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111cd4f2e9901b04ca60906accf47f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  m_LootTable:
+  - Kind: 0
+    Weight: 20
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 0
+  - Kind: 2
+    Weight: 25
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 5
+  - Kind: 1
+    Weight: 20
+    FoodPrefab: {fileID: 8989629000530212592, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 20
+    FoodPrefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    StaminaAmount: 0

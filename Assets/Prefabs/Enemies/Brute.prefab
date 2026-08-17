@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1863524310077405169}
   - component: {fileID: -3585038373898010958}
   - component: {fileID: 7905232947335659139}
+  - component: {fileID: 6725432989599498775}
   - component: {fileID: 5227256866594031395}
   m_Layer: 0
   m_Name: Brute
@@ -192,6 +193,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73096ac11ff05474eb551223d9498892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Brute
+--- !u!114 &6725432989599498775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111cd4f2e9901b04ca60906accf47f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  m_LootTable:
+  - Kind: 0
+    Weight: 30
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 0
+  - Kind: 2
+    Weight: 25
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 3
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 10
+    FoodPrefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 5
+    FoodPrefab: {fileID: 8989629000530212592, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
+    StaminaAmount: 0
 --- !u!95 &5227256866594031395
 Animator:
   serializedVersion: 7

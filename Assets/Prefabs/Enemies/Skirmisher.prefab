@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6381152842487625804}
   - component: {fileID: 7540378403131320969}
   - component: {fileID: 6146092015076375650}
+  - component: {fileID: 2697021579361658800}
   - component: {fileID: 2118483306058908496}
   m_Layer: 0
   m_Name: Skirmisher
@@ -200,6 +201,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201edec0b260b5647aa3d1d3d5c8660e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Skirmisher
+--- !u!114 &2697021579361658800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866038250968637081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111cd4f2e9901b04ca60906accf47f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  m_LootTable:
+  - Kind: 0
+    Weight: 45
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 0
+  - Kind: 2
+    Weight: 30
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 1
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 10
+    FoodPrefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
+    StaminaAmount: 0
 --- !u!95 &2118483306058908496
 Animator:
   serializedVersion: 7
