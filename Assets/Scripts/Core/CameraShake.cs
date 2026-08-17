@@ -5,6 +5,9 @@ public class CameraShake : MonoBehaviour
 {
     public static CameraShake Instance { get; private set; }
 
+    [SerializeField]
+    private float m_ShakeForcePerHp = 0.5f;
+
     private CinemachineImpulseSource m_ImpulseSource;
 
     void Awake()
@@ -17,9 +20,15 @@ public class CameraShake : MonoBehaviour
 
     void Start() => GameManager.Instance.PlayerController.Combatant.Damaged += OnPlayerDamaged;
 
+    void OnDestroy()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.PlayerController != null)
+            GameManager.Instance.PlayerController.Combatant.Damaged -= OnPlayerDamaged;
+    }
+
     void OnPlayerDamaged(DamageResult result)
     {
         if (result.HPLost > 0)
-            m_ImpulseSource.GenerateImpulseWithForce(result.HPLost * 0.5f);
+            m_ImpulseSource.GenerateImpulseWithForce(result.HPLost * m_ShakeForcePerHp);
     }
 }
