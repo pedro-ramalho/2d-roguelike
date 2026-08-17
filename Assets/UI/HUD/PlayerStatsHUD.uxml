@@ -5,5 +5,11 @@
     xmlns:uie="UnityEditor.UIElements"
     xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
 >
-    
+    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
+    <ui:VisualElement name="PlayerStatsPanel" class="player-stats-panel">
+        <ui:Label text="HP: X/Y" name="HealthLabel" class="player-stats-label"/>
+        <ui:Label text="Block: X" name="BlockLabel" class="player-stats-label"/>
+        <ui:Label text="Stamina: X" name="StaminaLabel" class="player-stats-label"/>
+        <ui:Label text="Attack: X" name="AttackLabel" class="player-stats-label"/>
+    </ui:VisualElement>
 </ui:UXML>
