@@ -32,11 +32,11 @@ public class CombatantAnimator : MonoBehaviour
     private Coroutine m_HurtCoroutine;
     private Coroutine m_DeathCoroutine;
 
-    private readonly float m_AttackNudgeDistance = 0.3f;
-    private readonly float m_AttackAnimationDuration = 0.2f;
-    private readonly float m_WalkAnimationDuration = 0.25f;
-    private readonly float m_HurtAnimationDuration = 0.15f;
-    private readonly float m_DeathAnimationDuration = 0.3f;
+    private readonly float m_AttackNudgeDistance = 0.2f;
+    private readonly float m_AttackAnimationDuration = 0.15f;
+    private readonly float m_WalkAnimationDuration = 0.20f;
+    private readonly float m_HurtAnimationDuration = 0.10f;
+    private readonly float m_DeathAnimationDuration = 0.2f;
     private readonly float m_ProjectileAnimationDuration = 0.5f;
 
     private static readonly int m_AttackHash = Animator.StringToHash("Attack");
