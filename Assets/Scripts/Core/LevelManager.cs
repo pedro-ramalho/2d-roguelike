@@ -117,7 +117,8 @@ public class LevelManager : MonoBehaviour
 
     public void NewLevel()
     {
-        // Should restore stamina here...
+        int amount = Mathf.RoundToInt(m_PlayerController.Combatant.MaxStamina * 0.25f);
+        m_PlayerController.Combatant.ChangeStamina(amount);
         GoToLevel(m_CurrentLevel + 1);
     }
 
