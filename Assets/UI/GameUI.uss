@@ -80,7 +80,36 @@
     padding: 8px 12px;
 }
 
-.player-stats-label {
+.level-panel {
+    flex-direction: row;
+    align-items: center;
+}
+
+.level-label {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-text-align: middle-left;
+}
+
+.stats-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.stat {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 60px;
+}
+
+.stat-icon {
+    width: 32px;
+    height: 32px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: 10px;
+}
+
+.stat-label {
     color: rgb(255, 255, 255);
     font-size: 24px;
     -unity-text-align: middle-left;

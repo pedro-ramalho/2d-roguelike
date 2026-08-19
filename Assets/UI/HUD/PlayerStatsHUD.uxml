@@ -1,15 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
     <ui:VisualElement name="PlayerStatsPanel" class="player-stats-panel">
-        <ui:Label text="HP: X/Y" name="HealthLabel" class="player-stats-label"/>
-        <ui:Label text="Block: X" name="BlockLabel" class="player-stats-label"/>
-        <ui:Label text="Stamina: X" name="StaminaLabel" class="player-stats-label"/>
-        <ui:Label text="Attack: X" name="AttackLabel" class="player-stats-label"/>
+        <ui:VisualElement name="LevelPanel" class="level-panel">
+            <ui:Label text="LV 1" name="LevelLabel" class="level-label"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="StatsPanel" class="stats-row">
+            <ui:VisualElement name="HP" class="stat">
+                <ui:VisualElement name="HealthIcon" class="stat-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/UI/Life.png?fileID=2800000&amp;guid=1814a2d0f580b1c4d844a5fb6f8dabb8&amp;type=3#Life&quot;);"/>
+                <ui:Label text="X/Y" name="HealthLabel" class="stat-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="Block" class="stat">
+                <ui:VisualElement name="BlockIcon" class="stat-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/UI/Defense.png?fileID=2800000&amp;guid=62b65f366da816b419bae8dba11100a7&amp;type=3#Defense&quot;);"/>
+                <ui:Label text="X" name="BlockLabel" class="stat-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="Stamina" class="stat">
+                <ui:VisualElement name="StaminaIcon" class="stat-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/UI/Speed.png?fileID=2800000&amp;guid=0187514e78e25254b8c3fe5387cd58b4&amp;type=3#Speed&quot;);"/>
+                <ui:Label text="X" name="StaminaLabel" class="stat-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="Attack" class="stat">
+                <ui:VisualElement name="AttackIcon" class="stat-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/UI/Attack.png?fileID=2800000&amp;guid=f59b6f1cccc714c4d867407a30f8b974&amp;type=3#Attack&quot;);"/>
+                <ui:Label text="X" name="AttackLabel" class="stat-label"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

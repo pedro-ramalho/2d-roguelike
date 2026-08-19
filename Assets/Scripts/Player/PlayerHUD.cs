@@ -56,9 +56,9 @@ public class PlayerHUD : MonoBehaviour
 
     void Refresh()
     {
-        m_HealthLabel.text = $"HP: {m_Player.HP}/{m_Player.MaxHP}";
-        m_BlockLabel.text = $"Block: {m_Player.Block}";
-        m_StaminaLabel.text = $"Stamina: {m_Player.Stamina}";
-        m_AttackLabel.text = $"Attack: {m_Player.Attack}";
+        m_HealthLabel.text = $"{m_Player.HP}/{m_Player.MaxHP}";
+        m_BlockLabel.text = $"{m_Player.Block}";
+        m_StaminaLabel.text = $"{m_Player.Stamina}";
+        m_AttackLabel.text = $"{m_Player.Attack}";
     }
 }
