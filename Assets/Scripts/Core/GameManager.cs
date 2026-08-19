@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public BoardManager BoardManager;
     public LevelManager LevelManager;
     public PlayerController PlayerController;
-    public UIDocument UIDoc;
+    public UIDocument HUDLayersDoc;
     public LevelProgressionSettings ProgressionSettings => m_ProgressionSettings;
 
     void Awake()

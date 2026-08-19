@@ -5,5 +5,9 @@
     xmlns:uie="UnityEditor.UIElements"
     xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
 >
-    
+    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
+    <ui:VisualElement name="StatusEffectSlot" class="status-slot">
+        <ui:VisualElement name="Icon" class="status-icon"/>
+        <ui:Label text="Label" name="Duration" class="status-duration"/>
+    </ui:VisualElement>
 </ui:UXML>

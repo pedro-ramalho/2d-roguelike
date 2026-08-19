@@ -30,7 +30,7 @@ public class CombatantFloaters : MonoBehaviour
 
     void Start()
     {
-        UIDocument doc = GameManager.Instance.UIDoc;
+        UIDocument doc = GameManager.Instance.HUDLayersDoc;
 
         m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
         m_Camera = Camera.main;

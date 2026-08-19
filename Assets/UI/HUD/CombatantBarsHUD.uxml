@@ -5,5 +5,14 @@
     xmlns:uie="UnityEditor.UIElements"
     xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
 >
-    
+    <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
+    <ui:VisualElement name="CombatantHUD" class="combatant-hud">
+        <ui:VisualElement name="HUDContent" class="hud-content" style="width: 75px;">
+            <ui:VisualElement name="StatusEffectsRow" class="status-row" style="width: auto;"/>
+            <ui:VisualElement name="Bars" class="bar" style="height: 8px;">
+                <ui:VisualElement name="HPFill" class="bar-fill bar-fill-hp"/>
+                <ui:VisualElement name="BlockFill" class="bar-fill bar-fill-block"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>

@@ -244,7 +244,7 @@ MonoBehaviour:
   BoardManager: {fileID: 1160969521}
   LevelManager: {fileID: 1339684672}
   PlayerController: {fileID: 1653753611}
-  UIDoc: {fileID: 583965553}
+  HUDLayersDoc: {fileID: 1028096706}
 --- !u!114 &377119141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,61 +697,6 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
---- !u!1 &583965552
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 583965554}
-  - component: {fileID: 583965553}
-  m_Layer: 5
-  m_Name: GameUIDocument
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &583965553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583965552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 878e598bdb55ffd4596c4595d22bf9ee, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 42e34359474e2d4499679abc69877561, type: 3}
-  m_SortingOrder: 0
-  m_Position: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!4 &583965554
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583965552}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &932462299
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +838,61 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+--- !u!1 &1028096705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1028096707}
+  - component: {fileID: 1028096706}
+  m_Layer: 5
+  m_Name: HUDLayersUIDocument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1028096706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028096705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 878e598bdb55ffd4596c4595d22bf9ee, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: e37203a2c123dfe44bf8d43a9179682e, type: 3}
+  m_SortingOrder: 1
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &1028096707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028096705}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1073150171
 GameObject:
   m_ObjectHideFlags: 0
@@ -8714,8 +8714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff0976062235b941af152adac2b9534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantHUD
-  m_Template: {fileID: 9197481963319205126, guid: 7c63a2d9060ffc54ebfbe4bea2e037b1, type: 3}
-  m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
+  m_Template: {fileID: 9197481963319205126, guid: 1aa4cb910e41b8c47a8277cbc368db86, type: 3}
+  m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: ac42c91d101e6374e9b725c76f8e658a, type: 3}
   m_ShowStatusEffects: 1
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_IconSet: {fileID: 11400000, guid: 493c85b27f0fbc04d844abe5369e67df, type: 2}
@@ -8731,7 +8731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9641e0d05be0a541bf0bc7f8a83601c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantFloaters
-  m_FloaterTemplate: {fileID: 9197481963319205126, guid: f3909eb1f19fd7942974b47abe58a77d, type: 3}
+  m_FloaterTemplate: {fileID: 9197481963319205126, guid: fd932fcc75c3f5d40b08c28d851695b4, type: 3}
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_Duration: 0.5
   m_RisePixels: 50
@@ -9288,12 +9288,12 @@ SceneRoots:
   - {fileID: 939603748}
   - {fileID: 1653753610}
   - {fileID: 1215784290}
-  - {fileID: 583965554}
   - {fileID: 394013678}
   - {fileID: 2019273668}
   - {fileID: 2017098004}
   - {fileID: 389906932}
   - {fileID: 1513904560}
+  - {fileID: 1028096707}
   - {fileID: 1691645436}
   - {fileID: 465026500}
   - {fileID: 1680459597}

@@ -31,7 +31,7 @@ public class CombatantHUD : MonoBehaviour
 
     void Start()
     {
-        UIDocument doc = GameManager.Instance.UIDoc;
+        UIDocument doc = GameManager.Instance.HUDLayersDoc;
         m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("CombatantHUDLayer");
 
         VisualElement container = m_Template.Instantiate();
