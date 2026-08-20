@@ -23,6 +23,9 @@ public class MainMenuHUD : MonoBehaviour
     [SerializeField]
     private AudioClip m_ClickSFX;
 
+    // Game Title Label
+    private Label m_GameTitleLabel;
+
     // Buttons Panel
     private VisualElement m_ButtonsPanel;
     private Button m_StartRunButton;
@@ -38,6 +41,8 @@ public class MainMenuHUD : MonoBehaviour
     {
         VisualElement root = m_UIDocument.rootVisualElement;
         VisualElement mainMenuPanel = root.Q<VisualElement>("MainMenuPanel");
+
+        m_GameTitleLabel = mainMenuPanel.Q<Label>("GameTitleLabel");
 
         m_ButtonsPanel = mainMenuPanel.Q<VisualElement>("ButtonsPanel");
         m_CreditsPanel = mainMenuPanel.Q<VisualElement>("CreditsPanel");
@@ -82,6 +87,9 @@ public class MainMenuHUD : MonoBehaviour
 
     void ShowPanel(PanelType panel)
     {
+        m_GameTitleLabel.style.display =
+            panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
+
         m_ButtonsPanel.style.display =
             panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
 
