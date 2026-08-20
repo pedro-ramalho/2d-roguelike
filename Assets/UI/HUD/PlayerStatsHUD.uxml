@@ -4,6 +4,7 @@
         <ui:VisualElement name="LevelPanel" class="level-panel">
             <ui:Label text="LV 1" name="LevelLabel" class="level-label"/>
         </ui:VisualElement>
+        <ui:VisualElement name="Separator" class="stats-separator"/>
         <ui:VisualElement name="StatsPanel" class="stats-row">
             <ui:VisualElement name="HP" class="stat">
                 <ui:VisualElement name="HealthIcon" class="stat-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/UI/Life.png?fileID=2800000&amp;guid=1814a2d0f580b1c4d844a5fb6f8dabb8&amp;type=3#Life&quot;);"/>
