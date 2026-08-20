@@ -8,6 +8,7 @@ public class PlayerHUD : MonoBehaviour
     private Combatant m_Player;
 
     private VisualElement m_PlayerStatsPanel;
+    private Label m_LevelLabel;
     private Label m_HealthLabel;
     private Label m_BlockLabel;
     private Label m_StaminaLabel;
@@ -18,6 +19,7 @@ public class PlayerHUD : MonoBehaviour
         m_Player = GetComponent<Combatant>();
 
         m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");
+        m_LevelLabel = m_PlayerStatsPanel.Q<Label>("LevelLabel");
         m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
         m_BlockLabel = m_PlayerStatsPanel.Q<Label>("BlockLabel");
         m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
@@ -29,7 +31,13 @@ public class PlayerHUD : MonoBehaviour
         m_Player.StaminaChanged += _ => Refresh();
     }
 
-    void Start() => Refresh();
+    void Start()
+    {
+        GameManager.Instance.LevelManager.LevelChanged += OnLevelChanged;
+        Refresh();
+    }
+
+    void OnLevelChanged(int level) => m_LevelLabel.text = $"LV {level}";
 
     void OnDisable()
     {
@@ -45,6 +53,9 @@ public class PlayerHUD : MonoBehaviour
 
     void OnDestroy()
     {
+        if (GameManager.Instance != null && GameManager.Instance.LevelManager != null)
+            GameManager.Instance.LevelManager.LevelChanged -= OnLevelChanged;
+
         if (m_Player == null)
             return;
 
