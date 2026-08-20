@@ -34,6 +34,7 @@ public class LevelManager : MonoBehaviour
     // Events
     public event Action<GameOverReason, int> GameOverTriggered;
     public event Action GameStartTriggered;
+    public event Action<int> LevelChanged;
 
     // State
     private int m_CurrentLevel = 0;
@@ -75,6 +76,7 @@ public class LevelManager : MonoBehaviour
         m_PlayerController.gameObject.SetActive(false);
 
         m_CurrentLevel = level;
+        LevelChanged?.Invoke(m_CurrentLevel);
 
         ResolveBand(m_CurrentLevel);
 
@@ -130,6 +132,7 @@ public class LevelManager : MonoBehaviour
 
         m_CurrentBand = null;
         m_CurrentLevel = 1;
+        LevelChanged?.Invoke(m_CurrentLevel);
         ResolveBand(m_CurrentLevel);
 
         m_BoardManager.Clean();
