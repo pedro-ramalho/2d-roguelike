@@ -27,6 +27,23 @@
     margin-bottom: 64px;
 }
 
+.credit-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.credit-icon {
+    width: 36px;
+    height: 36px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: 12px;
+}
+
+.credit-label {
+    font-size: 24px;
+}
+
 .menu-button {
     -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
     font-size: 28px;
