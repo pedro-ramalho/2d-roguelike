@@ -826,10 +826,6 @@ PrefabInstance:
       value: SettingsMenuHUD
       objectReference: {fileID: 0}
     - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
-      propertyPath: m_ClickSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
-    - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
       propertyPath: m_UIDocument
       value: 
       objectReference: {fileID: 2019273667}
@@ -838,6 +834,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+--- !u!114 &996595076 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+  m_PrefabInstance: {fileID: 996595075}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54e4c9090aaa004db0c278ae7246ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SettingsMenuHUD
 --- !u!1 &1028096705
 GameObject:
   m_ObjectHideFlags: 0
@@ -8806,7 +8813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuHUD
   m_UIDocument: {fileID: 394013677}
-  m_SettingsMenuHUD: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
+  m_SettingsMenuHUD: {fileID: 996595076}
   m_ClickSFX: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
 --- !u!1 &1691645435
 GameObject:
