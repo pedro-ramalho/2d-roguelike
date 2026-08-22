@@ -40,6 +40,8 @@ public class PauseMenuHUD : MonoBehaviour
         m_ResumeButton.clicked += OnResumeButtonPress;
         m_SettingsButton.clicked += OnSettingsButtonPress;
         m_QuitButton.clicked += OnQuitButtonPress;
+
+        m_SettingsMenuHUD.Closed += OnSettingsMenuClosed;
     }
 
     void OnEnable() => m_InputActions.Enable();
@@ -56,6 +58,9 @@ public class PauseMenuHUD : MonoBehaviour
 
         if (m_QuitButton != null)
             m_QuitButton.clicked -= OnQuitButtonPress;
+
+        if (m_SettingsMenuHUD != null)
+            m_SettingsMenuHUD.Closed -= OnSettingsMenuClosed;
     }
 
     void Pause(bool pause)
@@ -74,6 +79,13 @@ public class PauseMenuHUD : MonoBehaviour
 
     void PlayClickSFX() => AudioManager.Instance.PlaySFX(m_ClickSFX);
 
+    void ShowPauseButtons(bool show)
+    {
+        m_ResumeButton.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+        m_SettingsButton.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+        m_QuitButton.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
     void OnResumeButtonPress()
     {
         PlayClickSFX();
@@ -83,8 +95,13 @@ public class PauseMenuHUD : MonoBehaviour
     void OnSettingsButtonPress()
     {
         PlayClickSFX();
+
+        ShowPauseButtons(false);
+
         m_SettingsMenuHUD.Show(true);
     }
+
+    void OnSettingsMenuClosed() => ShowPauseButtons(true);
 
     void OnQuitButtonPress()
     {
