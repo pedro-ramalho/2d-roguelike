@@ -59,3 +59,35 @@
 .menu-button:hover {
     background-color: rgb(85, 85, 85);
 }
+
+.settings-slider {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(27, 27, 27);
+
+    width:425px;
+    margin-bottom:16px;
+}
+
+.settings-slider .unity-base-slider__label {
+    width: 200px;
+    min-width: 200px;
+    -unity-text-align: middle-left;
+}
+
+.settings-slider:hover .unity-base-slider__label,
+.settings-slider:focus .unity-base-slider__label {
+    color: rgb(255, 255, 255);
+}
+
+.settings-slider .unity-base-slider__dragger {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+}
+
+.settings-slider .unity-base-slider__dragger:hover {
+    background-color: rgb(200, 200, 200);
+}

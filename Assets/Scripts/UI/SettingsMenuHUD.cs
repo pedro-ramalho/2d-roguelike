@@ -20,9 +20,9 @@ public class SettingsMenuHUD : MonoBehaviour
     private static readonly string m_MusicVolumeMixerParam = "MusicVolume";
     private static readonly string m_SFXVolumeMixerParam = "SFXVolume";
 
-    private static readonly float m_MasterVolumeDefaultValue = 1.0f;
-    private static readonly float m_MusicVolumeDefaultValue = 0.8f;
-    private static readonly float m_SFXVolumeDefaultValue = 0.6f;
+    private static readonly float m_MasterVolumeDefaultValue = 0.5f;
+    private static readonly float m_MusicVolumeDefaultValue = 0.5f;
+    private static readonly float m_SFXVolumeDefaultValue = 0.5f;
 
     public event Action Closed;
 
