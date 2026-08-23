@@ -21,6 +21,7 @@ public class DebugController : MonoBehaviour
             -> H: skip to the next band
             -> J: toggle God mode (no damage)
             -> L: reload current level
+            -> Y: die
         */
         if (Keyboard.current.vKey.wasPressedThisFrame)
             m_Player.ApplyStatusEffect(new StatusEffectEmpowered(2));
@@ -51,6 +52,9 @@ public class DebugController : MonoBehaviour
 
         if (Keyboard.current.lKey.wasPressedThisFrame)
             GameManager.Instance.LevelManager.ReloadCurrentLevel();
+
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+            m_Player.TakeDamage(m_Player.MaxHP);
     }
 
     void SkipToNextBand()
