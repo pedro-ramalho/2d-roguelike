@@ -4,8 +4,8 @@
     <ui:VisualElement name="GameOverPanel" class="game-over-panel" style="display: none; flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center;">
         <ui:VisualElement name="GameOverPanelLabelsContainer" style="align-items: center; margin-bottom: 48px;">
             <ui:Label text="GAME OVER" name="GameOverBannerLabel" class="game-over-banner"/>
-            <ui:Label text="Placeholder" name="GameOverLevelsTraveledLabel" style="color: rgb(255, 255, 255); margin-bottom: 16px; -unity-text-align: middle-center;"/>
-            <ui:Label text="Placeholder" name="GameOverReasonLabel" style="color: rgb(255, 255, 255); -unity-text-align: middle-center;"/>
+            <ui:Label text="Placeholder" name="GameOverLevelsTraveledLabel" style="color: rgb(255, 255, 255); margin-bottom: 16px; -unity-text-align: middle-center; font-size: 16px;"/>
+            <ui:Label text="Placeholder" name="GameOverReasonLabel" class="game-over-panel-label" style="color: rgb(236, 54, 54); -unity-text-align: middle-center; -unity-font-style: bold;"/>
         </ui:VisualElement>
         <ui:VisualElement name="GameOverPanelButtonsContainer" style="align-items: center;">
             <ui:Button text="Restart" name="RestartRunButton" class="menu-button" style="margin-bottom: 16px;"/>

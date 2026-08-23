@@ -74,9 +74,13 @@
 .game-over-banner {
     -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
     color: rgb(255, 255, 255);
-    font-size: 32px;
+    font-size: 42px;
     -unity-text-align: middle-center;
     -unity-text-outline-width: 4px;
     -unity-text-outline-color: rgb(27, 27, 27);
     margin-bottom: 64px;
+}
+
+.game-over-panel-label {
+    font-size: 18px;
 }
