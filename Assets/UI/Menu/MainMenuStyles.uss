@@ -59,3 +59,24 @@
 .menu-button:hover {
     background-color: rgb(85, 85, 85);
 }
+
+.game-over-panel {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+}
+
+.game-over-panel--visible {
+    opacity: 1;
+}
+
+.game-over-banner {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    color: rgb(255, 255, 255);
+    font-size: 32px;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(27, 27, 27);
+    margin-bottom: 64px;
+}
