@@ -17,6 +17,10 @@ public class CombatantAnimator : MonoBehaviour
     [SerializeField]
     private AudioClip m_StepSFX;
 
+    [Header("Death Handling")]
+    [SerializeField]
+    private bool m_DestroyOnDeath = true;
+
     // Private references
     private ICombatant m_Combatant;
     private TurnManager m_TurnManager;
@@ -181,7 +185,8 @@ public class CombatantAnimator : MonoBehaviour
 
         m_DeathCoroutine = null;
 
-        Destroy(gameObject);
+        if (m_DestroyOnDeath)
+            Destroy(gameObject);
     }
 
     public void PlayWalkAnimation(Vector2Int targetCell, Vector2Int direction)
