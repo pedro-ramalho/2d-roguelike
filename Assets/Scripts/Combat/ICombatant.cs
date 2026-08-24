@@ -37,6 +37,7 @@ public interface ICombatant
     public event Action<int> BlockAdded;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
+    public event Action StateReset;
 
     DamageResult AttackTarget(ICombatant target, Vector2Int direction);
     DamageResult TakeDamage(int amount);

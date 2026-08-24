@@ -134,6 +134,10 @@ public class PlayerController : MonoBehaviour
             color.a = 1f;
             m_SpriteRenderer.color = color;
         }
+
+        CombatantHUD hud = GetComponent<CombatantHUD>();
+        if (hud != null)
+            hud.enabled = visible;
     }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)

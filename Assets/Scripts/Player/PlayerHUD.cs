@@ -29,6 +29,7 @@ public class PlayerHUD : MonoBehaviour
         m_Player.HealthAdded += _ => Refresh();
         m_Player.BlockAdded += _ => Refresh();
         m_Player.StaminaChanged += _ => Refresh();
+        m_Player.StateReset += Refresh;
     }
 
     void Start()
@@ -63,6 +64,7 @@ public class PlayerHUD : MonoBehaviour
         m_Player.HealthAdded -= _ => Refresh();
         m_Player.BlockAdded -= _ => Refresh();
         m_Player.StaminaChanged -= _ => Refresh();
+        m_Player.StateReset -= Refresh;
     }
 
     void Refresh()
