@@ -124,7 +124,21 @@ public class PlayerController : MonoBehaviour
 
     public void GameOver() => m_IsGameOver = true;
 
-    public void SetVisible(bool visible) => m_SpriteRenderer.enabled = visible;
+    public void SetVisible(bool visible)
+    {
+        m_SpriteRenderer.enabled = visible;
+
+        if (visible)
+        {
+            Color color = m_SpriteRenderer.color;
+            color.a = 1f;
+            m_SpriteRenderer.color = color;
+        }
+
+        CombatantHUD hud = GetComponent<CombatantHUD>();
+        if (hud != null)
+            hud.enabled = visible;
+    }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)
     {

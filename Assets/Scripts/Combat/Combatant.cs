@@ -64,6 +64,7 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
     public event Action<int> StaminaChanged;
     public event Action<StatusEffect> StatusApplied;
     public event Action<StatusEffect> StatusRemoved;
+    public event Action StateReset;
 
     void Awake()
     {
@@ -238,6 +239,8 @@ public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
         };
 
         m_StatusEffects.Clear();
+
+        StateReset?.Invoke();
     }
 
     public void RefreshStats()

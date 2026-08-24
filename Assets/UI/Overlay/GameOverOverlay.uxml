@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=4bb66d1dc93197b429debae68eb898e8&amp;type=3#GameUI"/>
     <Style src="project://database/Assets/UI/Menu/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=7092ed0d9a2219e43b511b70a9033ac7&amp;type=3#MainMenuStyles"/>
-    <ui:VisualElement name="GameOverPanel" style="display: none; flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: space-around;">
-        <ui:Label text="Game Over" name="GameOverMessage" style="color: rgb(255, 255, 255);"/>
-        <ui:Button text="Restart" name="RestartRunButton" class="menu-button"/>
-        <ui:Button text="Return to Menu" name="ReturnToMenuButton" class="menu-button"/>
+    <ui:VisualElement name="GameOverPanel" class="game-over-panel" style="display: none; flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center;">
+        <ui:VisualElement name="GameOverPanelLabelsContainer" style="align-items: center; margin-bottom: 48px;">
+            <ui:Label text="GAME OVER" name="GameOverBannerLabel" class="game-over-banner"/>
+            <ui:Label text="Placeholder" name="GameOverLevelsTraveledLabel" style="color: rgb(255, 255, 255); margin-bottom: 16px; -unity-text-align: middle-center; font-size: 16px;"/>
+            <ui:Label text="Placeholder" name="GameOverReasonLabel" class="game-over-panel-label" style="color: rgb(236, 54, 54); -unity-text-align: middle-center; -unity-font-style: bold;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="GameOverPanelButtonsContainer" style="align-items: center;">
+            <ui:Button text="Restart" name="RestartRunButton" class="menu-button" style="margin-bottom: 16px;"/>
+            <ui:Button text="Return to Menu" name="ReturnToMenuButton" class="menu-button" style="margin-bottom: 0; margin-top: 0;"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

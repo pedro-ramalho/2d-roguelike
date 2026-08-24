@@ -52,6 +52,12 @@ public class CombatantHUD : MonoBehaviour
             Bind(combatant);
     }
 
+    void OnEnable()
+    {
+        if (m_Combatant != null)
+            RefreshBars();
+    }
+
     void OnDisable()
     {
         if (m_Root != null)
@@ -83,6 +89,8 @@ public class CombatantHUD : MonoBehaviour
             m_Combatant.BlockAdded -= OnStatChanged;
             m_Combatant.StatusApplied -= OnStatusApplied;
             m_Combatant.StatusRemoved -= OnStatusRemoved;
+            m_Combatant.Defeated -= OnCombatantDefeated;
+            m_Combatant.StateReset -= RefreshBars;
         }
 
         if (m_TurnManager != null)
@@ -133,6 +141,12 @@ public class CombatantHUD : MonoBehaviour
         m_Slots.Remove(effect.Type);
     }
 
+    void OnCombatantDefeated()
+    {
+        m_Root.style.visibility = Visibility.Hidden;
+        enabled = false;
+    }
+
     void RefreshSlotDurations()
     {
         foreach (StatusEffect effect in m_Combatant.StatusEffects)
@@ -148,6 +162,8 @@ public class CombatantHUD : MonoBehaviour
         m_Combatant.BlockAdded += OnStatChanged;
         m_Combatant.StatusApplied += OnStatusApplied;
         m_Combatant.StatusRemoved += OnStatusRemoved;
+        m_Combatant.Defeated += OnCombatantDefeated;
+        m_Combatant.StateReset += RefreshBars;
 
         m_TurnManager = GameManager.Instance.TurnManager;
         m_TurnManager.OnTick += RefreshSlotDurations;

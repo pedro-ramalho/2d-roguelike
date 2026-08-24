@@ -7,7 +7,8 @@ public class GameOverHUD : MonoBehaviour
     private PlayerInputActions m_InputActions;
 
     private VisualElement m_GameOverPanel;
-    private Label m_GameOverMessage;
+    private Label m_GameOverLevelsTraveledLabel;
+    private Label m_GameOverReasonLabel;
     private Button m_RestartRunButton;
     private Button m_ReturnToMenuButton;
 
@@ -32,9 +33,18 @@ public class GameOverHUD : MonoBehaviour
         VisualElement root = m_UIDocument.rootVisualElement;
 
         m_GameOverPanel = root.Q<VisualElement>("GameOverPanel");
-        m_GameOverMessage = m_GameOverPanel.Q<Label>("GameOverMessage");
-        m_RestartRunButton = m_GameOverPanel.Q<Button>("RestartRunButton");
-        m_ReturnToMenuButton = m_GameOverPanel.Q<Button>("ReturnToMenuButton");
+
+        VisualElement labelsContainer = m_GameOverPanel.Q<VisualElement>(
+            "GameOverPanelLabelsContainer"
+        );
+        VisualElement buttonsContainer = m_GameOverPanel.Q<VisualElement>(
+            "GameOverPanelButtonsContainer"
+        );
+
+        m_GameOverLevelsTraveledLabel = labelsContainer.Q<Label>("GameOverLevelsTraveledLabel");
+        m_GameOverReasonLabel = labelsContainer.Q<Label>("GameOverReasonLabel");
+        m_RestartRunButton = buttonsContainer.Q<Button>("RestartRunButton");
+        m_ReturnToMenuButton = buttonsContainer.Q<Button>("ReturnToMenuButton");
 
         m_GameOverPanel.style.display = DisplayStyle.None;
 
@@ -78,11 +88,19 @@ public class GameOverHUD : MonoBehaviour
 
         string levelString = levels > 1 ? "levels" : "level";
         string reasonString =
-            reason == GameOverReason.Depleted ? "You ran out of stamina!" : "You were defeated!";
+            reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
 
         m_GameOverPanel.style.display = DisplayStyle.Flex;
-        m_GameOverMessage.text =
-            $"Game Over! {reasonString}\n\nYou traveled through {levels} {levelString}.\n\nPress Enter to restart.";
+        m_GameOverPanel
+            .schedule.Execute(() =>
+                m_GameOverPanel.EnableInClassList("game-over-panel--visible", true)
+            )
+            .StartingIn(16);
+
+        m_GameOverLevelsTraveledLabel.text =
+            $"You traveled through {levels} {levelString}, but in the end...";
+        m_GameOverReasonLabel.text =
+            reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
     }
 
     void OnRestartRunButtonPress()
@@ -101,6 +119,7 @@ public class GameOverHUD : MonoBehaviour
     void OnGameStart()
     {
         m_IsGameOver = false;
+        m_GameOverPanel.EnableInClassList("game-over-panel--visible", false);
         m_GameOverPanel.style.display = DisplayStyle.None;
     }
 }

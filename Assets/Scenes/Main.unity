@@ -8709,6 +8709,7 @@ MonoBehaviour:
   m_HurtSFX: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
   m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
   m_StepSFX: {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
+  m_DestroyOnDeath: 0
 --- !u!114 &1653753616
 MonoBehaviour:
   m_ObjectHideFlags: 0
