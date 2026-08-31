@@ -42,6 +42,8 @@ public class LevelTransitionManager : MonoBehaviour
 
             yield return null;
         }
+
+        m_LevelTransitionPanel.style.opacity = 0f;
     }
 
     public IEnumerator FadeOutCoroutine(int levelNumber, string name)
