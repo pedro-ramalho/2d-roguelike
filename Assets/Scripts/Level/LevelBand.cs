@@ -13,6 +13,9 @@ public class LevelBand : ScriptableObject
 {
     public BandType Type;
 
+    [Header("Band Name")]
+    public string Name;
+
     [Header("Level Range")]
     public int MinLevel;
     public int MaxLevel;

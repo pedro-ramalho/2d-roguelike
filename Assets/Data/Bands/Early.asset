@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Early
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 1
+  Name: Early
   MinLevel: 4
   MaxLevel: 8
   BoardWidth: 10
