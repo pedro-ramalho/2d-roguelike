@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Late
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 3
+  Name: Late
   MinLevel: 16
   MaxLevel: 1000
   BoardWidth: 14

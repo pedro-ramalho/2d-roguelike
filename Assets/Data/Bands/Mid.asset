@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mid
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 2
+  Name: Mid
   MinLevel: 9
   MaxLevel: 15
   BoardWidth: 12

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 0
+  Name: Tutorial
   MinLevel: 1
   MaxLevel: 3
   BoardWidth: 8
