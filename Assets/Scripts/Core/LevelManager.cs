@@ -78,11 +78,11 @@ public class LevelManager : MonoBehaviour
         m_CurrentLevel = level;
         LevelChanged?.Invoke(m_CurrentLevel);
 
-        ResolveBand(m_CurrentLevel);
+        LevelBand band = ResolveBand(m_CurrentLevel);
 
         AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
 
-        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel);
+        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel, band.Name);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);

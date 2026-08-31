@@ -10,6 +10,7 @@ public class LevelTransitionManager : MonoBehaviour
     // UI Elements
     private VisualElement m_LevelTransitionPanel;
     private Label m_NewLevelLabel;
+    private Label m_BandNameLabel;
 
     // Animation parameters
     private readonly float m_FadeDuration = 0.5f;
@@ -19,10 +20,14 @@ public class LevelTransitionManager : MonoBehaviour
         VisualElement root = m_UIDocument.rootVisualElement;
 
         m_LevelTransitionPanel = root.Q<VisualElement>("LevelTransitionPanel");
+
         m_NewLevelLabel = m_LevelTransitionPanel.Q<Label>("NewLevelLabel");
+        m_BandNameLabel = m_LevelTransitionPanel.Q<Label>("BandNameLabel");
     }
 
     void SetLevelText(int levelNumber) => m_NewLevelLabel.text = $"Level {levelNumber}";
+
+    void SetBandNameText(string name) => m_BandNameLabel.text = name;
 
     public IEnumerator FadeInCoroutine()
     {
@@ -39,9 +44,10 @@ public class LevelTransitionManager : MonoBehaviour
         }
     }
 
-    public IEnumerator FadeOutCoroutine(int levelNumber)
+    public IEnumerator FadeOutCoroutine(int levelNumber, string name)
     {
         SetLevelText(levelNumber);
+        SetBandNameText(name);
 
         float elapsed = 0;
         float opacity = m_LevelTransitionPanel.style.opacity.value;
