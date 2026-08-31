@@ -123,7 +123,7 @@ public class LevelManager : MonoBehaviour
     {
         m_PlayerController.Combatant.RefreshStats();
 
-        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel, band.Name);
+        yield return m_LevelTransitionManager.FadeOutCoroutine(band);
 
         RebuildLevel();
 

@@ -25,9 +25,11 @@ public class LevelTransitionManager : MonoBehaviour
         m_BandNameLabel = m_LevelTransitionPanel.Q<Label>("BandNameLabel");
     }
 
-    void SetLevelText(int levelNumber) => m_NewLevelLabel.text = $"Level {levelNumber}";
-
-    void SetBandNameText(string name) => m_BandNameLabel.text = name;
+    void SetLevelTransitionText(LevelBand band)
+    {
+        m_NewLevelLabel.text = $"Levels {band.MinLevel} - {band.MaxLevel}";
+        m_BandNameLabel.text = band.Name;
+    }
 
     public IEnumerator FadeInCoroutine()
     {
@@ -46,10 +48,16 @@ public class LevelTransitionManager : MonoBehaviour
         m_LevelTransitionPanel.style.opacity = 0f;
     }
 
-    public IEnumerator FadeOutCoroutine(int levelNumber, string name)
+    public IEnumerator FadeOutCoroutine(LevelBand band)
     {
-        SetLevelText(levelNumber);
-        SetBandNameText(name);
+        SetLevelTransitionText(band);
+
+        if (band.Type == BandType.Tutorial)
+        {
+            m_LevelTransitionPanel.style.opacity = 1f;
+
+            yield break;
+        }
 
         float elapsed = 0;
         float opacity = m_LevelTransitionPanel.style.opacity.value;
