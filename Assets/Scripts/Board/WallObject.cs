@@ -3,6 +3,10 @@ using UnityEngine.Tilemaps;
 
 public class WallObject : CellObject
 {
+    [Header("SFX Clips")]
+    [SerializeField]
+    private AudioClip[] m_BreakSFX;
+
     private int m_HealthPoint;
     private Tile m_OriginalTile;
 
@@ -30,6 +34,9 @@ public class WallObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         m_HealthPoint--;
+
+        if (m_BreakSFX != null && m_BreakSFX.Length > 0)
+            AudioManager.Instance.PlayRandomSFXFromList(m_BreakSFX);
 
         if (m_HealthPoint > 0)
         {

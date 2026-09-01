@@ -209,12 +209,16 @@ public class CombatantAnimator : MonoBehaviour
 
     public void PlayHurtAnimation(DamageResult result)
     {
-        if (m_HurtCoroutine != null)
-            StopCoroutine(m_HurtCoroutine);
+        if (result.BlockLost > 0)
+            AudioManager.Instance.PlayRandomSFXFromList(m_BlockSFX);
 
         if (result.HPLost > 0)
         {
             AudioManager.Instance.PlayRandomSFXFromList(m_HurtSFX);
+
+            if (m_HurtCoroutine != null)
+                StopCoroutine(m_HurtCoroutine);
+
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
         }
     }
