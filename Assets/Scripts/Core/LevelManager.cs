@@ -127,7 +127,7 @@ public class LevelManager : MonoBehaviour
 
         RebuildLevel();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
 
         yield return m_LevelTransitionManager.FadeInCoroutine();
     }

@@ -7,6 +7,13 @@ public class LevelTransitionManager : MonoBehaviour
     [SerializeField]
     private UIDocument m_UIDocument;
 
+    [Header("Typewriter Settings")]
+    [SerializeField]
+    private float m_TypeInterval = 0.04f;
+
+    [SerializeField]
+    private AudioClip m_TypeSFX;
+
     // UI Elements
     private VisualElement m_LevelTransitionPanel;
     private Label m_NewLevelLabel;
@@ -27,8 +34,32 @@ public class LevelTransitionManager : MonoBehaviour
 
     void SetLevelTransitionText(LevelBand band)
     {
-        m_NewLevelLabel.text = $"Levels {band.MinLevel} - {band.MaxLevel}";
+        m_NewLevelLabel.text = "";
+        StartCoroutine(TypewriterCoroutine($"Levels {band.MinLevel} - {band.MaxLevel}"));
+
         m_BandNameLabel.text = band.Name;
+    }
+
+    IEnumerator TypewriterCoroutine(string text)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        for (int i = 1; i <= text.Length; i++)
+        {
+            m_NewLevelLabel.text = text.Substring(0, i);
+            char c = text[i - 1];
+
+            if (!char.IsWhiteSpace(c))
+            {
+                if (AudioManager.Instance != null && m_TypeSFX != null)
+                    AudioManager.Instance.PlaySFXWithPitch(
+                        m_TypeSFX,
+                        1f + Random.Range(-0.08f, 0.08f)
+                    );
+            }
+
+            yield return new WaitForSeconds(m_TypeInterval);
+        }
     }
 
     public IEnumerator FadeInCoroutine()
