@@ -71,39 +71,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    IEnumerator GoToLevelCoroutine(int level)
-    {
-        m_PlayerController.gameObject.SetActive(false);
-
-        m_CurrentLevel = level;
-        LevelChanged?.Invoke(m_CurrentLevel);
-
-        LevelBand band = ResolveBand(m_CurrentLevel);
-
-        AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
-
-        yield return m_LevelTransitionManager.FadeOutCoroutine(m_CurrentLevel, band.Name);
-
-        m_BoardManager.Clean();
-        m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
-
-        UpdateConfiner();
-
-        m_BoardGenerator.GenerateBoard(
-            m_BoardManager,
-            m_TurnManager,
-            m_PlayerController,
-            m_CurrentLevel
-        );
-
-        m_PlayerController.gameObject.SetActive(true);
-        m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
-
-        yield return new WaitForSeconds(3f);
-
-        yield return m_LevelTransitionManager.FadeInCoroutine();
-    }
-
     void OnPlayerDefeated() => TriggerGameOver(GameOverReason.Defeated);
 
     void OnPlayerDepleted() => TriggerGameOver(GameOverReason.Depleted);
@@ -115,7 +82,55 @@ public class LevelManager : MonoBehaviour
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 
-    public void GoToLevel(int level) => StartCoroutine(GoToLevelCoroutine(level));
+    public void GoToLevel(int level)
+    {
+        m_CurrentLevel = level;
+        LevelChanged?.Invoke(m_CurrentLevel);
+
+        LevelBand previousBand = m_CurrentBand;
+        LevelBand newBand = ResolveBand(m_CurrentLevel);
+
+        bool crossedBand = previousBand != newBand;
+
+        if (crossedBand)
+            StartCoroutine(BandTransitionCoroutine(newBand));
+        else
+            RebuildLevel();
+    }
+
+    void RebuildLevel()
+    {
+        m_PlayerController.gameObject.SetActive(false);
+
+        AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
+
+        m_BoardManager.Clean();
+        m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
+        UpdateConfiner();
+
+        m_BoardGenerator.GenerateBoard(
+            m_BoardManager,
+            m_TurnManager,
+            m_PlayerController,
+            m_CurrentLevel
+        );
+
+        m_PlayerController.gameObject.SetActive(true);
+        m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
+    }
+
+    IEnumerator BandTransitionCoroutine(LevelBand band)
+    {
+        m_PlayerController.Combatant.RefreshStats();
+
+        yield return m_LevelTransitionManager.FadeOutCoroutine(band);
+
+        RebuildLevel();
+
+        yield return new WaitForSeconds(4f);
+
+        yield return m_LevelTransitionManager.FadeInCoroutine();
+    }
 
     public void NewLevel()
     {
@@ -131,27 +146,13 @@ public class LevelManager : MonoBehaviour
         GameStartTriggered?.Invoke();
 
         m_CurrentBand = null;
-        m_CurrentLevel = 1;
-        LevelChanged?.Invoke(m_CurrentLevel);
-        ResolveBand(m_CurrentLevel);
-
-        m_BoardManager.Clean();
-        m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
-
-        UpdateConfiner();
-
-        m_BoardGenerator.GenerateBoard(
-            m_BoardManager,
-            m_TurnManager,
-            m_PlayerController,
-            m_CurrentLevel
-        );
+        m_CurrentLevel = 0;
 
         m_PlayerController.Combatant.ResetState();
-
         m_PlayerController.Init();
-        m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
         m_PlayerController.SetVisible(true);
+
+        GoToLevel(1);
     }
 
     void UpdateConfiner()
@@ -174,10 +175,6 @@ public class LevelManager : MonoBehaviour
             {
                 m_BoardWidth = band.BoardWidth;
                 m_BoardHeight = band.BoardHeight;
-
-                if (m_CurrentBand != null && m_CurrentBand != band)
-                    m_PlayerController.Combatant.RefreshStats();
-
                 m_CurrentBand = band;
 
                 return band;
