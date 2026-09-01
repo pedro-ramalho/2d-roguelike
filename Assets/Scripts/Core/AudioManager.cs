@@ -53,6 +53,15 @@ public class AudioManager : MonoBehaviour
         m_SFXSource.PlayOneShot(clip, volume);
     }
 
+    public void PlayRandomSFXFromList(AudioClip[] clips, float volume = 1f)
+    {
+        if (clips == null || clips.Length == 0)
+            return;
+
+        int randomIndex = Random.Range(0, clips.Length);
+        PlaySFX(clips[randomIndex], volume);
+    }
+
     public void SetVolume(string parameter, float linear)
     {
         float dB = linear > 0.0001f ? Mathf.Log10(linear) * 20f : -80f;

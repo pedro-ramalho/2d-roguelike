@@ -6,16 +6,16 @@ public class CombatantAnimator : MonoBehaviour
 {
     [Header("SFX Clips")]
     [SerializeField]
-    private AudioClip m_AttackSFX;
+    private AudioClip[] m_HurtSFX;
 
     [SerializeField]
-    private AudioClip m_HurtSFX;
+    private AudioClip[] m_BlockSFX;
+
+    [SerializeField]
+    private AudioClip[] m_StepSFX;
 
     [SerializeField]
     private AudioClip m_DeathSFX;
-
-    [SerializeField]
-    private AudioClip m_StepSFX;
 
     [Header("Death Handling")]
     [SerializeField]
@@ -195,7 +195,7 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_WalkCoroutine);
 
         SetSpriteFacing(direction);
-        AudioManager.Instance.PlaySFX(m_StepSFX);
+        AudioManager.Instance.PlayRandomSFXFromList(m_StepSFX);
         m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
     }
 
@@ -214,7 +214,7 @@ public class CombatantAnimator : MonoBehaviour
 
         if (result.HPLost > 0)
         {
-            AudioManager.Instance.PlaySFX(m_HurtSFX);
+            AudioManager.Instance.PlayRandomSFXFromList(m_HurtSFX);
             m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
         }
     }
@@ -234,7 +234,6 @@ public class CombatantAnimator : MonoBehaviour
             StopCoroutine(m_AttackCoroutine);
 
         SetSpriteFacing(direction);
-        AudioManager.Instance.PlaySFX(m_AttackSFX);
         m_Animator.SetTrigger(m_AttackHash);
         m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction));
     }
