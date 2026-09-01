@@ -62,6 +62,16 @@ public class AudioManager : MonoBehaviour
         PlaySFX(clips[randomIndex], volume);
     }
 
+    public void PlaySFXWithPitch(AudioClip clip, float pitch, float volume = 1f)
+    {
+        if (clip == null)
+            return;
+
+        m_SFXSource.pitch = pitch;
+        m_SFXSource.PlayOneShot(clip, volume);
+        m_SFXSource.pitch = 1f;
+    }
+
     public void SetVolume(string parameter, float linear)
     {
         float dB = linear > 0.0001f ? Mathf.Log10(linear) * 20f : -80f;
