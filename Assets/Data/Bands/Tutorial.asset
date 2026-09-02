@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 0
   Name: Tutorial
+  Track: {fileID: 8300000, guid: dddfeae95d5224d43a8be565cc6b8aa5, type: 3}
   MinLevel: 1
   MaxLevel: 3
   BoardWidth: 8
