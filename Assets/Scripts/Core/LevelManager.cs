@@ -20,10 +20,10 @@ public class LevelManager : MonoBehaviour
     private BoardGenerator m_BoardGenerator;
 
     [SerializeField]
-    private AudioClip m_LevelTransitionSFX;
+    private AudioClip m_GameOverDefeatedSFX;
 
     [SerializeField]
-    private AudioClip m_GameOverSFX;
+    private AudioClip m_GameOverDepletedSFX;
 
     [SerializeField]
     private BoxCollider2D m_ConfinerBounds;
@@ -78,7 +78,11 @@ public class LevelManager : MonoBehaviour
     void TriggerGameOver(GameOverReason reason)
     {
         m_PlayerController.GameOver();
-        AudioManager.Instance.PlaySFX(m_GameOverSFX);
+
+        AudioClip sfx =
+            reason == GameOverReason.Defeated ? m_GameOverDefeatedSFX : m_GameOverDepletedSFX;
+        AudioManager.Instance.PlaySFX(sfx);
+
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 
@@ -101,8 +105,6 @@ public class LevelManager : MonoBehaviour
     void RebuildLevel()
     {
         m_PlayerController.gameObject.SetActive(false);
-
-        AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
 
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);

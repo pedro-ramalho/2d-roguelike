@@ -1223,7 +1223,8 @@ MonoBehaviour:
   m_LevelTransitionManager: {fileID: 270326508}
   m_BoardGenerator: {fileID: 1160969522}
   m_LevelTransitionSFX: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
-  m_GameOverSFX: {fileID: 8300000, guid: b6b608537288246c9a464915db27bf52, type: 3}
+  m_GameOverDefeatedSFX: {fileID: 8300000, guid: 545df749671160747b6f7a28de17512f, type: 3}
+  m_GameOverDepletedSFX: {fileID: 8300000, guid: 92bf124968cc57348b41d639cdbfa05f, type: 3}
   m_ConfinerBounds: {fileID: 1831454673}
   m_Confiner: {fileID: 413544372}
 --- !u!1 &1379060560
