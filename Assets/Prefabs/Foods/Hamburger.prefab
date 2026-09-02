@@ -113,4 +113,6 @@ MonoBehaviour:
     Amount: 14
   - Band: 3
     Amount: 16
-  m_ConsumeSFX: {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  m_ConsumeSFX:
+  - {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  - {fileID: 8300000, guid: 062161c1897a54088a5430f8c197e1b8, type: 3}

@@ -6,7 +6,7 @@ public abstract class FoodObject : CellObject
     private BandAmount[] m_BandAmounts;
 
     [SerializeField]
-    protected AudioClip m_ConsumeSFX;
+    protected AudioClip[] m_ConsumeSFX;
 
     protected abstract void ApplyEffect(PlayerController player);
 
@@ -26,6 +26,8 @@ public abstract class FoodObject : CellObject
     public override void PlayerEntered(PlayerController player)
     {
         m_Board.ClearCell(m_Cell);
+
+        AudioManager.Instance.PlayRandomSFXFromList(m_ConsumeSFX);
 
         ApplyEffect(player);
 
