@@ -115,3 +115,7 @@
 .settings-slider .unity-base-slider__dragger:hover {
     background-color: rgb(200, 200, 200);
 }
+
+.hidden {
+    visibility: hidden;
+}

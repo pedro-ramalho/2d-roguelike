@@ -568,7 +568,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverHUD
   m_UIDocument: {fileID: 389906931}
   m_LevelManager: {fileID: 1339684672}
-  m_ClickSFX: {fileID: 0}
+  m_ClickSFX: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
+  m_GameOverDepletedSFX: {fileID: 8300000, guid: 6c0d70035ab5f7047802d412629d6bf5, type: 3}
+  m_GameOverDefeatedSFX: {fileID: 8300000, guid: 12d6b1ad98392084586d90b96e9cbb37, type: 3}
 --- !u!1 &472713372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,9 +1224,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   m_LevelTransitionManager: {fileID: 270326508}
   m_BoardGenerator: {fileID: 1160969522}
-  m_LevelTransitionSFX: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
-  m_GameOverDefeatedSFX: {fileID: 8300000, guid: 545df749671160747b6f7a28de17512f, type: 3}
-  m_GameOverDepletedSFX: {fileID: 8300000, guid: 92bf124968cc57348b41d639cdbfa05f, type: 3}
   m_ConfinerBounds: {fileID: 1831454673}
   m_Confiner: {fileID: 413544372}
 --- !u!1 &1379060560
