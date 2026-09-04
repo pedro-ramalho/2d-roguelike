@@ -11,53 +11,102 @@ namespace Board
 {
     public class BoardGenerator : MonoBehaviour
     {
-        // Tiles
         [SerializeField]
         private Tile[] m_GroundTiles;
 
         [SerializeField]
         private Tile[] m_WallTiles;
 
-        // Prefabs
         [SerializeField]
         private WallObject m_WallPrefab;
 
         [SerializeField]
         private ExitCellObject m_ExitPrefab;
 
-        // Private references
         private BoardManager m_BoardManager;
         private LevelBand m_CurrentBand;
 
-        // Empty cells
         private List<Vector2Int> m_EmptyCells;
 
-        // Level
-        private int m_CurrentLevel;
+        void Setup(BoardManager board)
+        {
+            m_BoardManager = board;
+            m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
+            m_EmptyCells = new List<Vector2Int>();
+        }
 
-        Vector2Int GetRandomEmptyCell()
+        void CreateBorderTile(Vector2Int coord)
+        {
+            Tile tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
+            m_BoardManager.SetCellTile(coord, tile);
+            m_BoardManager.SetCellPassable(coord, false);
+        }
+
+        void CreateGroundTile(Vector2Int coord)
+        {
+            Tile tile = m_GroundTiles[Random.Range(0, m_GroundTiles.Length)];
+            m_BoardManager.SetCellTile(coord, tile);
+            m_BoardManager.SetCellPassable(coord, true);
+            m_EmptyCells.Add(coord);
+        }
+
+        void CreateTile(int x, int y)
+        {
+            Vector2Int coord = new Vector2Int(x, y);
+
+            if (IsBorder(x, y))
+                CreateBorderTile(coord);
+            else
+                CreateGroundTile(coord);
+        }
+
+        void CreateTiles()
+        {
+            for (int y = 0; y < m_BoardManager.Height; y++)
+            for (int x = 0; x < m_BoardManager.Width; x++)
+                CreateTile(x, y);
+        }
+
+        void ReserveSpecialCells()
+        {
+            m_EmptyCells.Remove(new Vector2Int(1, 1));
+            m_EmptyCells.Remove(
+                new Vector2Int(m_BoardManager.Width - 2, m_BoardManager.Height - 2)
+            );
+        }
+
+        bool TryGetRandomEmptyCell(out Vector2Int coord)
         {
             if (m_EmptyCells.Count == 0)
-                return new Vector2Int(-1, -1);
+            {
+                coord = new Vector2Int(-1, -1);
+                return false;
+            }
 
             int index = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[index];
+            coord = m_EmptyCells[index];
             m_EmptyCells.RemoveAt(index);
 
-            return coord;
+            return true;
+        }
+
+        void GenerateExitCell()
+        {
+            Vector2Int endCoord = new Vector2Int(
+                m_BoardManager.Width - 2,
+                m_BoardManager.Height - 2
+            );
+            m_BoardManager.Place(m_ExitPrefab, endCoord);
         }
 
         void GenerateWalls()
         {
-            int wallCount = Random.Range(
-                m_CurrentBand.MinWallCount,
-                m_CurrentBand.MaxWallCount + 1
-            );
+            int count = Random.Range(m_CurrentBand.MinWallCount, m_CurrentBand.MaxWallCount + 1);
 
-            for (int i = 0; i < wallCount; i++)
+            for (int i = 0; i < count; i++)
             {
-                Vector2Int cell = GetRandomEmptyCell();
-                m_BoardManager.Place(m_WallPrefab, cell);
+                if (TryGetRandomEmptyCell(out Vector2Int coord))
+                    m_BoardManager.Place(m_WallPrefab, coord);
             }
         }
 
@@ -68,24 +117,17 @@ namespace Board
                 int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
                 for (int i = 0; i < count; i++)
-                {
-                    Vector2Int cell = GetRandomEmptyCell();
-                    m_BoardManager.Place(entry.Prefab, cell);
-                }
+                    if (TryGetRandomEmptyCell(out Vector2Int coord))
+                        m_BoardManager.Place(entry.Prefab, coord);
             }
         }
 
-        bool IsEliteLevel(int level) =>
-            level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
-
         EnemyController SpawnEnemy(EnemyController prefab)
         {
-            if (m_EmptyCells.Count == 0)
+            if (!TryGetRandomEmptyCell(out Vector2Int coord))
                 return null;
 
-            Vector2Int cell = GetRandomEmptyCell();
-
-            EnemyController enemy = m_BoardManager.Place(prefab, cell);
+            EnemyController enemy = m_BoardManager.Place(prefab, coord);
             enemy.Combatant.ApplyBandStats();
 
             return enemy;
@@ -107,55 +149,25 @@ namespace Board
                 }
             }
 
-            if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
+            if (GameManager.Instance.LevelManager.IsEliteLevel() && spawned.Count > 0)
             {
                 EnemyController chosen = spawned[Random.Range(0, spawned.Count)];
+
                 chosen.gameObject.AddComponent<EliteModifier>();
             }
         }
 
-        public void GenerateBoard(BoardManager boardManager, int currentLevel)
+        bool IsBorder(int x, int y) =>
+            x == 0 || y == 0 || x == m_BoardManager.Width - 1 || y == m_BoardManager.Height - 1;
+
+        public void GenerateBoard(BoardManager board)
         {
-            m_BoardManager = boardManager;
-            m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
-            m_CurrentLevel = currentLevel;
+            Setup(board);
 
-            m_EmptyCells = new List<Vector2Int>();
+            CreateTiles();
+            ReserveSpecialCells();
 
-            for (int y = 0; y < boardManager.Height; y++)
-            {
-                for (int x = 0; x < boardManager.Width; x++)
-                {
-                    Tile tile;
-                    Vector2Int coord = new Vector2Int(x, y);
-
-                    bool isBorder =
-                        x == 0
-                        || y == 0
-                        || x == boardManager.Width - 1
-                        || y == boardManager.Height - 1;
-                    if (isBorder)
-                    {
-                        tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
-                        m_BoardManager.SetCellPassable(coord, false);
-                    }
-                    else
-                    {
-                        tile = m_GroundTiles[Random.Range(0, m_GroundTiles.Length)];
-                        m_BoardManager.SetCellPassable(coord, true);
-                        m_EmptyCells.Add(coord);
-                    }
-
-                    m_BoardManager.SetCellTile(coord, tile);
-                }
-            }
-
-            m_EmptyCells.Remove(new Vector2Int(1, 1));
-
-            Vector2Int endCoord = new Vector2Int(boardManager.Width - 2, boardManager.Height - 2);
-            m_BoardManager.Place(m_ExitPrefab, endCoord);
-            m_EmptyCells.Remove(endCoord);
-
+            GenerateExitCell();
             GenerateWalls();
             GenerateFood();
             GenerateEnemies();

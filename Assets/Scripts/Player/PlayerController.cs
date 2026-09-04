@@ -1,6 +1,7 @@
 using Board;
 using Combat;
 using Core;
+using Enemy;
 using UnityEngine;
 
 namespace Player
@@ -69,11 +70,11 @@ namespace Player
             return Vector2Int.zero;
         }
 
-        void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
+        void HandleEnemyDamage(EnemyController enemy, Vector2Int target, BoardManager.CellData cell)
         {
-            m_Combatant.AttackTarget(enemy, target - m_Combatant.Cell);
+            m_Combatant.AttackTarget(enemy.Combatant, target - m_Combatant.Cell);
 
-            if (enemy.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
+            if (enemy.Combatant.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
                 cell.ContainedObject = null;
         }
 
@@ -88,7 +89,7 @@ namespace Player
 
             if (cell.ContainedObject == null)
                 MoveTo(target, false);
-            else if (cell.ContainedObject is ICombatant enemy)
+            else if (cell.ContainedObject is EnemyController enemy)
                 HandleEnemyDamage(enemy, target, cell);
             else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
             {

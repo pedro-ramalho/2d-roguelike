@@ -41,9 +41,6 @@ namespace Board
 
         public void Init(int width, int height)
         {
-            m_Tilemap = GetComponentInChildren<Tilemap>();
-            m_Grid = GetComponentInChildren<Grid>();
-
             m_Width = width;
             m_Height = height;
 

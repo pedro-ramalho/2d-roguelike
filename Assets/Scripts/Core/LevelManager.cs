@@ -12,7 +12,6 @@ namespace Core
     {
         // Private references
         private BoardManager m_BoardManager;
-        private TurnManager m_TurnManager;
         private PlayerController m_PlayerController;
 
         private LevelBand m_CurrentBand;
@@ -52,7 +51,6 @@ namespace Core
         void Start()
         {
             m_BoardManager = GameManager.Instance.BoardManager;
-            m_TurnManager = GameManager.Instance.TurnManager;
             m_PlayerController = GameManager.Instance.PlayerController;
 
             m_PlayerController.Combatant.Depleted += OnPlayerDepleted;
@@ -83,6 +81,9 @@ namespace Core
             GameOverTriggered?.Invoke(reason, m_CurrentLevel);
         }
 
+        public bool IsEliteLevel() =>
+            m_CurrentLevel % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
+
         public void GoToLevel(int level)
         {
             m_CurrentLevel = level;
@@ -107,7 +108,7 @@ namespace Core
             m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
             UpdateConfiner();
 
-            m_BoardGenerator.GenerateBoard(m_BoardManager, m_CurrentLevel);
+            m_BoardGenerator.GenerateBoard(m_BoardManager);
 
             m_PlayerController.gameObject.SetActive(true);
             m_PlayerController.Spawn(m_PlayerSpawnCell);

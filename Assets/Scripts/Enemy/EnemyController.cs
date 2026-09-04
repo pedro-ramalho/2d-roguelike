@@ -59,7 +59,7 @@ namespace Enemy
             BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Combatant.Cell);
             currentCell.ContainedObject = null;
 
-            targetCell.ContainedObject = m_Combatant;
+            targetCell.ContainedObject = this;
             m_Combatant.SetCell(coord);
 
             m_CombatantAnimator.PlayWalkAnimation(coord, direction);
