@@ -10,10 +10,10 @@ namespace Board
 
         public GameObject GameObject => gameObject;
 
-        public virtual void Init(BoardManager board, Vector2Int cell)
+        protected virtual void Awake()
         {
-            m_Board = board;
-            m_Cell = cell;
+            m_Board = Core.GameManager.Instance.BoardManager;
+            m_Cell = m_Board.WorldToCell(transform.position);
         }
 
         public virtual void PlayerEntered(PlayerController player) { }

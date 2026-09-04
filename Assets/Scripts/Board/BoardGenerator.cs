@@ -27,7 +27,6 @@ namespace Board
 
         // Private references
         private BoardManager m_BoardManager;
-        private PlayerController m_PlayerController;
         private LevelBand m_CurrentBand;
 
         // Empty cells
@@ -58,11 +57,7 @@ namespace Board
             for (int i = 0; i < wallCount; i++)
             {
                 Vector2Int cell = GetRandomEmptyCell();
-                WallObject wall = Instantiate(m_WallPrefab);
-
-                wall.Init(m_BoardManager, cell);
-
-                m_BoardManager.AddObject(wall, cell);
+                m_BoardManager.Place(m_WallPrefab, cell);
             }
         }
 
@@ -75,11 +70,7 @@ namespace Board
                 for (int i = 0; i < count; i++)
                 {
                     Vector2Int cell = GetRandomEmptyCell();
-                    FoodObject food = Instantiate(entry.Prefab);
-
-                    food.Init(m_BoardManager, cell);
-
-                    m_BoardManager.AddObject(food, cell);
+                    m_BoardManager.Place(entry.Prefab, cell);
                 }
             }
         }
@@ -94,10 +85,7 @@ namespace Board
 
             Vector2Int cell = GetRandomEmptyCell();
 
-            EnemyController enemy = Instantiate(prefab);
-            m_BoardManager.AddObject(enemy.Combatant, cell);
-            enemy.SnapTo(cell);
-
+            EnemyController enemy = m_BoardManager.Place(prefab, cell);
             enemy.Combatant.ApplyBandStats();
 
             return enemy;
@@ -126,14 +114,9 @@ namespace Board
             }
         }
 
-        public void GenerateBoard(
-            BoardManager boardManager,
-            PlayerController playerController,
-            int currentLevel
-        )
+        public void GenerateBoard(BoardManager boardManager, int currentLevel)
         {
             m_BoardManager = boardManager;
-            m_PlayerController = playerController;
             m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
             m_CurrentLevel = currentLevel;
 
@@ -170,8 +153,7 @@ namespace Board
             m_EmptyCells.Remove(new Vector2Int(1, 1));
 
             Vector2Int endCoord = new Vector2Int(boardManager.Width - 2, boardManager.Height - 2);
-            m_BoardManager.AddObject(Instantiate(m_ExitPrefab), endCoord);
-            m_ExitPrefab.Init(m_BoardManager, endCoord);
+            m_BoardManager.Place(m_ExitPrefab, endCoord);
             m_EmptyCells.Remove(endCoord);
 
             GenerateWalls();

@@ -107,10 +107,10 @@ namespace Core
             m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
             UpdateConfiner();
 
-            m_BoardGenerator.GenerateBoard(m_BoardManager, m_PlayerController, m_CurrentLevel);
+            m_BoardGenerator.GenerateBoard(m_BoardManager, m_CurrentLevel);
 
             m_PlayerController.gameObject.SetActive(true);
-            m_PlayerController.Spawn(m_BoardManager, m_PlayerSpawnCell);
+            m_PlayerController.Spawn(m_PlayerSpawnCell);
         }
 
         IEnumerator BandTransitionCoroutine(LevelBand band)

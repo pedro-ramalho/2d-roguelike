@@ -1042,6 +1042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b29ea21c80e59409e9c83854c94764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardManager
+  m_Grid: {fileID: 1160969519}
+  m_Tilemap: {fileID: 1437948160}
 --- !u!114 &1160969522
 MonoBehaviour:
   m_ObjectHideFlags: 0

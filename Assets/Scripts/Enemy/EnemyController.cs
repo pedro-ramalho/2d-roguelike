@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public abstract class EnemyController : MonoBehaviour
+    public abstract class EnemyController : MonoBehaviour, ICellOccupant
     {
         // Private references
         private BoardManager m_BoardManager;
@@ -16,16 +16,14 @@ namespace Enemy
         private Combatant m_Combatant;
         private CombatantAnimator m_CombatantAnimator;
 
-        // State
-        private Vector2Int m_Cell;
-
         // Protected properties
         protected CombatantAnimator Animator => m_CombatantAnimator;
-        protected Vector2Int PlayerCell => m_PlayerController.Cell;
+        protected Vector2Int PlayerCell => m_PlayerController.Combatant.Cell;
 
         // Public properties
         public Combatant Combatant => m_Combatant;
-        public Vector2Int Cell => m_Cell;
+
+        public GameObject GameObject => gameObject;
 
         void Awake()
         {
@@ -56,23 +54,17 @@ namespace Enemy
             if (isInvalidCell)
                 return false;
 
-            Vector2Int direction = coord - m_Cell;
+            Vector2Int direction = coord - m_Combatant.Cell;
 
-            BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Cell);
+            BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Combatant.Cell);
             currentCell.ContainedObject = null;
 
             targetCell.ContainedObject = m_Combatant;
-            m_Cell = coord;
+            m_Combatant.SetCell(coord);
 
             m_CombatantAnimator.PlayWalkAnimation(coord, direction);
 
             return true;
-        }
-
-        public void SnapTo(Vector2Int coord)
-        {
-            m_Cell = coord;
-            transform.position = m_BoardManager.CellToWorld(coord);
         }
 
         protected bool CanEnterCell(Vector2Int coord)
@@ -89,10 +81,10 @@ namespace Enemy
             return true;
         }
 
-        protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
+        protected bool TryMove(Vector2Int direction) => MoveTo(m_Combatant.Cell + direction);
 
         protected bool IsInLineOfSightToPlayer() =>
-            m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
+            m_BoardManager.IsInLineOfSight(m_Combatant.Cell, m_PlayerController.Combatant.Cell);
 
         protected bool IsAdjacentToPlayer(Vector2Int delta) =>
             Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
@@ -118,7 +110,8 @@ namespace Enemy
 
         protected Vector3 PlayerCellToWorld() => m_BoardManager.CellToWorld(PlayerCell);
 
-        protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
+        protected Vector2Int ComputeDeltaToPlayer() =>
+            m_PlayerController.Combatant.Cell - m_Combatant.Cell;
 
         protected void DealDamageToPlayer()
         {

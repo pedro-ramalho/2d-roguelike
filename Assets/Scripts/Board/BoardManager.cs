@@ -11,9 +11,13 @@ namespace Board
             public ICellOccupant ContainedObject;
         }
 
-        private Tilemap m_Tilemap;
-        private CellData[,] m_BoardData;
+        [SerializeField]
         private Grid m_Grid;
+
+        [SerializeField]
+        private Tilemap m_Tilemap;
+
+        private CellData[,] m_BoardData;
 
         private int m_Width;
         private int m_Height;
@@ -50,16 +54,20 @@ namespace Board
                 m_BoardData[x, y] = new CellData();
         }
 
-        public void AddObject(ICellOccupant occupant, Vector2Int coord)
+        public T Place<T>(T prefab, Vector2Int cell)
+            where T : Component, ICellOccupant
         {
-            CellData data = m_BoardData[coord.x, coord.y];
+            T instance = Instantiate(prefab, CellToWorld(cell), Quaternion.identity);
+            m_BoardData[cell.x, cell.y].ContainedObject = instance;
 
-            occupant.GameObject.transform.position = CellToWorld(coord);
-            data.ContainedObject = occupant;
+            return instance;
         }
 
         public Vector3 CellToWorld(Vector2Int cellIndex) =>
             m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
+
+        public Vector2Int WorldToCell(Vector3 worldPosition) =>
+            (Vector2Int)m_Grid.WorldToCell(worldPosition);
 
         public CellData GetCellData(Vector2Int cellIndex)
         {

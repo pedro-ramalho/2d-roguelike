@@ -16,22 +16,21 @@ namespace Board
         public Tile[] ObstacleTiles;
         public int MaxHealth = 2;
 
+        protected override void Awake()
+        {
+            base.Awake();
+
+            m_HealthPoint = MaxHealth;
+            m_OriginalTile = m_Board.GetCellTile(m_Cell);
+            m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
+        }
+
         Tile GetTileByHealthPoint()
         {
             if (m_HealthPoint <= 0)
                 return null;
 
             return ObstacleTiles[MaxHealth - m_HealthPoint];
-        }
-
-        public override void Init(BoardManager board, Vector2Int cell)
-        {
-            base.Init(board, cell);
-
-            m_HealthPoint = MaxHealth;
-
-            m_OriginalTile = m_Board.GetCellTile(cell);
-            m_Board.SetCellTile(cell, GetTileByHealthPoint());
         }
 
         public override bool PlayerWantsToEnter()
