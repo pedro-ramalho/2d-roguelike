@@ -51,9 +51,9 @@
 }
 
 .status-icon {
-    width: 16px;
-    height: 16px;
-    background-color: rgb(180, 180, 180);
+    width: 24px;
+    height: 24px;
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 .status-duration {
