@@ -6,7 +6,6 @@ public class Tomato : FoodObject
 {
     protected override void ApplyEffect(PlayerController player)
     {
-        AudioManager.Instance.PlaySFX(m_ConsumeSFX);
         List<StatusEffect> negativeStatuses = player
             .Combatant.StatusEffects.Where(s => s.IsNegative)
             .ToList();

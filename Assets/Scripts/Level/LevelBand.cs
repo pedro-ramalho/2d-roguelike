@@ -16,6 +16,9 @@ public class LevelBand : ScriptableObject
     [Header("Band Name")]
     public string Name;
 
+    [Header("Background Track")]
+    public AudioClip Track;
+
     [Header("Level Range")]
     public int MinLevel;
     public int MaxLevel;

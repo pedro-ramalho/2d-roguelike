@@ -20,12 +20,6 @@ public class LevelManager : MonoBehaviour
     private BoardGenerator m_BoardGenerator;
 
     [SerializeField]
-    private AudioClip m_LevelTransitionSFX;
-
-    [SerializeField]
-    private AudioClip m_GameOverSFX;
-
-    [SerializeField]
     private BoxCollider2D m_ConfinerBounds;
 
     [SerializeField]
@@ -78,7 +72,9 @@ public class LevelManager : MonoBehaviour
     void TriggerGameOver(GameOverReason reason)
     {
         m_PlayerController.GameOver();
-        AudioManager.Instance.PlaySFX(m_GameOverSFX);
+
+        AudioManager.Instance.StopMusic();
+
         GameOverTriggered?.Invoke(reason, m_CurrentLevel);
     }
 
@@ -102,8 +98,6 @@ public class LevelManager : MonoBehaviour
     {
         m_PlayerController.gameObject.SetActive(false);
 
-        AudioManager.Instance.PlaySFX(m_LevelTransitionSFX);
-
         m_BoardManager.Clean();
         m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
         UpdateConfiner();
@@ -123,12 +117,15 @@ public class LevelManager : MonoBehaviour
     {
         m_PlayerController.Combatant.RefreshStats();
 
+        StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
+
         yield return m_LevelTransitionManager.FadeOutCoroutine(band);
 
         RebuildLevel();
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
 
+        StartCoroutine(AudioManager.Instance.FadeInMusicCoroutine(band.Track, 10f));
         yield return m_LevelTransitionManager.FadeInCoroutine();
     }
 

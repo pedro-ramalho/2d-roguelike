@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -43,6 +44,44 @@ public class AudioManager : MonoBehaviour
         m_MusicSource.Play();
     }
 
+    public IEnumerator FadeOutMusicCoroutine(float duration)
+    {
+        float startVolume = m_MusicSource.volume;
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            m_MusicSource.volume = Mathf.Lerp(startVolume, 0, elapsed / duration);
+            yield return null;
+        }
+
+        m_MusicSource.Stop();
+        m_MusicSource.volume = startVolume; // restore for next Play
+    }
+
+    public IEnumerator FadeInMusicCoroutine(AudioClip track, float duration)
+    {
+        if (track == null)
+            yield break;
+
+        m_MusicSource.clip = track;
+        m_MusicSource.loop = true;
+        m_MusicSource.volume = 0f;
+        m_MusicSource.Play();
+
+        float elapsed = 0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            m_MusicSource.volume = Mathf.Lerp(0, 1, elapsed / duration);
+            yield return null;
+        }
+
+        m_MusicSource.volume = 1f;
+    }
+
     public void StopMusic() => m_MusicSource.Stop();
 
     public void PlaySFX(AudioClip clip, float volume = 1f)
@@ -51,6 +90,15 @@ public class AudioManager : MonoBehaviour
             return;
 
         m_SFXSource.PlayOneShot(clip, volume);
+    }
+
+    public void PlayRandomSFXFromList(AudioClip[] clips, float volume = 1f)
+    {
+        if (clips == null || clips.Length == 0)
+            return;
+
+        int randomIndex = Random.Range(0, clips.Length);
+        PlaySFX(clips[randomIndex], volume);
     }
 
     public void PlaySFXWithPitch(AudioClip clip, float pitch, float volume = 1f)

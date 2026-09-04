@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 2
   Name: Mid
+  Track: {fileID: 8300000, guid: 63c0b415d448a46478f44d42b91bdaa2, type: 3}
   MinLevel: 9
   MaxLevel: 15
   BoardWidth: 12

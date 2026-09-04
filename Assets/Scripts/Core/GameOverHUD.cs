@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -23,6 +24,12 @@ public class GameOverHUD : MonoBehaviour
 
     [SerializeField]
     private AudioClip m_ClickSFX;
+
+    [SerializeField]
+    private AudioClip m_GameOverDepletedSFX;
+
+    [SerializeField]
+    private AudioClip m_GameOverDefeatedSFX;
 
     void Awake() => m_InputActions = new PlayerInputActions();
 
@@ -82,13 +89,43 @@ public class GameOverHUD : MonoBehaviour
             m_ReturnToMenuButton.clicked -= OnReturnToMenuButtonPress;
     }
 
-    void OnGameOver(GameOverReason reason, int levels)
+    IEnumerator RevealGameOverPanelElementsCoroutine(int levels, GameOverReason reason)
     {
-        m_IsGameOver = true;
+        yield return new WaitForSecondsRealtime(0.5f);
 
         string levelString = levels > 1 ? "levels" : "level";
         string reasonString =
             reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
+
+        m_GameOverLevelsTraveledLabel.text =
+            $"You traveled through {levels} {levelString}, but in the end...";
+        m_GameOverLevelsTraveledLabel.RemoveFromClassList("hidden");
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
+
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        m_GameOverReasonLabel.text = reasonString;
+        m_GameOverReasonLabel.RemoveFromClassList("hidden");
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
+
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        m_RestartRunButton.RemoveFromClassList("hidden");
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        m_ReturnToMenuButton.RemoveFromClassList("hidden");
+        AudioManager.Instance.PlaySFX(m_ClickSFX);
+        yield return new WaitForSecondsRealtime(0.15f);
+
+        AudioClip sfx =
+            reason == GameOverReason.Depleted ? m_GameOverDepletedSFX : m_GameOverDefeatedSFX;
+        AudioManager.Instance.PlaySFX(sfx);
+    }
+
+    void OnGameOver(GameOverReason reason, int levels)
+    {
+        m_IsGameOver = true;
 
         m_GameOverPanel.style.display = DisplayStyle.Flex;
         m_GameOverPanel
@@ -97,10 +134,7 @@ public class GameOverHUD : MonoBehaviour
             )
             .StartingIn(16);
 
-        m_GameOverLevelsTraveledLabel.text =
-            $"You traveled through {levels} {levelString}, but in the end...";
-        m_GameOverReasonLabel.text =
-            reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
+        StartCoroutine(RevealGameOverPanelElementsCoroutine(levels, reason));
     }
 
     void OnRestartRunButtonPress()
@@ -121,5 +155,10 @@ public class GameOverHUD : MonoBehaviour
         m_IsGameOver = false;
         m_GameOverPanel.EnableInClassList("game-over-panel--visible", false);
         m_GameOverPanel.style.display = DisplayStyle.None;
+
+        m_GameOverLevelsTraveledLabel.AddToClassList("hidden");
+        m_GameOverReasonLabel.AddToClassList("hidden");
+        m_RestartRunButton.AddToClassList("hidden");
+        m_ReturnToMenuButton.AddToClassList("hidden");
     }
 }
