@@ -31,22 +31,15 @@ namespace Enemy
         {
             m_Combatant = GetComponent<Combatant>();
             m_CombatantAnimator = GetComponent<CombatantAnimator>();
-
-            m_Combatant.Defeated += OnDefeated;
         }
 
-        void Start() => m_TurnManager.OnTick += OnTurnHappened;
+        void Start()
+        {
+            m_TurnManager = GameManager.Instance.TurnManager;
+            m_TurnManager.OnTick += OnTurnHappened;
+        }
 
         void OnDestroy()
-        {
-            if (m_TurnManager != null)
-                m_TurnManager.OnTick -= OnTurnHappened;
-
-            if (m_Combatant != null)
-                m_Combatant.Defeated -= OnDefeated;
-        }
-
-        void OnDefeated()
         {
             if (m_TurnManager != null)
                 m_TurnManager.OnTick -= OnTurnHappened;
@@ -166,13 +159,11 @@ namespace Enemy
 
         public void Spawn(
             BoardManager boardManager,
-            TurnManager turnManager,
             PlayerController playerController,
             Vector2Int cell
         )
         {
             m_BoardManager = boardManager;
-            m_TurnManager = turnManager;
             m_PlayerController = playerController;
 
             SnapTo(cell);

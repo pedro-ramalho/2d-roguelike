@@ -27,7 +27,6 @@ namespace Board
 
         // Private references
         private BoardManager m_BoardManager;
-        private TurnManager m_TurnManager;
         private PlayerController m_PlayerController;
         private LevelBand m_CurrentBand;
 
@@ -37,7 +36,19 @@ namespace Board
         // Level
         private int m_CurrentLevel;
 
-        void GenerateWall()
+        Vector2Int GetRandomEmptyCell()
+        {
+            if (m_EmptyCells.Count == 0)
+                return new Vector2Int(-1, -1);
+
+            int index = Random.Range(0, m_EmptyCells.Count);
+            Vector2Int coord = m_EmptyCells[index];
+            m_EmptyCells.RemoveAt(index);
+
+            return coord;
+        }
+
+        void GenerateWalls()
         {
             int wallCount = Random.Range(
                 m_CurrentBand.MinWallCount,
@@ -46,13 +57,10 @@ namespace Board
 
             for (int i = 0; i < wallCount; i++)
             {
-                int randomIndex = Random.Range(0, m_EmptyCells.Count);
-                Vector2Int coord = m_EmptyCells[randomIndex];
+                Vector2Int cell = GetRandomEmptyCell();
+                WallObject wall = Instantiate(m_WallPrefab);
 
-                m_EmptyCells.RemoveAt(randomIndex);
-                WallObject newWall = Instantiate(m_WallPrefab);
-
-                m_BoardManager.AddObject(newWall, coord);
+                m_BoardManager.AddObject(wall, cell);
             }
         }
 
@@ -64,13 +72,10 @@ namespace Board
 
                 for (int i = 0; i < count; i++)
                 {
-                    int randomIndex = Random.Range(0, m_EmptyCells.Count);
-                    Vector2Int coord = m_EmptyCells[randomIndex];
+                    Vector2Int cell = GetRandomEmptyCell();
+                    FoodObject food = Instantiate(entry.Prefab);
 
-                    m_EmptyCells.RemoveAt(randomIndex);
-
-                    FoodObject newFood = Instantiate(entry.Prefab);
-                    m_BoardManager.AddObject(newFood, coord);
+                    m_BoardManager.AddObject(food, cell);
                 }
             }
         }
@@ -83,20 +88,18 @@ namespace Board
             if (m_EmptyCells.Count == 0)
                 return null;
 
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
-            m_EmptyCells.RemoveAt(randomIndex);
+            Vector2Int cell = GetRandomEmptyCell();
 
-            EnemyController newEnemy = Instantiate(prefab);
-            m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
+            EnemyController enemy = Instantiate(prefab);
+            m_BoardManager.SetCellOccupant(cell, enemy.Combatant);
 
-            newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
-            newEnemy.Combatant.ApplyBandStats();
+            enemy.Spawn(m_BoardManager, m_PlayerController, cell);
+            enemy.Combatant.ApplyBandStats();
 
-            return newEnemy;
+            return enemy;
         }
 
-        void GenerateEnemy()
+        void GenerateEnemies()
         {
             List<EnemyController> spawned = new List<EnemyController>();
 
@@ -121,13 +124,11 @@ namespace Board
 
         public void GenerateBoard(
             BoardManager boardManager,
-            TurnManager turnManager,
             PlayerController playerController,
             int currentLevel
         )
         {
             m_BoardManager = boardManager;
-            m_TurnManager = turnManager;
             m_PlayerController = playerController;
             m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
             m_CurrentLevel = currentLevel;
@@ -168,9 +169,9 @@ namespace Board
             m_BoardManager.AddObject(Instantiate(m_ExitPrefab), endCoord);
             m_EmptyCells.Remove(endCoord);
 
-            GenerateWall();
+            GenerateWalls();
             GenerateFood();
-            GenerateEnemy();
+            GenerateEnemies();
         }
     }
 }
