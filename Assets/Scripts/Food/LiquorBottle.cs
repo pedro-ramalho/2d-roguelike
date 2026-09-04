@@ -1,8 +1,13 @@
-public class LiquorBottle : FoodObject
+using Player;
+
+namespace Food
 {
-    protected override void ApplyEffect(PlayerController player)
+    public class LiquorBottle : FoodObject
     {
-        player.Combatant.IncreaseMaxHP(GetAmountForCurrentBand());
-        player.Combatant.Heal(GetAmountForCurrentBand());
+        protected override void ApplyEffect(PlayerController player)
+        {
+            player.Combatant.IncreaseMaxHP(GetAmountForCurrentBand());
+            player.Combatant.Heal(GetAmountForCurrentBand());
+        }
     }
 }

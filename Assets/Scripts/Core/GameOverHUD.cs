@@ -3,162 +3,165 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class GameOverHUD : MonoBehaviour
+namespace Core
 {
-    private PlayerInputActions m_InputActions;
-
-    private VisualElement m_GameOverPanel;
-    private Label m_GameOverLevelsTraveledLabel;
-    private Label m_GameOverReasonLabel;
-    private Button m_RestartRunButton;
-    private Button m_ReturnToMenuButton;
-
-    private bool m_IsGameOver;
-
-    // UI document
-    [SerializeField]
-    private UIDocument m_UIDocument;
-
-    [SerializeField]
-    private LevelManager m_LevelManager;
-
-    [SerializeField]
-    private AudioClip m_ClickSFX;
-
-    [SerializeField]
-    private AudioClip m_GameOverDepletedSFX;
-
-    [SerializeField]
-    private AudioClip m_GameOverDefeatedSFX;
-
-    void Awake() => m_InputActions = new PlayerInputActions();
-
-    void Start()
+    public class GameOverHUD : MonoBehaviour
     {
-        m_IsGameOver = false;
+        private PlayerInputActions m_InputActions;
 
-        VisualElement root = m_UIDocument.rootVisualElement;
+        private VisualElement m_GameOverPanel;
+        private Label m_GameOverLevelsTraveledLabel;
+        private Label m_GameOverReasonLabel;
+        private Button m_RestartRunButton;
+        private Button m_ReturnToMenuButton;
 
-        m_GameOverPanel = root.Q<VisualElement>("GameOverPanel");
+        private bool m_IsGameOver;
 
-        VisualElement labelsContainer = m_GameOverPanel.Q<VisualElement>(
-            "GameOverPanelLabelsContainer"
-        );
-        VisualElement buttonsContainer = m_GameOverPanel.Q<VisualElement>(
-            "GameOverPanelButtonsContainer"
-        );
+        // UI document
+        [SerializeField]
+        private UIDocument m_UIDocument;
 
-        m_GameOverLevelsTraveledLabel = labelsContainer.Q<Label>("GameOverLevelsTraveledLabel");
-        m_GameOverReasonLabel = labelsContainer.Q<Label>("GameOverReasonLabel");
-        m_RestartRunButton = buttonsContainer.Q<Button>("RestartRunButton");
-        m_ReturnToMenuButton = buttonsContainer.Q<Button>("ReturnToMenuButton");
+        [SerializeField]
+        private LevelManager m_LevelManager;
 
-        m_GameOverPanel.style.display = DisplayStyle.None;
+        [SerializeField]
+        private AudioClip m_ClickSFX;
 
-        m_LevelManager.GameOverTriggered += OnGameOver;
-        m_LevelManager.GameStartTriggered += OnGameStart;
+        [SerializeField]
+        private AudioClip m_GameOverDepletedSFX;
 
-        m_RestartRunButton.clicked += OnRestartRunButtonPress;
-        m_ReturnToMenuButton.clicked += OnReturnToMenuButtonPress;
-    }
+        [SerializeField]
+        private AudioClip m_GameOverDefeatedSFX;
 
-    void Update()
-    {
-        if (m_IsGameOver && m_InputActions.Player.Restart.WasPressedThisFrame())
-            GameManager.Instance.LevelManager.StartNewGame();
-    }
+        void Awake() => m_InputActions = new PlayerInputActions();
 
-    void OnEnable() => m_InputActions.Player.Enable();
-
-    void OnDisable() => m_InputActions.Player.Disable();
-
-    void OnDestroy()
-    {
-        m_InputActions.Dispose();
-
-        if (m_LevelManager != null)
+        void Start()
         {
-            m_LevelManager.GameOverTriggered -= OnGameOver;
-            m_LevelManager.GameStartTriggered -= OnGameStart;
+            m_IsGameOver = false;
+
+            VisualElement root = m_UIDocument.rootVisualElement;
+
+            m_GameOverPanel = root.Q<VisualElement>("GameOverPanel");
+
+            VisualElement labelsContainer = m_GameOverPanel.Q<VisualElement>(
+                "GameOverPanelLabelsContainer"
+            );
+            VisualElement buttonsContainer = m_GameOverPanel.Q<VisualElement>(
+                "GameOverPanelButtonsContainer"
+            );
+
+            m_GameOverLevelsTraveledLabel = labelsContainer.Q<Label>("GameOverLevelsTraveledLabel");
+            m_GameOverReasonLabel = labelsContainer.Q<Label>("GameOverReasonLabel");
+            m_RestartRunButton = buttonsContainer.Q<Button>("RestartRunButton");
+            m_ReturnToMenuButton = buttonsContainer.Q<Button>("ReturnToMenuButton");
+
+            m_GameOverPanel.style.display = DisplayStyle.None;
+
+            m_LevelManager.GameOverTriggered += OnGameOver;
+            m_LevelManager.GameStartTriggered += OnGameStart;
+
+            m_RestartRunButton.clicked += OnRestartRunButtonPress;
+            m_ReturnToMenuButton.clicked += OnReturnToMenuButtonPress;
         }
 
-        if (m_RestartRunButton != null)
-            m_RestartRunButton.clicked -= OnRestartRunButtonPress;
+        void Update()
+        {
+            if (m_IsGameOver && m_InputActions.Player.Restart.WasPressedThisFrame())
+                GameManager.Instance.LevelManager.StartNewGame();
+        }
 
-        if (m_ReturnToMenuButton != null)
-            m_ReturnToMenuButton.clicked -= OnReturnToMenuButtonPress;
-    }
+        void OnEnable() => m_InputActions.Player.Enable();
 
-    IEnumerator RevealGameOverPanelElementsCoroutine(int levels, GameOverReason reason)
-    {
-        yield return new WaitForSecondsRealtime(0.5f);
+        void OnDisable() => m_InputActions.Player.Disable();
 
-        string levelString = levels > 1 ? "levels" : "level";
-        string reasonString =
-            reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
+        void OnDestroy()
+        {
+            m_InputActions.Dispose();
 
-        m_GameOverLevelsTraveledLabel.text =
-            $"You traveled through {levels} {levelString}, but in the end...";
-        m_GameOverLevelsTraveledLabel.RemoveFromClassList("hidden");
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
+            if (m_LevelManager != null)
+            {
+                m_LevelManager.GameOverTriggered -= OnGameOver;
+                m_LevelManager.GameStartTriggered -= OnGameStart;
+            }
 
-        yield return new WaitForSecondsRealtime(0.15f);
+            if (m_RestartRunButton != null)
+                m_RestartRunButton.clicked -= OnRestartRunButtonPress;
 
-        m_GameOverReasonLabel.text = reasonString;
-        m_GameOverReasonLabel.RemoveFromClassList("hidden");
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
+            if (m_ReturnToMenuButton != null)
+                m_ReturnToMenuButton.clicked -= OnReturnToMenuButtonPress;
+        }
 
-        yield return new WaitForSecondsRealtime(0.15f);
+        IEnumerator RevealGameOverPanelElementsCoroutine(int levels, GameOverReason reason)
+        {
+            yield return new WaitForSecondsRealtime(0.5f);
 
-        m_RestartRunButton.RemoveFromClassList("hidden");
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
-        yield return new WaitForSecondsRealtime(0.15f);
+            string levelString = levels > 1 ? "levels" : "level";
+            string reasonString =
+                reason == GameOverReason.Depleted ? "YOU RAN OUT OF STAMINA" : "YOU WERE DEFEATED";
 
-        m_ReturnToMenuButton.RemoveFromClassList("hidden");
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
-        yield return new WaitForSecondsRealtime(0.15f);
+            m_GameOverLevelsTraveledLabel.text =
+                $"You traveled through {levels} {levelString}, but in the end...";
+            m_GameOverLevelsTraveledLabel.RemoveFromClassList("hidden");
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
 
-        AudioClip sfx =
-            reason == GameOverReason.Depleted ? m_GameOverDepletedSFX : m_GameOverDefeatedSFX;
-        AudioManager.Instance.PlaySFX(sfx);
-    }
+            yield return new WaitForSecondsRealtime(0.15f);
 
-    void OnGameOver(GameOverReason reason, int levels)
-    {
-        m_IsGameOver = true;
+            m_GameOverReasonLabel.text = reasonString;
+            m_GameOverReasonLabel.RemoveFromClassList("hidden");
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
 
-        m_GameOverPanel.style.display = DisplayStyle.Flex;
-        m_GameOverPanel
-            .schedule.Execute(() =>
-                m_GameOverPanel.EnableInClassList("game-over-panel--visible", true)
-            )
-            .StartingIn(16);
+            yield return new WaitForSecondsRealtime(0.15f);
 
-        StartCoroutine(RevealGameOverPanelElementsCoroutine(levels, reason));
-    }
+            m_RestartRunButton.RemoveFromClassList("hidden");
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
+            yield return new WaitForSecondsRealtime(0.15f);
 
-    void OnRestartRunButtonPress()
-    {
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
-        GameManager.Instance.LevelManager.StartNewGame();
-    }
+            m_ReturnToMenuButton.RemoveFromClassList("hidden");
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
+            yield return new WaitForSecondsRealtime(0.15f);
 
-    void OnReturnToMenuButtonPress()
-    {
-        Time.timeScale = 1f;
-        AudioManager.Instance.PlaySFX(m_ClickSFX);
-        SceneManager.LoadScene("Menu");
-    }
+            AudioClip sfx =
+                reason == GameOverReason.Depleted ? m_GameOverDepletedSFX : m_GameOverDefeatedSFX;
+            AudioManager.Instance.PlaySFX(sfx);
+        }
 
-    void OnGameStart()
-    {
-        m_IsGameOver = false;
-        m_GameOverPanel.EnableInClassList("game-over-panel--visible", false);
-        m_GameOverPanel.style.display = DisplayStyle.None;
+        void OnGameOver(GameOverReason reason, int levels)
+        {
+            m_IsGameOver = true;
 
-        m_GameOverLevelsTraveledLabel.AddToClassList("hidden");
-        m_GameOverReasonLabel.AddToClassList("hidden");
-        m_RestartRunButton.AddToClassList("hidden");
-        m_ReturnToMenuButton.AddToClassList("hidden");
+            m_GameOverPanel.style.display = DisplayStyle.Flex;
+            m_GameOverPanel
+                .schedule.Execute(() =>
+                    m_GameOverPanel.EnableInClassList("game-over-panel--visible", true)
+                )
+                .StartingIn(16);
+
+            StartCoroutine(RevealGameOverPanelElementsCoroutine(levels, reason));
+        }
+
+        void OnRestartRunButtonPress()
+        {
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
+            GameManager.Instance.LevelManager.StartNewGame();
+        }
+
+        void OnReturnToMenuButtonPress()
+        {
+            Time.timeScale = 1f;
+            AudioManager.Instance.PlaySFX(m_ClickSFX);
+            SceneManager.LoadScene("Menu");
+        }
+
+        void OnGameStart()
+        {
+            m_IsGameOver = false;
+            m_GameOverPanel.EnableInClassList("game-over-panel--visible", false);
+            m_GameOverPanel.style.display = DisplayStyle.None;
+
+            m_GameOverLevelsTraveledLabel.AddToClassList("hidden");
+            m_GameOverReasonLabel.AddToClassList("hidden");
+            m_RestartRunButton.AddToClassList("hidden");
+            m_ReturnToMenuButton.AddToClassList("hidden");
+        }
     }
 }

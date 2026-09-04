@@ -1,7 +1,12 @@
-public class Salad : FoodObject
+using Player;
+
+namespace Food
 {
-    protected override void ApplyEffect(PlayerController player)
+    public class Salad : FoodObject
     {
-        player.Combatant.Heal(GetAmountForCurrentBand());
+        protected override void ApplyEffect(PlayerController player)
+        {
+            player.Combatant.Heal(GetAmountForCurrentBand());
+        }
     }
 }

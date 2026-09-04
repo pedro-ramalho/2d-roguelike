@@ -1,52 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using UnityEngine;
 
-public class TurnManager : MonoBehaviour
+namespace Core
 {
-    private int m_TurnCount;
-    private readonly HashSet<CombatantAnimator> m_Animators = new();
-
-    public event System.Action OnTick;
-    public bool IsProcessingTurn { get; private set; }
-
-    void Awake() => m_TurnCount = 1;
-
-    bool AnyBusy() => m_Animators.Any(a => a.IsBusy);
-
-    IEnumerator ProcessTurnCoroutine()
+    public class TurnManager : MonoBehaviour
     {
-        IsProcessingTurn = true;
+        private int m_TurnCount;
+        private readonly HashSet<CombatantAnimator> m_Animators = new();
 
-        // wait until the Player becomes idle
-        while (AnyBusy())
-            yield return null;
+        public event System.Action OnTick;
+        public bool IsProcessingTurn { get; private set; }
 
-        Tick();
+        void Awake() => m_TurnCount = 1;
 
-        // wait until Enemies become idle
-        while (AnyBusy())
-            yield return null;
+        bool AnyBusy() => m_Animators.Any(a => a.IsBusy);
 
-        IsProcessingTurn = false;
-    }
+        IEnumerator ProcessTurnCoroutine()
+        {
+            IsProcessingTurn = true;
 
-    public void Register(CombatantAnimator animator) => m_Animators.Add(animator);
+            // wait until the Player becomes idle
+            while (AnyBusy())
+                yield return null;
 
-    public void Unregister(CombatantAnimator animator) => m_Animators.Remove(animator);
+            Tick();
 
-    public void Tick()
-    {
-        m_TurnCount++;
-        OnTick?.Invoke();
-    }
+            // wait until Enemies become idle
+            while (AnyBusy())
+                yield return null;
 
-    public void BeginTurn()
-    {
-        if (IsProcessingTurn)
-            return;
+            IsProcessingTurn = false;
+        }
 
-        StartCoroutine(ProcessTurnCoroutine());
+        public void Register(CombatantAnimator animator) => m_Animators.Add(animator);
+
+        public void Unregister(CombatantAnimator animator) => m_Animators.Remove(animator);
+
+        public void Tick()
+        {
+            m_TurnCount++;
+            OnTick?.Invoke();
+        }
+
+        public void BeginTurn()
+        {
+            if (IsProcessingTurn)
+                return;
+
+            StartCoroutine(ProcessTurnCoroutine());
+        }
     }
 }

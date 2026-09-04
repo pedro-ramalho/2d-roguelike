@@ -1,9 +1,13 @@
 using System;
+using Combat;
 
-[Serializable]
-public class EliteRewardEntry
+namespace Enemy
 {
-    public CombatantStat Stat;
-    public int Amount;
-    public float Weight;
+    [Serializable]
+    public class EliteRewardEntry
+    {
+        public CombatantStat Stat;
+        public int Amount;
+        public float Weight;
+    }
 }

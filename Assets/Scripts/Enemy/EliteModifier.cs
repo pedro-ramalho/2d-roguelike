@@ -1,34 +1,40 @@
+using Combat;
+using Core;
+using Loot;
 using UnityEngine;
 
-public class EliteModifier : MonoBehaviour
+namespace Enemy
 {
-    private Combatant m_Combatant;
-
-    void Awake()
+    public class EliteModifier : MonoBehaviour
     {
-        m_Combatant = GetComponent<Combatant>();
-        m_Combatant.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
+        private Combatant m_Combatant;
 
-        // Update the tint
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
+        void Awake()
+        {
+            m_Combatant = GetComponent<Combatant>();
+            m_Combatant.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
 
-        m_Combatant.Defeated += OnEliteDefeated;
-    }
+            // Update the tint
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
 
-    void OnDestroy()
-    {
-        if (m_Combatant != null)
-            m_Combatant.Defeated -= OnEliteDefeated;
-    }
+            m_Combatant.Defeated += OnEliteDefeated;
+        }
 
-    void OnEliteDefeated()
-    {
-        var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
-        if (pool.Length == 0)
-            return;
+        void OnDestroy()
+        {
+            if (m_Combatant != null)
+                m_Combatant.Defeated -= OnEliteDefeated;
+        }
 
-        EliteRewardEntry entry = WeightedPool.PickRandom(pool, e => e.Weight);
-        m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+        void OnEliteDefeated()
+        {
+            var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
+            if (pool.Length == 0)
+                return;
+
+            EliteRewardEntry entry = WeightedPool.PickRandom(pool, e => e.Weight);
+            m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+        }
     }
 }

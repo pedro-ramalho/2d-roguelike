@@ -1,29 +1,32 @@
 using System.Collections;
 using UnityEngine;
 
-public class Skirmisher : EnemyController
+namespace Enemy
 {
-    private static readonly int m_SkirmisherTurns = 2;
-
-    IEnumerator ResolveSkirmisherAction()
+    public class Skirmisher : EnemyController
     {
-        for (int i = 0; i < m_SkirmisherTurns; i++)
+        private static readonly int m_SkirmisherTurns = 2;
+
+        IEnumerator ResolveSkirmisherAction()
         {
-            Vector2Int delta = ComputeDeltaToPlayer();
-            if (IsAdjacentToPlayer(delta))
+            for (int i = 0; i < m_SkirmisherTurns; i++)
             {
-                AttackPlayer(delta);
+                Vector2Int delta = ComputeDeltaToPlayer();
+                if (IsAdjacentToPlayer(delta))
+                {
+                    AttackPlayer(delta);
 
-                break;
-            }
-            else
-            {
-                MoveTowards(delta);
+                    break;
+                }
+                else
+                {
+                    MoveTowards(delta);
 
-                yield return new WaitUntil(() => !Animator.IsBusy);
+                    yield return new WaitUntil(() => !Animator.IsBusy);
+                }
             }
         }
-    }
 
-    protected override void ResolveEnemyAction() => StartCoroutine(ResolveSkirmisherAction());
+        protected override void ResolveEnemyAction() => StartCoroutine(ResolveSkirmisherAction());
+    }
 }

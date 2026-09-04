@@ -1,10 +1,12 @@
 using System;
-using UnityEngine;
 
-[Serializable]
-public struct LevelEntry<T>
+namespace Level
 {
-    public T Prefab;
-    public int MinCount;
-    public int MaxCount;
+    [Serializable]
+    public struct LevelEntry<T>
+    {
+        public T Prefab;
+        public int MinCount;
+        public int MaxCount;
+    }
 }

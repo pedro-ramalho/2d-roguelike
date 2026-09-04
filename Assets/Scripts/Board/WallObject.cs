@@ -1,55 +1,59 @@
+using Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class WallObject : CellObject
+namespace Board
 {
-    [Header("SFX Clips")]
-    [SerializeField]
-    private AudioClip[] m_BreakSFX;
-
-    private int m_HealthPoint;
-    private Tile m_OriginalTile;
-
-    public Tile[] ObstacleTiles;
-    public int MaxHealth = 2;
-
-    Tile GetTileByHealthPoint()
+    public class WallObject : CellObject
     {
-        if (m_HealthPoint <= 0)
-            return null;
+        [Header("SFX Clips")]
+        [SerializeField]
+        private AudioClip[] m_BreakSFX;
 
-        return ObstacleTiles[MaxHealth - m_HealthPoint];
-    }
+        private int m_HealthPoint;
+        private Tile m_OriginalTile;
 
-    public override void Init(BoardManager board, Vector2Int cell)
-    {
-        base.Init(board, cell);
+        public Tile[] ObstacleTiles;
+        public int MaxHealth = 2;
 
-        m_HealthPoint = MaxHealth;
-
-        m_OriginalTile = m_Board.GetCellTile(cell);
-        m_Board.SetCellTile(cell, GetTileByHealthPoint());
-    }
-
-    public override bool PlayerWantsToEnter()
-    {
-        m_HealthPoint--;
-
-        if (m_BreakSFX != null && m_BreakSFX.Length > 0)
-            AudioManager.Instance.PlayRandomSFXFromList(m_BreakSFX);
-
-        if (m_HealthPoint > 0)
+        Tile GetTileByHealthPoint()
         {
-            m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
+            if (m_HealthPoint <= 0)
+                return null;
 
-            return false;
+            return ObstacleTiles[MaxHealth - m_HealthPoint];
         }
 
-        m_Board.SetCellTile(m_Cell, m_OriginalTile);
-        m_Board.ClearCell(m_Cell);
+        public override void Init(BoardManager board, Vector2Int cell)
+        {
+            base.Init(board, cell);
 
-        Destroy(gameObject);
+            m_HealthPoint = MaxHealth;
 
-        return true;
+            m_OriginalTile = m_Board.GetCellTile(cell);
+            m_Board.SetCellTile(cell, GetTileByHealthPoint());
+        }
+
+        public override bool PlayerWantsToEnter()
+        {
+            m_HealthPoint--;
+
+            if (m_BreakSFX != null && m_BreakSFX.Length > 0)
+                AudioManager.Instance.PlayRandomSFXFromList(m_BreakSFX);
+
+            if (m_HealthPoint > 0)
+            {
+                m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
+
+                return false;
+            }
+
+            m_Board.SetCellTile(m_Cell, m_OriginalTile);
+            m_Board.ClearCell(m_Cell);
+
+            Destroy(gameObject);
+
+            return true;
+        }
     }
 }

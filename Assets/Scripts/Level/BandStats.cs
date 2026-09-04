@@ -1,10 +1,13 @@
 using System;
 
-[Serializable]
-public struct BandStats
+namespace Level
 {
-    public BandType Band;
-    public int MaxHP;
-    public int Attack;
-    public int MaxBlock;
+    [Serializable]
+    public struct BandStats
+    {
+        public BandType Band;
+        public int MaxHP;
+        public int Attack;
+        public int MaxBlock;
+    }
 }

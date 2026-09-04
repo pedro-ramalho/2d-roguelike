@@ -1,11 +1,12 @@
-using UnityEngine;
-
-public class StatusEffectWeak : StatusEffect
+namespace Status
 {
-    private readonly float m_WeakDamageMultiplier = 0.5f;
+    public class StatusEffectWeak : StatusEffect
+    {
+        private readonly float m_WeakDamageMultiplier = 0.5f;
 
-    public StatusEffectWeak(int duration)
-        : base(StatusEffectType.Weak, duration, true) { }
+        public StatusEffectWeak(int duration)
+            : base(StatusEffectType.Weak, duration, true) { }
 
-    public override float ModifyOutgoingDamage(float damage) => damage * m_WeakDamageMultiplier;
+        public override float ModifyOutgoingDamage(float damage) => damage * m_WeakDamageMultiplier;
+    }
 }
