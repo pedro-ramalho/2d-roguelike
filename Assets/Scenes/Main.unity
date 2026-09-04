@@ -197,6 +197,7 @@ MonoBehaviour:
   m_UIDocument: {fileID: 1513904559}
   m_TypeInterval: 0.18
   m_TypeSFX: {fileID: 8300000, guid: 2adcb4b9683b1b640936d8417196a305, type: 3}
+  m_CassetteSFX: {fileID: 8300000, guid: 626dd4f9491c98d48a4d6ff4837d4fa8, type: 3}
 --- !u!1 &377119138
 GameObject:
   m_ObjectHideFlags: 0

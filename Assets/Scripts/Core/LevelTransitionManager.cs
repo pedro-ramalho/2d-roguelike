@@ -14,6 +14,9 @@ public class LevelTransitionManager : MonoBehaviour
     [SerializeField]
     private AudioClip m_TypeSFX;
 
+    [SerializeField]
+    private AudioClip m_CassetteSFX;
+
     // UI Elements
     private VisualElement m_LevelTransitionPanel;
     private Label m_NewLevelLabel;
@@ -92,6 +95,10 @@ public class LevelTransitionManager : MonoBehaviour
 
         float elapsed = 0;
         float opacity = m_LevelTransitionPanel.style.opacity.value;
+
+        AudioManager.Instance.PlaySFX(m_CassetteSFX);
+
+        yield return new WaitForSeconds(0.5f);
 
         while (elapsed < m_FadeDuration)
         {

@@ -117,12 +117,15 @@ public class LevelManager : MonoBehaviour
     {
         m_PlayerController.Combatant.RefreshStats();
 
+        StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
+
         yield return m_LevelTransitionManager.FadeOutCoroutine(band);
 
         RebuildLevel();
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
 
+        StartCoroutine(AudioManager.Instance.FadeInMusicCoroutine(band.Track, 10f));
         yield return m_LevelTransitionManager.FadeInCoroutine();
     }
 
