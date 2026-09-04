@@ -1,112 +1,124 @@
 using System.Collections;
+using Level;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LevelTransitionManager : MonoBehaviour
+namespace Core
 {
-    [SerializeField]
-    private UIDocument m_UIDocument;
-
-    [Header("Typewriter Settings")]
-    [SerializeField]
-    private float m_TypeInterval = 0.04f;
-
-    [SerializeField]
-    private AudioClip m_TypeSFX;
-
-    [SerializeField]
-    private AudioClip m_CassetteSFX;
-
-    // UI Elements
-    private VisualElement m_LevelTransitionPanel;
-    private Label m_NewLevelLabel;
-    private Label m_BandNameLabel;
-
-    // Animation parameters
-    private readonly float m_FadeDuration = 0.5f;
-
-    void Awake()
+    public class LevelTransitionManager : MonoBehaviour
     {
-        VisualElement root = m_UIDocument.rootVisualElement;
+        [SerializeField]
+        private UIDocument m_UIDocument;
 
-        m_LevelTransitionPanel = root.Q<VisualElement>("LevelTransitionPanel");
+        [Header("Typewriter Settings")]
+        [SerializeField]
+        private float m_TypeInterval = 0.04f;
 
-        m_NewLevelLabel = m_LevelTransitionPanel.Q<Label>("NewLevelLabel");
-        m_BandNameLabel = m_LevelTransitionPanel.Q<Label>("BandNameLabel");
-    }
+        [SerializeField]
+        private AudioClip m_TypeSFX;
 
-    void SetLevelTransitionText(LevelBand band)
-    {
-        m_NewLevelLabel.text = "";
-        StartCoroutine(TypewriterCoroutine($"Levels {band.MinLevel} - {band.MaxLevel}"));
+        [SerializeField]
+        private AudioClip m_CassetteSFX;
 
-        m_BandNameLabel.text = band.Name;
-    }
+        // UI Elements
+        private VisualElement m_LevelTransitionPanel;
+        private Label m_NewLevelLabel;
+        private Label m_BandNameLabel;
 
-    IEnumerator TypewriterCoroutine(string text)
-    {
-        yield return new WaitForSeconds(0.5f);
+        // Animation parameters
+        private readonly float m_FadeDuration = 0.5f;
 
-        for (int i = 1; i <= text.Length; i++)
+        void Awake()
         {
-            m_NewLevelLabel.text = text.Substring(0, i);
-            char c = text[i - 1];
+            VisualElement root = m_UIDocument.rootVisualElement;
 
-            if (!char.IsWhiteSpace(c))
+            m_LevelTransitionPanel = root.Q<VisualElement>("LevelTransitionPanel");
+
+            m_NewLevelLabel = m_LevelTransitionPanel.Q<Label>("NewLevelLabel");
+            m_BandNameLabel = m_LevelTransitionPanel.Q<Label>("BandNameLabel");
+        }
+
+        void SetLevelTransitionText(LevelBand band)
+        {
+            m_NewLevelLabel.text = "";
+            StartCoroutine(TypewriterCoroutine($"Levels {band.MinLevel} - {band.MaxLevel}"));
+
+            m_BandNameLabel.text = band.Name;
+        }
+
+        IEnumerator TypewriterCoroutine(string text)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            for (int i = 1; i <= text.Length; i++)
             {
-                if (AudioManager.Instance != null && m_TypeSFX != null)
-                    AudioManager.Instance.PlaySFXWithPitch(
-                        m_TypeSFX,
-                        1f + Random.Range(-0.08f, 0.08f)
-                    );
+                m_NewLevelLabel.text = text.Substring(0, i);
+                char c = text[i - 1];
+
+                if (!char.IsWhiteSpace(c))
+                {
+                    if (AudioManager.Instance != null && m_TypeSFX != null)
+                        AudioManager.Instance.PlaySFXWithPitch(
+                            m_TypeSFX,
+                            1f + Random.Range(-0.08f, 0.08f)
+                        );
+                }
+
+                yield return new WaitForSeconds(m_TypeInterval);
+            }
+        }
+
+        public IEnumerator FadeInCoroutine()
+        {
+            float elapsed = 0;
+            float opacity = m_LevelTransitionPanel.style.opacity.value;
+
+            while (elapsed < m_FadeDuration)
+            {
+                elapsed += Time.deltaTime;
+
+                m_LevelTransitionPanel.style.opacity = Mathf.Lerp(
+                    opacity,
+                    0,
+                    elapsed / m_FadeDuration
+                );
+
+                yield return null;
             }
 
-            yield return new WaitForSeconds(m_TypeInterval);
-        }
-    }
-
-    public IEnumerator FadeInCoroutine()
-    {
-        float elapsed = 0;
-        float opacity = m_LevelTransitionPanel.style.opacity.value;
-
-        while (elapsed < m_FadeDuration)
-        {
-            elapsed += Time.deltaTime;
-
-            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 0, elapsed / m_FadeDuration);
-
-            yield return null;
+            m_LevelTransitionPanel.style.opacity = 0f;
         }
 
-        m_LevelTransitionPanel.style.opacity = 0f;
-    }
-
-    public IEnumerator FadeOutCoroutine(LevelBand band)
-    {
-        SetLevelTransitionText(band);
-
-        if (band.Type == BandType.Tutorial)
+        public IEnumerator FadeOutCoroutine(LevelBand band)
         {
-            m_LevelTransitionPanel.style.opacity = 1f;
+            SetLevelTransitionText(band);
 
-            yield break;
-        }
+            if (band.Type == BandType.Tutorial)
+            {
+                m_LevelTransitionPanel.style.opacity = 1f;
 
-        float elapsed = 0;
-        float opacity = m_LevelTransitionPanel.style.opacity.value;
+                yield break;
+            }
 
-        AudioManager.Instance.PlaySFX(m_CassetteSFX);
+            float elapsed = 0;
+            float opacity = m_LevelTransitionPanel.style.opacity.value;
 
-        yield return new WaitForSeconds(0.5f);
+            AudioManager.Instance.PlaySFX(m_CassetteSFX);
 
-        while (elapsed < m_FadeDuration)
-        {
-            elapsed += Time.deltaTime;
+            yield return new WaitForSeconds(0.5f);
 
-            m_LevelTransitionPanel.style.opacity = Mathf.Lerp(opacity, 1, elapsed / m_FadeDuration);
+            while (elapsed < m_FadeDuration)
+            {
+                elapsed += Time.deltaTime;
 
-            yield return null;
+                m_LevelTransitionPanel.style.opacity = Mathf.Lerp(
+                    opacity,
+                    1,
+                    elapsed / m_FadeDuration
+                );
+
+                yield return null;
+            }
         }
     }
 }

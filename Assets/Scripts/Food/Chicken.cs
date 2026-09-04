@@ -1,7 +1,12 @@
-public class Chicken : FoodObject
+using Player;
+
+namespace Food
 {
-    protected override void ApplyEffect(PlayerController player)
+    public class Chicken : FoodObject
     {
-        player.Combatant.IncreaseAttack(GetAmountForCurrentBand());
+        protected override void ApplyEffect(PlayerController player)
+        {
+            player.Combatant.IncreaseAttack(GetAmountForCurrentBand());
+        }
     }
 }

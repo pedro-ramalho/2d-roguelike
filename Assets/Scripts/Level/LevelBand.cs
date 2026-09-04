@@ -1,35 +1,40 @@
+using Enemy;
+using Food;
 using UnityEngine;
 
-public enum BandType
+namespace Level
 {
-    Tutorial,
-    Early,
-    Mid,
-    Late,
-}
+    public enum BandType
+    {
+        Tutorial,
+        Early,
+        Mid,
+        Late,
+    }
 
-[CreateAssetMenu(fileName = "LevelBand", menuName = "Scriptable Objects/LevelBand")]
-public class LevelBand : ScriptableObject
-{
-    public BandType Type;
+    [CreateAssetMenu(fileName = "LevelBand", menuName = "Scriptable Objects/LevelBand")]
+    public class LevelBand : ScriptableObject
+    {
+        public BandType Type;
 
-    [Header("Band Name")]
-    public string Name;
+        [Header("Band Name")]
+        public string Name;
 
-    [Header("Background Track")]
-    public AudioClip Track;
+        [Header("Background Track")]
+        public AudioClip Track;
 
-    [Header("Level Range")]
-    public int MinLevel;
-    public int MaxLevel;
+        [Header("Level Range")]
+        public int MinLevel;
+        public int MaxLevel;
 
-    [Header("Board")]
-    public int BoardWidth;
-    public int BoardHeight;
+        [Header("Board")]
+        public int BoardWidth;
+        public int BoardHeight;
 
-    [Header("Content")]
-    public int MinWallCount;
-    public int MaxWallCount;
-    public LevelEntry<FoodObject>[] FoodEntries;
-    public LevelEntry<EnemyController>[] EnemyEntries;
+        [Header("Content")]
+        public int MinWallCount;
+        public int MaxWallCount;
+        public LevelEntry<FoodObject>[] FoodEntries;
+        public LevelEntry<EnemyController>[] EnemyEntries;
+    }
 }

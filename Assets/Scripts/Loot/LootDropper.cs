@@ -1,43 +1,52 @@
+using Combat;
+using Core;
+using Enemy;
+using Food;
 using UnityEngine;
 
-public class LootDropper : MonoBehaviour
+namespace Loot
 {
-    [SerializeField]
-    private LootEntry[] m_LootTable;
-
-    private Combatant m_Combatant;
-    private EnemyController m_Enemy;
-
-    void Awake()
+    public class LootDropper : MonoBehaviour
     {
-        m_Combatant = GetComponent<Combatant>();
-        m_Enemy = GetComponent<EnemyController>();
+        [SerializeField]
+        private LootEntry[] m_LootTable;
 
-        m_Combatant.Defeated += OnDefeated;
-    }
+        private Combatant m_Combatant;
+        private EnemyController m_Enemy;
 
-    void OnDestroy()
-    {
-        if (m_Combatant != null)
-            m_Combatant.Defeated -= OnDefeated;
-    }
-
-    void OnDefeated()
-    {
-        LootEntry entry = WeightedPool.PickRandom(m_LootTable, e => e.Weight);
-        switch (entry.Kind)
+        void Awake()
         {
-            case LootKind.Nothing:
-                break;
+            m_Combatant = GetComponent<Combatant>();
+            m_Enemy = GetComponent<EnemyController>();
 
-            case LootKind.Stamina:
-                GameManager.Instance.PlayerController.Combatant.ChangeStamina(entry.StaminaAmount);
-                break;
+            m_Combatant.Defeated += OnDefeated;
+        }
 
-            case LootKind.Food:
-                FoodObject drop = Instantiate(entry.FoodPrefab);
-                GameManager.Instance.BoardManager.AddObject(drop, m_Enemy.Cell);
-                break;
+        void OnDestroy()
+        {
+            if (m_Combatant != null)
+                m_Combatant.Defeated -= OnDefeated;
+        }
+
+        void OnDefeated()
+        {
+            LootEntry entry = WeightedPool.PickRandom(m_LootTable, e => e.Weight);
+            switch (entry.Kind)
+            {
+                case LootKind.Nothing:
+                    break;
+
+                case LootKind.Stamina:
+                    GameManager.Instance.PlayerController.Combatant.ChangeStamina(
+                        entry.StaminaAmount
+                    );
+                    break;
+
+                case LootKind.Food:
+                    FoodObject drop = Instantiate(entry.FoodPrefab);
+                    GameManager.Instance.BoardManager.AddObject(drop, m_Enemy.Cell);
+                    break;
+            }
         }
     }
 }

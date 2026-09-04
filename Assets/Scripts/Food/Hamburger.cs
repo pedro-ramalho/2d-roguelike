@@ -1,7 +1,12 @@
-public class Hamburger : FoodObject
+using Player;
+
+namespace Food
 {
-    protected override void ApplyEffect(PlayerController player)
+    public class Hamburger : FoodObject
     {
-        player.Combatant.ChangeStamina(GetAmountForCurrentBand());
+        protected override void ApplyEffect(PlayerController player)
+        {
+            player.Combatant.ChangeStamina(GetAmountForCurrentBand());
+        }
     }
 }

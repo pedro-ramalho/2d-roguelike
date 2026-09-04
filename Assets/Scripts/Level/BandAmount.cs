@@ -1,8 +1,11 @@
 using System;
 
-[Serializable]
-public struct BandAmount
+namespace Level
 {
-    public BandType Band;
-    public int Amount;
+    [Serializable]
+    public struct BandAmount
+    {
+        public BandType Band;
+        public int Amount;
+    }
 }

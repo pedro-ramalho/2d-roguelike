@@ -1,38 +1,43 @@
-using System.Collections;
+using Board;
+using Level;
+using Player;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public enum GameOverReason
+namespace Core
 {
-    Depleted,
-    Defeated,
-}
-
-public class GameManager : MonoBehaviour
-{
-    [SerializeField]
-    private LevelProgressionSettings m_ProgressionSettings;
-
-    public static GameManager Instance { get; private set; }
-
-    public TurnManager TurnManager { get; private set; }
-    public BoardManager BoardManager;
-    public LevelManager LevelManager;
-    public PlayerController PlayerController;
-    public UIDocument HUDLayersDoc;
-    public LevelProgressionSettings ProgressionSettings => m_ProgressionSettings;
-
-    void Awake()
+    public enum GameOverReason
     {
-        if (Instance != null)
+        Depleted,
+        Defeated,
+    }
+
+    public class GameManager : MonoBehaviour
+    {
+        [SerializeField]
+        private LevelProgressionSettings m_ProgressionSettings;
+
+        public static GameManager Instance { get; private set; }
+
+        public TurnManager TurnManager { get; private set; }
+        public BoardManager BoardManager;
+        public LevelManager LevelManager;
+        public PlayerController PlayerController;
+        public UIDocument HUDLayersDoc;
+        public LevelProgressionSettings ProgressionSettings => m_ProgressionSettings;
+
+        void Awake()
         {
-            Destroy(gameObject);
+            if (Instance != null)
+            {
+                Destroy(gameObject);
 
-            return;
+                return;
+            }
+
+            Instance = this;
+
+            TurnManager = GetComponent<TurnManager>();
         }
-
-        Instance = this;
-
-        TurnManager = GetComponent<TurnManager>();
     }
 }

@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class Brute : EnemyController
+namespace Enemy
 {
-    protected override void ResolveEnemyAction()
+    public class Brute : EnemyController
     {
-        Vector2Int delta = ComputeDeltaToPlayer();
-        ChaseOrAttack(delta);
+        protected override void ResolveEnemyAction()
+        {
+            Vector2Int delta = ComputeDeltaToPlayer();
+            ChaseOrAttack(delta);
+        }
     }
 }

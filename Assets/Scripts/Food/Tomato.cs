@@ -1,22 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
+using Player;
+using Status;
 using UnityEngine;
 
-public class Tomato : FoodObject
+namespace Food
 {
-    protected override void ApplyEffect(PlayerController player)
+    public class Tomato : FoodObject
     {
-        List<StatusEffect> negativeStatuses = player
-            .Combatant.StatusEffects.Where(s => s.IsNegative)
-            .ToList();
+        protected override void ApplyEffect(PlayerController player)
+        {
+            List<StatusEffect> negativeStatuses = player
+                .Combatant.StatusEffects.Where(s => s.IsNegative)
+                .ToList();
 
-        if (negativeStatuses.Count == 0)
-            return;
+            if (negativeStatuses.Count == 0)
+                return;
 
-        StatusEffect randomNegativeEffect = negativeStatuses[
-            Random.Range(0, negativeStatuses.Count)
-        ];
+            StatusEffect randomNegativeEffect = negativeStatuses[
+                Random.Range(0, negativeStatuses.Count)
+            ];
 
-        player.Combatant.RemoveStatusEffect(randomNegativeEffect);
+            player.Combatant.RemoveStatusEffect(randomNegativeEffect);
+        }
     }
 }

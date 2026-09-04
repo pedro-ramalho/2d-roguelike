@@ -1,16 +1,17 @@
-using UnityEngine;
-
-public static class StatusEffectFactory
+namespace Status
 {
-    public static StatusEffect FromType(StatusEffectType type, int duration)
+    public static class StatusEffectFactory
     {
-        return type switch
+        public static StatusEffect FromType(StatusEffectType type, int duration)
         {
-            StatusEffectType.Stunned => new StatusEffectStunned(duration),
-            StatusEffectType.Weak => new StatusEffectWeak(duration),
-            StatusEffectType.Vulnerable => new StatusEffectVulnerable(duration),
-            StatusEffectType.Empowered => new StatusEffectEmpowered(duration),
-            _ => throw new System.ArgumentException($"Unknown status type: {type}"),
-        };
+            return type switch
+            {
+                StatusEffectType.Stunned => new StatusEffectStunned(duration),
+                StatusEffectType.Weak => new StatusEffectWeak(duration),
+                StatusEffectType.Vulnerable => new StatusEffectVulnerable(duration),
+                StatusEffectType.Empowered => new StatusEffectEmpowered(duration),
+                _ => throw new System.ArgumentException($"Unknown status type: {type}"),
+            };
+        }
     }
 }

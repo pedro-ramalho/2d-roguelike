@@ -1,17 +1,22 @@
+using Core;
+using Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class ExitCellObject : CellObject
+namespace Board
 {
-    public Tile endTile;
-
-    public override void Init(BoardManager board, Vector2Int coord)
+    public class ExitCellObject : CellObject
     {
-        base.Init(board, coord);
+        public Tile endTile;
 
-        m_Board.SetCellTile(coord, endTile);
+        public override void Init(BoardManager board, Vector2Int coord)
+        {
+            base.Init(board, coord);
+
+            m_Board.SetCellTile(coord, endTile);
+        }
+
+        public override void PlayerEntered(PlayerController _) =>
+            GameManager.Instance?.LevelManager?.NewLevel();
     }
-
-    public override void PlayerEntered(PlayerController _) =>
-        GameManager.Instance?.LevelManager?.NewLevel();
 }

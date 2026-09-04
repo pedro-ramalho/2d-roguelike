@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ICellOccupant
+namespace Board
 {
-    GameObject GameObject { get; }
+    public interface ICellOccupant
+    {
+        GameObject GameObject { get; }
+    }
 }

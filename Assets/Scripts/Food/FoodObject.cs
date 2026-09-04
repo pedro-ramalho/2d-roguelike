@@ -1,36 +1,43 @@
+using Board;
+using Core;
+using Level;
+using Player;
 using UnityEngine;
 
-public abstract class FoodObject : CellObject
+namespace Food
 {
-    [SerializeField]
-    private BandAmount[] m_BandAmounts;
-
-    [SerializeField]
-    protected AudioClip[] m_ConsumeSFX;
-
-    protected abstract void ApplyEffect(PlayerController player);
-
-    protected int GetAmountForCurrentBand()
+    public abstract class FoodObject : CellObject
     {
-        BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+        [SerializeField]
+        private BandAmount[] m_BandAmounts;
 
-        foreach (BandAmount entry in m_BandAmounts)
+        [SerializeField]
+        protected AudioClip[] m_ConsumeSFX;
+
+        protected abstract void ApplyEffect(PlayerController player);
+
+        protected int GetAmountForCurrentBand()
         {
-            if (entry.Band == current)
-                return entry.Amount;
+            BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+
+            foreach (BandAmount entry in m_BandAmounts)
+            {
+                if (entry.Band == current)
+                    return entry.Amount;
+            }
+
+            return 0;
         }
 
-        return 0;
-    }
+        public override void PlayerEntered(PlayerController player)
+        {
+            m_Board.ClearCell(m_Cell);
 
-    public override void PlayerEntered(PlayerController player)
-    {
-        m_Board.ClearCell(m_Cell);
+            AudioManager.Instance.PlayRandomSFXFromList(m_ConsumeSFX);
 
-        AudioManager.Instance.PlayRandomSFXFromList(m_ConsumeSFX);
+            ApplyEffect(player);
 
-        ApplyEffect(player);
-
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 }
