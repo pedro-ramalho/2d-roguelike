@@ -60,6 +60,8 @@ namespace Board
                 Vector2Int cell = GetRandomEmptyCell();
                 WallObject wall = Instantiate(m_WallPrefab);
 
+                wall.Init(m_BoardManager, cell);
+
                 m_BoardManager.AddObject(wall, cell);
             }
         }
@@ -74,6 +76,8 @@ namespace Board
                 {
                     Vector2Int cell = GetRandomEmptyCell();
                     FoodObject food = Instantiate(entry.Prefab);
+
+                    food.Init(m_BoardManager, cell);
 
                     m_BoardManager.AddObject(food, cell);
                 }
@@ -91,9 +95,9 @@ namespace Board
             Vector2Int cell = GetRandomEmptyCell();
 
             EnemyController enemy = Instantiate(prefab);
-            m_BoardManager.SetCellOccupant(cell, enemy.Combatant);
+            m_BoardManager.AddObject(enemy.Combatant, cell);
+            enemy.SnapTo(cell);
 
-            enemy.Spawn(m_BoardManager, m_PlayerController, cell);
             enemy.Combatant.ApplyBandStats();
 
             return enemy;
@@ -167,6 +171,7 @@ namespace Board
 
             Vector2Int endCoord = new Vector2Int(boardManager.Width - 2, boardManager.Height - 2);
             m_BoardManager.AddObject(Instantiate(m_ExitPrefab), endCoord);
+            m_ExitPrefab.Init(m_BoardManager, endCoord);
             m_EmptyCells.Remove(endCoord);
 
             GenerateWalls();

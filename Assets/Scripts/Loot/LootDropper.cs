@@ -44,6 +44,7 @@ namespace Loot
 
                 case LootKind.Food:
                     FoodObject drop = Instantiate(entry.FoodPrefab);
+                    drop.Init(GameManager.Instance.BoardManager, m_Enemy.Cell);
                     GameManager.Instance.BoardManager.AddObject(drop, m_Enemy.Cell);
                     break;
             }

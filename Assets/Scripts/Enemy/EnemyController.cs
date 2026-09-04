@@ -31,11 +31,11 @@ namespace Enemy
         {
             m_Combatant = GetComponent<Combatant>();
             m_CombatantAnimator = GetComponent<CombatantAnimator>();
-        }
 
-        void Start()
-        {
             m_TurnManager = GameManager.Instance.TurnManager;
+            m_BoardManager = GameManager.Instance.BoardManager;
+            m_PlayerController = GameManager.Instance.PlayerController;
+
             m_TurnManager.OnTick += OnTurnHappened;
         }
 
@@ -69,7 +69,7 @@ namespace Enemy
             return true;
         }
 
-        void SnapTo(Vector2Int coord)
+        public void SnapTo(Vector2Int coord)
         {
             m_Cell = coord;
             transform.position = m_BoardManager.CellToWorld(coord);
@@ -156,17 +156,5 @@ namespace Enemy
         }
 
         protected abstract void ResolveEnemyAction();
-
-        public void Spawn(
-            BoardManager boardManager,
-            PlayerController playerController,
-            Vector2Int cell
-        )
-        {
-            m_BoardManager = boardManager;
-            m_PlayerController = playerController;
-
-            SnapTo(cell);
-        }
     }
 }

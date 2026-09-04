@@ -50,14 +50,12 @@ namespace Board
                 m_BoardData[x, y] = new CellData();
         }
 
-        public void AddObject(CellObject obj, Vector2Int coord)
+        public void AddObject(ICellOccupant occupant, Vector2Int coord)
         {
             CellData data = m_BoardData[coord.x, coord.y];
 
-            obj.transform.position = CellToWorld(coord);
-            data.ContainedObject = obj;
-
-            obj.Init(this, coord);
+            occupant.GameObject.transform.position = CellToWorld(coord);
+            data.ContainedObject = occupant;
         }
 
         public Vector3 CellToWorld(Vector2Int cellIndex) =>
