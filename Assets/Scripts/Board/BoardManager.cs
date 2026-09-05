@@ -86,9 +86,6 @@ namespace Board
                 cellData.ContainedObject = null;
         }
 
-        public void SetCellOccupant(Vector2Int cellIndex, ICellOccupant occupant) =>
-            m_BoardData[cellIndex.x, cellIndex.y].ContainedObject = occupant;
-
         public void SetCellPassable(Vector2Int cellIndex, bool passable) =>
             GetCellData(cellIndex).Passable = passable;
 
