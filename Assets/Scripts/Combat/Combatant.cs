@@ -15,37 +15,35 @@ namespace Combat
         [Header("Initial Stats")]
         // Authored initial values
         [SerializeField]
-        private int m_InitialMaxHP;
+        private int m_InitialMaxHP; // STAT
 
         [SerializeField]
-        private int m_InitialMaxBlock;
+        private int m_InitialMaxBlock; // STAT
 
         [SerializeField]
-        private int m_InitialAttack;
+        private int m_InitialAttack; // STAT
 
         [SerializeField]
-        private int m_InitialMaxStamina;
-
-        // -- Combatant Status Effects --
-        [Header("Status Effects")]
-        [SerializeField]
-        private StatusEffectRoll[] m_StatusRolls;
+        private int m_InitialMaxStamina; // STAT
 
         // -- Combatant Band-Specific Stats --
         [Header("Band Stats")]
         [SerializeField]
-        private BandStats[] m_BandStats;
+        private BandStats[] m_BandStats; // BAND-SPECIFIC STATS
+
+        // -- Combatant Status Effects --
+        [Header("Status Effects")]
+        [SerializeField]
+        private StatusEffectRoll[] m_StatusRolls; // STATUS EFFECT ROLL TABLE
 
         // -- Private References --
-        private TurnManager m_TurnManager;
-        private BoardManager m_BoardManager;
+        private TurnManager m_TurnManager; // TURN MANAGER REFERENCE
+        private BoardManager m_BoardManager; // BOARD MANAGER REFERENCE
 
         // -- Runtime State --
-        private CombatantStats m_Stats = new();
-        private readonly List<StatusEffect> m_StatusEffects = new();
-
-        // -- Runtime State --
-        private Vector2Int m_Cell;
+        private CombatantStats m_Stats = new(); // RUNTIME COMBATANT STATS
+        private readonly List<StatusEffect> m_StatusEffects = new(); // RUNTIME COMBATANT STATUS EFFECT LIST
+        private Vector2Int m_Cell; // RUNTIME COMBATANT CELL POSITION
 
         // Stats
         public int MaxHP => m_Stats.MaxHP;
@@ -62,23 +60,24 @@ namespace Combat
         public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
         // -- Combatant Flags --
-        public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
-        public bool IsGodMode { get; set; }
+        public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned); // RUNTIME FLAG
+        public bool IsGodMode { get; set; } // RUNTIME FLAG
 
         GameObject ICellOccupant.GameObject => gameObject;
 
         // -- Combatant Events --
-        public event Action Defeated;
-        public event Action Depleted;
-        public event Action<DamageResult> Damaged;
-        public event Action<Vector2Int> AttackPerformed;
-        public event Action<int> HealthAdded;
-        public event Action<int> BlockAdded;
-        public event Action<int> StaminaChanged;
-        public event Action<StatusEffect> StatusApplied;
-        public event Action<StatusEffect> StatusRemoved;
-        public event Action StateReset;
+        public event Action Defeated; // DEATH EVENT
+        public event Action Depleted; // DEATH EVENT
+        public event Action<DamageResult> Damaged; // DAMAGE TAKEN EVENT
+        public event Action<Vector2Int> AttackPerformed; // ATTACK EVENT
+        public event Action<int> HealthAdded; // STAT-MODIFICATION EVENT
+        public event Action<int> BlockAdded; // STAT-MODIFICATION EVENT
+        public event Action<int> StaminaChanged; // STAT-MODIFICATION EVENT
+        public event Action<StatusEffect> StatusApplied; // STATUS EFFECT EVENT
+        public event Action<StatusEffect> StatusRemoved; // STATUS EFFECT EVENT
+        public event Action StateReset; // STATE RESET EVENT
 
+        // -- SETUP --
         void Awake()
         {
             ResetState();
@@ -99,8 +98,10 @@ namespace Combat
                 m_TurnManager.OnTick -= TickStatusEffects;
         }
 
+        // -- CELL POSITION --
         public void SetCell(Vector2Int cell) => m_Cell = cell;
 
+        // -- COMBATANT DAMAGE --
         public DamageResult AttackTarget(Combatant target, Vector2Int direction)
         {
             AttackPerformed?.Invoke(direction);
@@ -134,6 +135,7 @@ namespace Combat
             return result;
         }
 
+        // -- COMBATANT STAT MODIFICATION --
         public void Heal(int amount)
         {
             m_Stats.HP = Mathf.Clamp(m_Stats.HP + amount, 0, m_Stats.MaxHP);
@@ -157,8 +159,59 @@ namespace Combat
                 Depleted?.Invoke();
         }
 
-        public void DecrementStamina() => ChangeStamina(-1);
+        public void UpgradeStat(CombatantStat stat, int amount)
+        {
+            switch (stat)
+            {
+                case CombatantStat.MaxHP:
+                    m_Stats.MaxHP += amount;
+                    break;
+                case CombatantStat.MaxBlock:
+                    m_Stats.MaxBlock += amount;
+                    break;
+                case CombatantStat.Attack:
+                    m_Stats.Attack += amount;
+                    break;
+                case CombatantStat.MaxStamina:
+                    m_Stats.MaxStamina += amount;
+                    break;
+            }
+        }
 
+        public void ApplyStatMultiplier(float hpMult, float blockMult, float attackMult)
+        {
+            m_Stats.MaxHP = Mathf.RoundToInt(m_Stats.MaxHP * hpMult);
+            m_Stats.MaxBlock = Mathf.RoundToInt(m_Stats.MaxBlock * blockMult);
+            m_Stats.Attack = Mathf.RoundToInt(m_Stats.Attack * attackMult);
+            m_Stats.HP = m_Stats.MaxHP;
+            m_Stats.Block = 0;
+        }
+
+        public void RefreshStats()
+        {
+            m_Stats.HP = MaxHP;
+            m_Stats.Stamina = MaxStamina;
+        }
+
+        public void ApplyBandStats()
+        {
+            BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+
+            foreach (BandStats entry in m_BandStats)
+            {
+                if (entry.Band == current)
+                {
+                    m_Stats.MaxHP = entry.MaxHP;
+                    m_Stats.HP = entry.MaxHP;
+                    m_Stats.Attack = entry.Attack;
+                    m_Stats.MaxBlock = entry.MaxBlock;
+
+                    return;
+                }
+            }
+        }
+
+        // -- COMBATANT STATUS EFFECT MANAGEMENT --
         public void RollStatusOnHit(Combatant target)
         {
             int level = GameManager.Instance.LevelManager.CurrentLevel;
@@ -208,84 +261,6 @@ namespace Combat
             StatusRemoved?.Invoke(effect);
         }
 
-        public void IncreaseMaxHP(int amount) => m_Stats.MaxHP += amount;
-
-        public void IncreaseMaxBlock(int amount) => m_Stats.MaxBlock += amount;
-
-        public void IncreaseAttack(int amount) => m_Stats.Attack += amount;
-
-        public void IncreaseMaxStamina(int amount) => m_Stats.MaxStamina += amount;
-
-        public void UpgradeStat(CombatantStat stat, int amount)
-        {
-            switch (stat)
-            {
-                case CombatantStat.MaxHP:
-                    IncreaseMaxHP(amount);
-                    break;
-                case CombatantStat.MaxBlock:
-                    IncreaseMaxBlock(amount);
-                    break;
-                case CombatantStat.Attack:
-                    IncreaseAttack(amount);
-                    break;
-                case CombatantStat.MaxStamina:
-                    IncreaseMaxStamina(amount);
-                    break;
-            }
-        }
-
-        public void ApplyStatMultiplier(float hpMult, float blockMult, float attackMult)
-        {
-            m_Stats.MaxHP = Mathf.RoundToInt(m_Stats.MaxHP * hpMult);
-            m_Stats.MaxBlock = Mathf.RoundToInt(m_Stats.MaxBlock * blockMult);
-            m_Stats.Attack = Mathf.RoundToInt(m_Stats.Attack * attackMult);
-            m_Stats.HP = m_Stats.MaxHP;
-            m_Stats.Block = 0;
-        }
-
-        public void ResetState()
-        {
-            m_Stats = new CombatantStats
-            {
-                MaxHP = m_InitialMaxHP,
-                HP = m_InitialMaxHP,
-                MaxBlock = m_InitialMaxBlock,
-                Block = 0,
-                Attack = m_InitialAttack,
-                MaxStamina = m_InitialMaxStamina,
-                Stamina = m_InitialMaxStamina,
-            };
-
-            m_StatusEffects.Clear();
-
-            StateReset?.Invoke();
-        }
-
-        public void RefreshStats()
-        {
-            m_Stats.HP = MaxHP;
-            m_Stats.Stamina = MaxStamina;
-        }
-
-        public void ApplyBandStats()
-        {
-            BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
-
-            foreach (BandStats entry in m_BandStats)
-            {
-                if (entry.Band == current)
-                {
-                    m_Stats.MaxHP = entry.MaxHP;
-                    m_Stats.HP = entry.MaxHP;
-                    m_Stats.Attack = entry.Attack;
-                    m_Stats.MaxBlock = entry.MaxBlock;
-
-                    return;
-                }
-            }
-        }
-
         void TickStatusEffects()
         {
             foreach (StatusEffect effect in m_StatusEffects)
@@ -303,6 +278,25 @@ namespace Combat
                     StatusRemoved?.Invoke(effect);
                 }
             }
+        }
+
+        // -- COMBATANT STATE RESET --
+        public void ResetState()
+        {
+            m_Stats = new CombatantStats
+            {
+                MaxHP = m_InitialMaxHP,
+                HP = m_InitialMaxHP,
+                MaxBlock = m_InitialMaxBlock,
+                Block = 0,
+                Attack = m_InitialAttack,
+                MaxStamina = m_InitialMaxStamina,
+                Stamina = m_InitialMaxStamina,
+            };
+
+            m_StatusEffects.Clear();
+
+            StateReset?.Invoke();
         }
     }
 }
