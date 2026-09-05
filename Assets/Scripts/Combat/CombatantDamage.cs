@@ -3,6 +3,18 @@ using UnityEngine;
 
 namespace Combat
 {
+    public readonly struct DamageResult
+    {
+        public int BlockLost { get; }
+        public int HPLost { get; }
+
+        public DamageResult(int blockLost, int hpLost)
+        {
+            BlockLost = blockLost;
+            HPLost = hpLost;
+        }
+    }
+
     public static class CombatantDamage
     {
         public static DamageResult ApplyDamage(Combatant attacker, Combatant defender)

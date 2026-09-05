@@ -29,11 +29,11 @@ namespace Status
 
         public virtual float ModifyIncomingDamage(float damage) => damage;
 
-        public virtual void OnTurnEnd(ICombatant combatant) => Duration--;
+        public virtual void OnTurnEnd(Combatant combatant) => Duration--;
 
-        public virtual void OnApplied(ICombatant combatant) { }
+        public virtual void OnApplied(Combatant combatant) { }
 
-        public virtual void OnRemoved(ICombatant combatant) { }
+        public virtual void OnRemoved(Combatant combatant) { }
 
         public override string ToString() =>
             Type switch

@@ -27,7 +27,7 @@ namespace Combat
         private static readonly Color BlockAddedColor = new Color(0.05f, 0.10f, 0.31f);
         private static readonly Color StatusAppliedColor = new Color(1f, 1f, 0f);
 
-        private ICombatant m_Combatant;
+        private Combatant m_Combatant;
         private VisualElement m_ParentLayer;
         private Camera m_Camera;
         private readonly List<VisualElement> m_Active = new();
@@ -39,7 +39,7 @@ namespace Combat
             m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
             m_Camera = Camera.main;
 
-            ICombatant combatant = GetComponent<ICombatant>();
+            Combatant combatant = GetComponent<Combatant>();
             if (combatant != null)
                 Bind(combatant);
         }
@@ -117,7 +117,7 @@ namespace Combat
             m_Active.Remove(floater);
         }
 
-        public void Bind(ICombatant combatant)
+        public void Bind(Combatant combatant)
         {
             m_Combatant = combatant;
             m_Combatant.Damaged += OnDamaged;

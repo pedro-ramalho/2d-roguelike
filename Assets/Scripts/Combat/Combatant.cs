@@ -9,8 +9,9 @@ using UnityEngine;
 
 namespace Combat
 {
-    public class Combatant : MonoBehaviour, ICombatant, ICellOccupant
+    public class Combatant : MonoBehaviour, ICellOccupant
     {
+        // -- Combatant Stats --
         [Header("Initial Stats")]
         // Authored initial values
         [SerializeField]
@@ -25,23 +26,25 @@ namespace Combat
         [SerializeField]
         private int m_InitialMaxStamina;
 
-        // Status rolls
+        // -- Combatant Status Effects --
         [Header("Status Effects")]
         [SerializeField]
         private StatusEffectRoll[] m_StatusRolls;
 
+        // -- Combatant Band-Specific Stats --
         [Header("Band Stats")]
         [SerializeField]
         private BandStats[] m_BandStats;
 
-        // Private references
+        // -- Private References --
         private TurnManager m_TurnManager;
         private BoardManager m_BoardManager;
 
-        // Runtime state
+        // -- Runtime State --
         private CombatantStats m_Stats = new();
         private readonly List<StatusEffect> m_StatusEffects = new();
 
+        // -- Runtime State --
         private Vector2Int m_Cell;
 
         // Stats
@@ -58,13 +61,13 @@ namespace Combat
         // Status effects
         public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
 
-        // Flags
+        // -- Combatant Flags --
         public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned);
         public bool IsGodMode { get; set; }
 
         GameObject ICellOccupant.GameObject => gameObject;
 
-        // Events
+        // -- Combatant Events --
         public event Action Defeated;
         public event Action Depleted;
         public event Action<DamageResult> Damaged;
@@ -156,7 +159,7 @@ namespace Combat
 
         public void DecrementStamina() => ChangeStamina(-1);
 
-        public void RollStatusOnHit(ICombatant target)
+        public void RollStatusOnHit(Combatant target)
         {
             int level = GameManager.Instance.LevelManager.CurrentLevel;
 

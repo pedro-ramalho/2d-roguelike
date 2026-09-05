@@ -24,7 +24,7 @@ namespace Combat
         private StatusEffectIconSet m_IconSet;
 
         private TurnManager m_TurnManager;
-        private ICombatant m_Combatant;
+        private Combatant m_Combatant;
         private VisualElement m_ParentLayer;
         private VisualElement m_Root;
         private VisualElement m_HPFill;
@@ -51,7 +51,7 @@ namespace Combat
 
             m_Camera = Camera.main;
 
-            ICombatant combatant = GetComponent<ICombatant>();
+            Combatant combatant = GetComponent<Combatant>();
             if (combatant != null)
                 Bind(combatant);
         }
@@ -158,7 +158,7 @@ namespace Combat
                     slot.Q<Label>("Duration").text = effect.Duration.ToString();
         }
 
-        public void Bind(ICombatant combatant)
+        public void Bind(Combatant combatant)
         {
             m_Combatant = combatant;
             m_Combatant.Damaged += OnStatChanged;

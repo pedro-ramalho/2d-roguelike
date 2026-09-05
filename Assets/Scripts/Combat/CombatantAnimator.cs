@@ -26,7 +26,7 @@ namespace Combat
         private bool m_DestroyOnDeath = true;
 
         // Private references
-        private ICombatant m_Combatant;
+        private Combatant m_Combatant;
         private TurnManager m_TurnManager;
         private BoardManager m_BoardManager;
 
@@ -256,7 +256,7 @@ namespace Combat
             p.Launch(transform.position, target, m_ProjectileAnimationDuration, onArrive);
         }
 
-        public void Bind(ICombatant combatant, TurnManager turnManager, BoardManager boardManager)
+        public void Bind(Combatant combatant, TurnManager turnManager, BoardManager boardManager)
         {
             m_Combatant = combatant;
             m_TurnManager = turnManager;
