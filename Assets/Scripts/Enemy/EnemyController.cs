@@ -126,8 +126,6 @@ namespace Enemy
                 m_PlayerController.Combatant,
                 new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y))
             );
-            if (result.HPLost > 0)
-                Combatant.RollStatusOnHit(m_PlayerController.Combatant);
         }
 
         protected void ChaseOrAttack(Vector2Int delta)

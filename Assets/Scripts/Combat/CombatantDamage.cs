@@ -5,7 +5,7 @@ namespace Combat
 {
     public static class CombatantDamage
     {
-        public static DamageResult ApplyDamage(ICombatant attacker, ICombatant defender)
+        public static DamageResult ApplyDamage(Combatant attacker, Combatant defender)
         {
             float damage = attacker.Attack;
 
@@ -17,7 +17,12 @@ namespace Combat
 
             int finalDamage = Mathf.Max(0, Mathf.FloorToInt(damage));
 
-            return defender.TakeDamage(finalDamage);
+            DamageResult result = defender.TakeDamage(finalDamage);
+
+            if (result.HPLost > 0)
+                attacker.RollStatusOnHit(defender);
+
+            return result;
         }
     }
 }

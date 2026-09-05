@@ -41,7 +41,6 @@ namespace Combat
         public event Action<StatusEffect> StatusRemoved;
         public event Action StateReset;
 
-        DamageResult AttackTarget(ICombatant target, Vector2Int direction);
         DamageResult TakeDamage(int amount);
         void Heal(int amount);
         void AddBlock(int amount);

@@ -98,14 +98,14 @@ namespace Combat
 
         public void SetCell(Vector2Int cell) => m_Cell = cell;
 
-        public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
+        public DamageResult AttackTarget(Combatant target, Vector2Int direction)
         {
             AttackPerformed?.Invoke(direction);
 
             return DealDamageTo(target);
         }
 
-        public DamageResult DealDamageTo(ICombatant target) =>
+        public DamageResult DealDamageTo(Combatant target) =>
             CombatantDamage.ApplyDamage(this, target);
 
         public DamageResult TakeDamage(int amount)
