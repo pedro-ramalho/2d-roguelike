@@ -1,6 +1,7 @@
 using Board;
 using Combat;
 using Core;
+using Enemy;
 using UnityEngine;
 
 namespace Player
@@ -15,12 +16,9 @@ namespace Player
         private CombatantAnimator m_CombatantAnimator;
         private SpriteRenderer m_SpriteRenderer;
 
-        // State
-        private Vector2Int m_CellPosition;
         private bool m_IsGameOver;
 
         public Combatant Combatant => m_Combatant;
-        public Vector2Int Cell => m_CellPosition;
 
         void Start()
         {
@@ -35,6 +33,7 @@ namespace Player
 
             m_Combatant = GetComponent<Combatant>();
             m_CombatantAnimator = GetComponent<CombatantAnimator>();
+            m_BoardManager = GameManager.Instance.BoardManager;
         }
 
         void OnEnable() => m_InputActions.Player.Enable();
@@ -71,11 +70,11 @@ namespace Player
             return Vector2Int.zero;
         }
 
-        void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
+        void HandleEnemyDamage(EnemyController enemy, Vector2Int target, BoardManager.CellData cell)
         {
-            m_Combatant.AttackTarget(enemy, target - m_CellPosition);
+            m_Combatant.AttackTarget(enemy.Combatant, target - m_Combatant.Cell);
 
-            if (enemy.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
+            if (enemy.Combatant.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
                 cell.ContainedObject = null;
         }
 
@@ -90,7 +89,7 @@ namespace Player
 
             if (cell.ContainedObject == null)
                 MoveTo(target, false);
-            else if (cell.ContainedObject is ICombatant enemy)
+            else if (cell.ContainedObject is EnemyController enemy)
                 HandleEnemyDamage(enemy, target, cell);
             else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
             {
@@ -112,7 +111,7 @@ namespace Player
 
             m_CombatantAnimator.SetSpriteFacing(direction);
 
-            Vector2Int target = m_CellPosition + direction;
+            Vector2Int target = m_Combatant.Cell + direction;
 
             BoardManager.CellData cell = m_BoardManager.GetCellData(target);
             if (cell == null || !cell.Passable)
@@ -143,16 +142,12 @@ namespace Player
                 hud.enabled = visible;
         }
 
-        public void Spawn(BoardManager boardManager, Vector2Int cell)
-        {
-            m_BoardManager = boardManager;
-            MoveTo(cell, true);
-        }
+        public void Spawn(Vector2Int cell) => MoveTo(cell, true);
 
         public void MoveTo(Vector2Int cell, bool snap)
         {
-            Vector2Int direction = cell - m_CellPosition;
-            m_CellPosition = cell;
+            Vector2Int direction = cell - m_Combatant.Cell;
+            m_Combatant.SetCell(cell);
 
             if (snap)
                 transform.position = m_BoardManager.CellToWorld(cell);

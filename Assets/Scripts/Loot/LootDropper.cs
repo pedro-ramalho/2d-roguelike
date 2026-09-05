@@ -12,12 +12,10 @@ namespace Loot
         private LootEntry[] m_LootTable;
 
         private Combatant m_Combatant;
-        private EnemyController m_Enemy;
 
         void Awake()
         {
             m_Combatant = GetComponent<Combatant>();
-            m_Enemy = GetComponent<EnemyController>();
 
             m_Combatant.Defeated += OnDefeated;
         }
@@ -35,7 +33,6 @@ namespace Loot
             {
                 case LootKind.Nothing:
                     break;
-
                 case LootKind.Stamina:
                     GameManager.Instance.PlayerController.Combatant.ChangeStamina(
                         entry.StaminaAmount
@@ -43,8 +40,7 @@ namespace Loot
                     break;
 
                 case LootKind.Food:
-                    FoodObject drop = Instantiate(entry.FoodPrefab);
-                    GameManager.Instance.BoardManager.AddObject(drop, m_Enemy.Cell);
+                    GameManager.Instance.BoardManager.Place(entry.FoodPrefab, m_Combatant.Cell);
                     break;
             }
         }

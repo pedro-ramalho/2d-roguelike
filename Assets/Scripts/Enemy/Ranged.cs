@@ -52,7 +52,7 @@ namespace Enemy
             int count = 0;
             int freeCells = 0;
 
-            Vector2Int cursor = Cell;
+            Vector2Int cursor = Combatant.Cell;
 
             while (count < m_RunwayScanDepth)
             {

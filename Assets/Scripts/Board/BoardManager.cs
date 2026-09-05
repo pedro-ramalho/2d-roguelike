@@ -11,9 +11,13 @@ namespace Board
             public ICellOccupant ContainedObject;
         }
 
-        private Tilemap m_Tilemap;
-        private CellData[,] m_BoardData;
+        [SerializeField]
         private Grid m_Grid;
+
+        [SerializeField]
+        private Tilemap m_Tilemap;
+
+        private CellData[,] m_BoardData;
 
         private int m_Width;
         private int m_Height;
@@ -37,9 +41,6 @@ namespace Board
 
         public void Init(int width, int height)
         {
-            m_Tilemap = GetComponentInChildren<Tilemap>();
-            m_Grid = GetComponentInChildren<Grid>();
-
             m_Width = width;
             m_Height = height;
 
@@ -50,18 +51,20 @@ namespace Board
                 m_BoardData[x, y] = new CellData();
         }
 
-        public void AddObject(CellObject obj, Vector2Int coord)
+        public T Place<T>(T prefab, Vector2Int cell)
+            where T : Component, ICellOccupant
         {
-            CellData data = m_BoardData[coord.x, coord.y];
+            T instance = Instantiate(prefab, CellToWorld(cell), Quaternion.identity);
+            m_BoardData[cell.x, cell.y].ContainedObject = instance;
 
-            obj.transform.position = CellToWorld(coord);
-            data.ContainedObject = obj;
-
-            obj.Init(this, coord);
+            return instance;
         }
 
         public Vector3 CellToWorld(Vector2Int cellIndex) =>
             m_Grid.GetCellCenterWorld((Vector3Int)cellIndex);
+
+        public Vector2Int WorldToCell(Vector3 worldPosition) =>
+            (Vector2Int)m_Grid.WorldToCell(worldPosition);
 
         public CellData GetCellData(Vector2Int cellIndex)
         {
@@ -82,9 +85,6 @@ namespace Board
             if (cellData != null)
                 cellData.ContainedObject = null;
         }
-
-        public void SetCellOccupant(Vector2Int cellIndex, ICellOccupant occupant) =>
-            m_BoardData[cellIndex.x, cellIndex.y].ContainedObject = occupant;
 
         public void SetCellPassable(Vector2Int cellIndex, bool passable) =>
             GetCellData(cellIndex).Passable = passable;

@@ -42,6 +42,8 @@ namespace Combat
         private CombatantStats m_Stats = new();
         private readonly List<StatusEffect> m_StatusEffects = new();
 
+        private Vector2Int m_Cell;
+
         // Stats
         public int MaxHP => m_Stats.MaxHP;
         public int HP => m_Stats.HP;
@@ -50,6 +52,8 @@ namespace Combat
         public int Attack => m_Stats.Attack;
         public int Stamina => m_Stats.Stamina;
         public int MaxStamina => m_Stats.MaxStamina;
+
+        public Vector2Int Cell => m_Cell;
 
         // Status effects
         public IReadOnlyList<StatusEffect> StatusEffects => m_StatusEffects;
@@ -79,6 +83,8 @@ namespace Combat
             m_TurnManager = GameManager.Instance.TurnManager;
             m_BoardManager = GameManager.Instance.BoardManager;
 
+            m_Cell = m_BoardManager.WorldToCell(transform.position);
+
             GetComponent<CombatantAnimator>().Bind(this, m_TurnManager, m_BoardManager);
         }
 
@@ -89,6 +95,8 @@ namespace Combat
             if (m_TurnManager != null)
                 m_TurnManager.OnTick -= TickStatusEffects;
         }
+
+        public void SetCell(Vector2Int cell) => m_Cell = cell;
 
         public DamageResult AttackTarget(ICombatant target, Vector2Int direction)
         {

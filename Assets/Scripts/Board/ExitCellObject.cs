@@ -9,11 +9,11 @@ namespace Board
     {
         public Tile endTile;
 
-        public override void Init(BoardManager board, Vector2Int coord)
+        protected override void Awake()
         {
-            base.Init(board, coord);
+            base.Awake();
 
-            m_Board.SetCellTile(coord, endTile);
+            m_Board.SetCellTile(m_Cell, endTile);
         }
 
         public override void PlayerEntered(PlayerController _) =>
