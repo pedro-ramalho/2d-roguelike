@@ -58,7 +58,7 @@ namespace Enemy
             {
                 cursor += direction;
 
-                if (!CanEnterCell(cursor))
+                if (!Combatant.CanMoveTo(cursor))
                     break;
 
                 freeCells++;
@@ -101,7 +101,7 @@ namespace Enemy
 
             for (int i = 0; i < m_RetreatDistance; i++)
             {
-                if (TryMove(direction))
+                if (Combatant.TryMoveTo(Combatant.Cell + direction))
                     yield return new WaitUntil(() => !Animator.IsBusy);
             }
         }

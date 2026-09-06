@@ -6,7 +6,7 @@ namespace Food
     {
         protected override void ApplyEffect(PlayerController player)
         {
-            player.Combatant.IncreaseMaxHP(GetAmountForCurrentBand());
+            player.Combatant.UpgradeStat(Combat.CombatantStat.MaxHP, GetAmountForCurrentBand());
             player.Combatant.Heal(GetAmountForCurrentBand());
         }
     }

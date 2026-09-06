@@ -52,10 +52,13 @@ namespace Board
         }
 
         public T Place<T>(T prefab, Vector2Int cell)
-            where T : Component, ICellOccupant
+            where T : Component
         {
             T instance = Instantiate(prefab, CellToWorld(cell), Quaternion.identity);
-            m_BoardData[cell.x, cell.y].ContainedObject = instance;
+
+            ICellOccupant occupant = instance.GetComponent<ICellOccupant>();
+            if (occupant != null)
+                m_BoardData[cell.x, cell.y].ContainedObject = occupant;
 
             return instance;
         }
@@ -81,7 +84,6 @@ namespace Board
         public void ClearCell(Vector2Int cellIndex)
         {
             CellData cellData = GetCellData(cellIndex);
-
             if (cellData != null)
                 cellData.ContainedObject = null;
         }
@@ -132,9 +134,13 @@ namespace Board
             {
                 CellData cellData = m_BoardData[x, y];
 
-                if (cellData.ContainedObject != null)
-                    Destroy(cellData.ContainedObject.GameObject);
+                if (cellData.ContainedObject == null)
+                {
+                    SetCellTile(new Vector2Int(x, y), null);
+                    continue;
+                }
 
+                Destroy(cellData.ContainedObject.GameObject);
                 SetCellTile(new Vector2Int(x, y), null);
             }
         }

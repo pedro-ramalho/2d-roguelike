@@ -33,6 +33,8 @@ namespace Combat
         // Components
         private SpriteRenderer m_SpriteRenderer;
         private Animator m_Animator;
+        private Color m_OriginalColor;
+        private bool m_IsHurt;
 
         // Coroutines
         private Coroutine m_AttackCoroutine;
@@ -60,6 +62,8 @@ namespace Combat
         {
             m_SpriteRenderer = GetComponent<SpriteRenderer>();
             m_Animator = GetComponent<Animator>();
+
+            m_OriginalColor = m_SpriteRenderer.color;
         }
 
         void OnDisable()
@@ -155,13 +159,18 @@ namespace Combat
 
         IEnumerator HurtAnimationCoroutine()
         {
-            Color startColor = m_SpriteRenderer.color;
+            if (!m_IsHurt)
+                m_OriginalColor = m_SpriteRenderer.color;
+
+            m_IsHurt = true;
 
             m_SpriteRenderer.color = Color.red;
 
             yield return new WaitForSeconds(m_HurtAnimationDuration);
 
-            m_SpriteRenderer.color = startColor;
+            m_SpriteRenderer.color = m_OriginalColor;
+
+            m_IsHurt = false;
 
             m_HurtCoroutine = null;
         }

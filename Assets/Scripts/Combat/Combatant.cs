@@ -96,10 +96,54 @@ namespace Combat
         {
             if (m_TurnManager != null)
                 m_TurnManager.OnTick -= TickStatusEffects;
+
+            if (m_BoardManager != null)
+                RemoveSelfFromCell();
         }
 
         // -- CELL POSITION --
-        public void SetCell(Vector2Int cell) => m_Cell = cell;
+        void RemoveSelfFromCell()
+        {
+            BoardManager.CellData data = m_BoardManager.GetCellData(m_Cell);
+            if (data != null && ReferenceEquals(data.ContainedObject, this))
+                data.ContainedObject = null;
+        }
+
+        public void Teleport(Vector2Int cell)
+        {
+            RemoveSelfFromCell();
+
+            m_Cell = cell;
+            transform.position = m_BoardManager.CellToWorld(cell);
+
+            BoardManager.CellData data = m_BoardManager.GetCellData(cell);
+            if (data != null)
+                data.ContainedObject = this;
+        }
+
+        public bool CanMoveTo(Vector2Int cell)
+        {
+            BoardManager.CellData data = m_BoardManager.GetCellData(cell);
+            return data != null && data.Passable && data.ContainedObject == null;
+        }
+
+        public bool TryMoveTo(Vector2Int cell)
+        {
+            if (!CanMoveTo(cell))
+                return false;
+
+            Vector2Int direction = cell - m_Cell;
+
+            RemoveSelfFromCell();
+
+            BoardManager.CellData targetData = m_BoardManager.GetCellData(cell);
+            targetData.ContainedObject = this;
+
+            m_Cell = cell;
+
+            GetComponent<CombatantAnimator>().PlayWalkAnimation(cell, direction);
+            return true;
+        }
 
         // -- COMBATANT DAMAGE --
         public DamageResult AttackTarget(Combatant target, Vector2Int direction)
@@ -128,7 +172,10 @@ namespace Combat
             DamageResult result = new DamageResult(blockLost, hpLost);
 
             if (previousHP > 0 && m_Stats.HP <= 0)
+            {
+                RemoveSelfFromCell();
                 Defeated?.Invoke();
+            }
 
             Damaged?.Invoke(result);
 
@@ -212,7 +259,7 @@ namespace Combat
         }
 
         // -- COMBATANT STATUS EFFECT MANAGEMENT --
-        public void RollStatusOnHit(Combatant target)
+        internal void RollStatusOnHit(Combatant target)
         {
             int level = GameManager.Instance.LevelManager.CurrentLevel;
 

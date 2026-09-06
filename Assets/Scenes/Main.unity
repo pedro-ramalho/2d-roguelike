@@ -8767,7 +8767,8 @@ MonoBehaviour:
   m_InitialMaxHP: 15
   m_InitialMaxBlock: 6
   m_InitialAttack: 2
-  m_InitialMaxStamina: 25
+  m_InitialMaxStamina: 1000
+  m_BandStats: []
   m_StatusRolls:
   - Type: 1
     Duration: 2
@@ -8777,7 +8778,6 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.2
     PerLevelBonus: 0.05
-  m_BandStats: []
 --- !u!1 &1680459596
 GameObject:
   m_ObjectHideFlags: 0

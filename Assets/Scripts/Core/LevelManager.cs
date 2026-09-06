@@ -102,6 +102,7 @@ namespace Core
 
         void RebuildLevel()
         {
+            m_BoardManager.ClearCell(m_PlayerController.Combatant.Cell);
             m_PlayerController.gameObject.SetActive(false);
 
             m_BoardManager.Clean();

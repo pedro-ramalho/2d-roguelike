@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public abstract class EnemyController : MonoBehaviour, ICellOccupant
+    public abstract class EnemyController : MonoBehaviour
     {
         // Private references
         private BoardManager m_BoardManager;
@@ -22,8 +22,6 @@ namespace Enemy
 
         // Public properties
         public Combatant Combatant => m_Combatant;
-
-        public GameObject GameObject => gameObject;
 
         void Awake()
         {
@@ -43,46 +41,6 @@ namespace Enemy
                 m_TurnManager.OnTick -= OnTurnHappened;
         }
 
-        bool MoveTo(Vector2Int coord)
-        {
-            BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
-
-            bool isInvalidCell =
-                (targetCell == null)
-                || (!targetCell.Passable)
-                || (targetCell.ContainedObject != null);
-            if (isInvalidCell)
-                return false;
-
-            Vector2Int direction = coord - m_Combatant.Cell;
-
-            BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Combatant.Cell);
-            currentCell.ContainedObject = null;
-
-            targetCell.ContainedObject = this;
-            m_Combatant.SetCell(coord);
-
-            m_CombatantAnimator.PlayWalkAnimation(coord, direction);
-
-            return true;
-        }
-
-        protected bool CanEnterCell(Vector2Int coord)
-        {
-            BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
-
-            bool isInvalidCell =
-                (targetCell == null)
-                || (!targetCell.Passable)
-                || (targetCell.ContainedObject != null);
-            if (isInvalidCell)
-                return false;
-
-            return true;
-        }
-
-        protected bool TryMove(Vector2Int direction) => MoveTo(m_Combatant.Cell + direction);
-
         protected bool IsInLineOfSightToPlayer() =>
             m_BoardManager.IsInLineOfSight(m_Combatant.Cell, m_PlayerController.Combatant.Cell);
 
@@ -98,13 +56,13 @@ namespace Enemy
 
             if (prioritizeX)
             {
-                if (!TryMove(xDirection))
-                    TryMove(yDirection);
+                if (!m_Combatant.TryMoveTo(m_Combatant.Cell + xDirection))
+                    m_Combatant.TryMoveTo(m_Combatant.Cell + yDirection);
             }
             else
             {
-                if (!TryMove(yDirection))
-                    TryMove(xDirection);
+                if (!m_Combatant.TryMoveTo(m_Combatant.Cell + yDirection))
+                    m_Combatant.TryMoveTo(m_Combatant.Cell + xDirection);
             }
         }
 
@@ -115,14 +73,12 @@ namespace Enemy
 
         protected void DealDamageToPlayer()
         {
-            DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
-            if (result.HPLost > 0)
-                Combatant.RollStatusOnHit(m_PlayerController.Combatant);
+            m_Combatant.DealDamageTo(m_PlayerController.Combatant);
         }
 
         protected void AttackPlayer(Vector2Int direction)
         {
-            DamageResult result = m_Combatant.AttackTarget(
+            m_Combatant.AttackTarget(
                 m_PlayerController.Combatant,
                 new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y))
             );
