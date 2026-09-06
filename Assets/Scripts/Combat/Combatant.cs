@@ -11,26 +11,6 @@ namespace Combat
 {
     public class Combatant : MonoBehaviour, ICellOccupant
     {
-        // -- Combatant Stats --
-        [Header("Initial Stats")]
-        // Authored initial values
-        [SerializeField]
-        private int m_InitialMaxHP; // STAT
-
-        [SerializeField]
-        private int m_InitialMaxBlock; // STAT
-
-        [SerializeField]
-        private int m_InitialAttack; // STAT
-
-        [SerializeField]
-        private int m_InitialMaxStamina; // STAT
-
-        // -- Combatant Band-Specific Stats --
-        [Header("Band Stats")]
-        [SerializeField]
-        private BandStats[] m_BandStats; // BAND-SPECIFIC STATS
-
         // -- Combatant Status Effects --
         [Header("Status Effects")]
         [SerializeField]
@@ -41,18 +21,9 @@ namespace Combat
         private BoardManager m_BoardManager; // BOARD MANAGER REFERENCE
 
         // -- Runtime State --
-        private CombatantStats m_Stats = new(); // RUNTIME COMBATANT STATS
+        private CombatantStats m_Stats; // RUNTIME COMBATANT STATS
         private readonly List<StatusEffect> m_StatusEffects = new(); // RUNTIME COMBATANT STATUS EFFECT LIST
         private Vector2Int m_Cell; // RUNTIME COMBATANT CELL POSITION
-
-        // Stats
-        public int MaxHP => m_Stats.MaxHP;
-        public int HP => m_Stats.HP;
-        public int MaxBlock => m_Stats.MaxBlock;
-        public int Block => m_Stats.Block;
-        public int Attack => m_Stats.Attack;
-        public int Stamina => m_Stats.Stamina;
-        public int MaxStamina => m_Stats.MaxStamina;
 
         public Vector2Int Cell => m_Cell;
 
@@ -61,29 +32,24 @@ namespace Combat
 
         // -- Combatant Flags --
         public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned); // RUNTIME FLAG
-        public bool IsGodMode { get; set; } // RUNTIME FLAG
 
         GameObject ICellOccupant.GameObject => gameObject;
 
+        public CombatantStats Stats => m_Stats;
+
         // -- Combatant Events --
         public event Action Defeated; // DEATH EVENT
-        public event Action Depleted; // DEATH EVENT
-        public event Action<DamageResult> Damaged; // DAMAGE TAKEN EVENT
         public event Action<Vector2Int> AttackPerformed; // ATTACK EVENT
-        public event Action<int> HealthAdded; // STAT-MODIFICATION EVENT
-        public event Action<int> BlockAdded; // STAT-MODIFICATION EVENT
-        public event Action<int> StaminaChanged; // STAT-MODIFICATION EVENT
         public event Action<StatusEffect> StatusApplied; // STATUS EFFECT EVENT
         public event Action<StatusEffect> StatusRemoved; // STATUS EFFECT EVENT
-        public event Action StateReset; // STATE RESET EVENT
 
         // -- SETUP --
         void Awake()
         {
-            ResetState();
-
             m_TurnManager = GameManager.Instance.TurnManager;
             m_BoardManager = GameManager.Instance.BoardManager;
+
+            m_Stats = GetComponent<CombatantStats>();
 
             m_Cell = m_BoardManager.WorldToCell(transform.position);
 
@@ -158,104 +124,16 @@ namespace Combat
 
         public DamageResult TakeDamage(int amount)
         {
-            if (IsGodMode)
-                return new DamageResult(0, 0);
-
             int previousHP = m_Stats.HP;
 
-            int blockLost = Mathf.Min(m_Stats.Block, amount);
-            m_Stats.Block -= blockLost;
-
-            int hpLost = Mathf.Max(0, amount - blockLost);
-            m_Stats.HP -= hpLost;
-
-            DamageResult result = new DamageResult(blockLost, hpLost);
-
+            DamageResult result = m_Stats.TakeDamage(amount);
             if (previousHP > 0 && m_Stats.HP <= 0)
             {
                 RemoveSelfFromCell();
                 Defeated?.Invoke();
             }
 
-            Damaged?.Invoke(result);
-
             return result;
-        }
-
-        // -- COMBATANT STAT MODIFICATION --
-        public void Heal(int amount)
-        {
-            m_Stats.HP = Mathf.Clamp(m_Stats.HP + amount, 0, m_Stats.MaxHP);
-            HealthAdded?.Invoke(amount);
-        }
-
-        public void AddBlock(int amount)
-        {
-            m_Stats.Block = Mathf.Clamp(m_Stats.Block + amount, 0, m_Stats.MaxBlock);
-            BlockAdded?.Invoke(amount);
-        }
-
-        public void ChangeStamina(int amount)
-        {
-            int previous = m_Stats.Stamina;
-
-            m_Stats.Stamina = Mathf.Clamp(m_Stats.Stamina + amount, 0, m_Stats.MaxStamina);
-            StaminaChanged?.Invoke(m_Stats.Stamina);
-
-            if (previous > 0 && m_Stats.Stamina == 0)
-                Depleted?.Invoke();
-        }
-
-        public void UpgradeStat(CombatantStat stat, int amount)
-        {
-            switch (stat)
-            {
-                case CombatantStat.MaxHP:
-                    m_Stats.MaxHP += amount;
-                    break;
-                case CombatantStat.MaxBlock:
-                    m_Stats.MaxBlock += amount;
-                    break;
-                case CombatantStat.Attack:
-                    m_Stats.Attack += amount;
-                    break;
-                case CombatantStat.MaxStamina:
-                    m_Stats.MaxStamina += amount;
-                    break;
-            }
-        }
-
-        public void ApplyStatMultiplier(float hpMult, float blockMult, float attackMult)
-        {
-            m_Stats.MaxHP = Mathf.RoundToInt(m_Stats.MaxHP * hpMult);
-            m_Stats.MaxBlock = Mathf.RoundToInt(m_Stats.MaxBlock * blockMult);
-            m_Stats.Attack = Mathf.RoundToInt(m_Stats.Attack * attackMult);
-            m_Stats.HP = m_Stats.MaxHP;
-            m_Stats.Block = 0;
-        }
-
-        public void RefreshStats()
-        {
-            m_Stats.HP = MaxHP;
-            m_Stats.Stamina = MaxStamina;
-        }
-
-        public void ApplyBandStats()
-        {
-            BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
-
-            foreach (BandStats entry in m_BandStats)
-            {
-                if (entry.Band == current)
-                {
-                    m_Stats.MaxHP = entry.MaxHP;
-                    m_Stats.HP = entry.MaxHP;
-                    m_Stats.Attack = entry.Attack;
-                    m_Stats.MaxBlock = entry.MaxBlock;
-
-                    return;
-                }
-            }
         }
 
         // -- COMBATANT STATUS EFFECT MANAGEMENT --
@@ -325,25 +203,6 @@ namespace Combat
                     StatusRemoved?.Invoke(effect);
                 }
             }
-        }
-
-        // -- COMBATANT STATE RESET --
-        public void ResetState()
-        {
-            m_Stats = new CombatantStats
-            {
-                MaxHP = m_InitialMaxHP,
-                HP = m_InitialMaxHP,
-                MaxBlock = m_InitialMaxBlock,
-                Block = 0,
-                Attack = m_InitialAttack,
-                MaxStamina = m_InitialMaxStamina,
-                Stamina = m_InitialMaxStamina,
-            };
-
-            m_StatusEffects.Clear();
-
-            StateReset?.Invoke();
         }
     }
 }

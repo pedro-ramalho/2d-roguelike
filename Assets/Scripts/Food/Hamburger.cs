@@ -6,7 +6,7 @@ namespace Food
     {
         protected override void ApplyEffect(PlayerController player)
         {
-            player.Combatant.ChangeStamina(GetAmountForCurrentBand());
+            player.Combatant.Stats.ChangeStamina(GetAmountForCurrentBand());
         }
     }
 }

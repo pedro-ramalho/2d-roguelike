@@ -5,6 +5,9 @@ namespace Food
     public class Chicken : FoodObject
     {
         protected override void ApplyEffect(PlayerController player) =>
-            player.Combatant.UpgradeStat(Combat.CombatantStat.Attack, GetAmountForCurrentBand());
+            player.Combatant.Stats.UpgradeStat(
+                Combat.CombatantStat.Attack,
+                GetAmountForCurrentBand()
+            );
     }
 }

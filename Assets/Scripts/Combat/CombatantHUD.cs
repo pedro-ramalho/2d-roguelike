@@ -88,13 +88,13 @@ namespace Combat
         {
             if (m_Combatant != null)
             {
-                m_Combatant.Damaged -= OnStatChanged;
-                m_Combatant.HealthAdded -= OnStatChanged;
-                m_Combatant.BlockAdded -= OnStatChanged;
+                m_Combatant.Stats.Damaged -= OnStatChanged;
+                m_Combatant.Stats.HealthAdded -= OnStatChanged;
+                m_Combatant.Stats.BlockAdded -= OnStatChanged;
                 m_Combatant.StatusApplied -= OnStatusApplied;
                 m_Combatant.StatusRemoved -= OnStatusRemoved;
                 m_Combatant.Defeated -= OnCombatantDefeated;
-                m_Combatant.StateReset -= RefreshBars;
+                m_Combatant.Stats.StatsReset -= RefreshBars;
             }
 
             if (m_TurnManager != null)
@@ -108,8 +108,8 @@ namespace Combat
 
         void RefreshBars()
         {
-            float hpPct = (float)m_Combatant.HP / m_Combatant.MaxHP * 100f;
-            float blockPct = (float)m_Combatant.Block / m_Combatant.MaxHP * 100f;
+            float hpPct = (float)m_Combatant.Stats.HP / m_Combatant.Stats.MaxHP * 100f;
+            float blockPct = (float)m_Combatant.Stats.Block / m_Combatant.Stats.MaxHP * 100f;
 
             m_HPFill.style.width = Length.Percent(hpPct);
             m_BlockFill.style.width = Length.Percent(blockPct);
@@ -161,13 +161,13 @@ namespace Combat
         public void Bind(Combatant combatant)
         {
             m_Combatant = combatant;
-            m_Combatant.Damaged += OnStatChanged;
-            m_Combatant.HealthAdded += OnStatChanged;
-            m_Combatant.BlockAdded += OnStatChanged;
+            m_Combatant.Stats.Damaged += OnStatChanged;
+            m_Combatant.Stats.HealthAdded += OnStatChanged;
+            m_Combatant.Stats.BlockAdded += OnStatChanged;
             m_Combatant.StatusApplied += OnStatusApplied;
             m_Combatant.StatusRemoved += OnStatusRemoved;
             m_Combatant.Defeated += OnCombatantDefeated;
-            m_Combatant.StateReset += RefreshBars;
+            m_Combatant.Stats.StatsReset += RefreshBars;
 
             m_TurnManager = GameManager.Instance.TurnManager;
             m_TurnManager.OnTick += RefreshSlotDurations;

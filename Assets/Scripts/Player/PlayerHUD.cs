@@ -9,7 +9,7 @@ namespace Player
     {
         [SerializeField]
         private UIDocument m_UIDocument;
-        private Combatant m_Player;
+        private CombatantStats m_Stats;
 
         private VisualElement m_PlayerStatsPanel;
         private Label m_LevelLabel;
@@ -20,7 +20,7 @@ namespace Player
 
         void Awake()
         {
-            m_Player = GetComponent<Combatant>();
+            m_Stats = GetComponent<CombatantStats>();
 
             m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>(
                 "PlayerStatsPanel"
@@ -31,11 +31,11 @@ namespace Player
             m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
             m_AttackLabel = m_PlayerStatsPanel.Q<Label>("AttackLabel");
 
-            m_Player.Damaged += _ => Refresh();
-            m_Player.HealthAdded += _ => Refresh();
-            m_Player.BlockAdded += _ => Refresh();
-            m_Player.StaminaChanged += _ => Refresh();
-            m_Player.StateReset += Refresh;
+            m_Stats.Damaged += _ => Refresh();
+            m_Stats.HealthAdded += _ => Refresh();
+            m_Stats.BlockAdded += _ => Refresh();
+            m_Stats.StaminaChanged += _ => Refresh();
+            m_Stats.StatsReset += Refresh;
         }
 
         void Start()
@@ -63,22 +63,22 @@ namespace Player
             if (GameManager.Instance != null && GameManager.Instance.LevelManager != null)
                 GameManager.Instance.LevelManager.LevelChanged -= OnLevelChanged;
 
-            if (m_Player == null)
+            if (m_Stats == null)
                 return;
 
-            m_Player.Damaged -= _ => Refresh();
-            m_Player.HealthAdded -= _ => Refresh();
-            m_Player.BlockAdded -= _ => Refresh();
-            m_Player.StaminaChanged -= _ => Refresh();
-            m_Player.StateReset -= Refresh;
+            m_Stats.Damaged -= _ => Refresh();
+            m_Stats.HealthAdded -= _ => Refresh();
+            m_Stats.BlockAdded -= _ => Refresh();
+            m_Stats.StaminaChanged -= _ => Refresh();
+            m_Stats.StatsReset -= Refresh;
         }
 
         void Refresh()
         {
-            m_HealthLabel.text = $"{m_Player.HP}/{m_Player.MaxHP}";
-            m_BlockLabel.text = $"{m_Player.Block}";
-            m_StaminaLabel.text = $"{m_Player.Stamina}";
-            m_AttackLabel.text = $"{m_Player.Attack}";
+            m_HealthLabel.text = $"{m_Stats.HP}/{m_Stats.MaxHP}";
+            m_BlockLabel.text = $"{m_Stats.Block}";
+            m_StaminaLabel.text = $"{m_Stats.Stamina}";
+            m_AttackLabel.text = $"{m_Stats.Attack}";
         }
     }
 }

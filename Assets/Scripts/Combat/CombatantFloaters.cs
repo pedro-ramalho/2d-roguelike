@@ -48,9 +48,9 @@ namespace Combat
         {
             if (m_Combatant != null)
             {
-                m_Combatant.Damaged -= OnDamaged;
-                m_Combatant.HealthAdded -= OnHealthAdded;
-                m_Combatant.BlockAdded -= OnBlockAdded;
+                m_Combatant.Stats.Damaged -= OnDamaged;
+                m_Combatant.Stats.HealthAdded -= OnHealthAdded;
+                m_Combatant.Stats.BlockAdded -= OnBlockAdded;
                 m_Combatant.StatusApplied -= OnStatusApplied;
             }
 
@@ -120,9 +120,9 @@ namespace Combat
         public void Bind(Combatant combatant)
         {
             m_Combatant = combatant;
-            m_Combatant.Damaged += OnDamaged;
-            m_Combatant.HealthAdded += OnHealthAdded;
-            m_Combatant.BlockAdded += OnBlockAdded;
+            m_Combatant.Stats.Damaged += OnDamaged;
+            m_Combatant.Stats.HealthAdded += OnHealthAdded;
+            m_Combatant.Stats.BlockAdded += OnBlockAdded;
             m_Combatant.StatusApplied += OnStatusApplied;
         }
     }

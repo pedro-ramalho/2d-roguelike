@@ -19,7 +19,7 @@ namespace Combat
     {
         public static DamageResult ApplyDamage(Combatant attacker, Combatant defender)
         {
-            float damage = attacker.Attack;
+            float damage = attacker.Stats.Attack;
 
             foreach (StatusEffect status in attacker.StatusEffects)
                 damage = status.ModifyOutgoingDamage(damage);

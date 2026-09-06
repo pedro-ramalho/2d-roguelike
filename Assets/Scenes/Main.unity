@@ -8564,6 +8564,7 @@ GameObject:
   - component: {fileID: 1653753610}
   - component: {fileID: 1653753609}
   - component: {fileID: 1653753619}
+  - component: {fileID: 1653753620}
   - component: {fileID: 1653753616}
   - component: {fileID: 1653753615}
   - component: {fileID: 1653753618}
@@ -8764,11 +8765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_InitialMaxHP: 15
-  m_InitialMaxBlock: 6
-  m_InitialAttack: 2
-  m_InitialMaxStamina: 1000
-  m_BandStats: []
   m_StatusRolls:
   - Type: 1
     Duration: 2
@@ -8778,6 +8774,23 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.2
     PerLevelBonus: 0.05
+--- !u!114 &1653753620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2022c04c6198f704e9d7f891b4f5b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStats
+  m_InitialMaxHP: 15
+  m_InitialMaxBlock: 6
+  m_InitialAttack: 2
+  m_InitialMaxStamina: 25
+  m_BandStats: []
 --- !u!1 &1680459596
 GameObject:
   m_ObjectHideFlags: 0

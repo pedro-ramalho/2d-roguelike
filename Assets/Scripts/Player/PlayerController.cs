@@ -112,7 +112,7 @@ namespace Player
             ResolvePlayerAction(cell, target);
         }
 
-        void TurnHappened() => m_Combatant.ChangeStamina(-1);
+        void TurnHappened() => m_Combatant.Stats.ChangeStamina(-1);
 
         public void Init() => m_IsGameOver = false;
 

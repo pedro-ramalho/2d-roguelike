@@ -96,7 +96,7 @@ namespace Enemy
 
         void OnTurnHappened()
         {
-            if (m_Combatant.HP <= 0)
+            if (m_Combatant.Stats.HP <= 0)
                 return;
 
             if (m_Combatant.IsStunned)

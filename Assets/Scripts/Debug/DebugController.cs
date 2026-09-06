@@ -45,7 +45,7 @@ namespace Debug
                 m_Player.TakeDamage(1);
 
             if (Keyboard.current.pKey.wasPressedThisFrame)
-                m_Player.Heal(1);
+                m_Player.Stats.Heal(1);
 
             if (Keyboard.current.gKey.wasPressedThisFrame)
                 GameManager.Instance.LevelManager.NewLevel();
@@ -54,13 +54,13 @@ namespace Debug
                 SkipToNextBand();
 
             if (Keyboard.current.jKey.wasPressedThisFrame)
-                m_Player.IsGodMode = !m_Player.IsGodMode;
+                m_Player.Stats.IsGodMode = !m_Player.Stats.IsGodMode;
 
             if (Keyboard.current.lKey.wasPressedThisFrame)
                 GameManager.Instance.LevelManager.ReloadCurrentLevel();
 
             if (Keyboard.current.yKey.wasPressedThisFrame)
-                m_Player.TakeDamage(m_Player.MaxHP);
+                m_Player.TakeDamage(m_Player.Stats.MaxHP);
         }
 
         void SkipToNextBand()

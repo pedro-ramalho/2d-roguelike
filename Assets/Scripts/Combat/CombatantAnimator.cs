@@ -79,7 +79,7 @@ namespace Combat
             if (m_Combatant != null)
             {
                 m_Combatant.AttackPerformed -= PlayAttackAnimation;
-                m_Combatant.Damaged -= PlayHurtAnimation;
+                m_Combatant.Stats.Damaged -= PlayHurtAnimation;
                 m_Combatant.Defeated -= PlayDeathAnimation;
             }
 
@@ -274,7 +274,7 @@ namespace Combat
             m_TurnManager.Register(this);
 
             m_Combatant.AttackPerformed += PlayAttackAnimation;
-            m_Combatant.Damaged += PlayHurtAnimation;
+            m_Combatant.Stats.Damaged += PlayHurtAnimation;
             m_Combatant.Defeated += PlayDeathAnimation;
         }
     }

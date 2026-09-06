@@ -6,7 +6,7 @@ namespace Food
     {
         protected override void ApplyEffect(PlayerController player)
         {
-            player.Combatant.AddBlock(GetAmountForCurrentBand());
+            player.Combatant.Stats.AddBlock(GetAmountForCurrentBand());
         }
     }
 }
