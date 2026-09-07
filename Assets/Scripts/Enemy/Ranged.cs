@@ -58,7 +58,7 @@ namespace Enemy
             {
                 cursor += direction;
 
-                if (!Combatant.CanMoveTo(cursor))
+                if (!m_BoardManager.IsCellOccupiable(cursor))
                     break;
 
                 freeCells++;

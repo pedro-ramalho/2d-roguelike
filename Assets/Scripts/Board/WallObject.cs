@@ -6,10 +6,6 @@ namespace Board
 {
     public class WallObject : CellObject
     {
-        [Header("SFX Clips")]
-        [SerializeField]
-        private AudioClip[] m_BreakSFX;
-
         [Header("Wall Properties")]
         [SerializeField]
         private Tile[] m_ObstacleTiles;
@@ -44,8 +40,7 @@ namespace Board
         {
             m_HealthPoint--;
 
-            if (m_BreakSFX != null && m_BreakSFX.Length > 0)
-                AudioManager.Instance.PlayRandomSFXFromList(m_BreakSFX);
+            AudioManager.Instance.PlayWallBreakSFX();
 
             if (m_HealthPoint > 0)
             {

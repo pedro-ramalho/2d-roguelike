@@ -18,6 +18,25 @@ namespace Core
         [SerializeField]
         private AudioSource m_SFXSource;
 
+        [Header("SFX Clips")]
+        [SerializeField]
+        private AudioClip[] m_HurtSFX;
+
+        [SerializeField]
+        private AudioClip[] m_BlockSFX;
+
+        [SerializeField]
+        private AudioClip[] m_StepSFX;
+
+        [SerializeField]
+        private AudioClip m_DeathSFX;
+
+        [SerializeField]
+        private AudioClip[] m_WallBreakSFX;
+
+        [SerializeField]
+        private AudioClip[] m_FoodConsumeSFX;
+
         void Awake()
         {
             if (Instance != null && Instance != this)
@@ -94,7 +113,7 @@ namespace Core
             m_SFXSource.PlayOneShot(clip, volume);
         }
 
-        public void PlayRandomSFXFromList(AudioClip[] clips, float volume = 1f)
+        void PlayRandomSFXFromList(AudioClip[] clips, float volume = 1f)
         {
             if (clips == null || clips.Length == 0)
                 return;
@@ -119,5 +138,17 @@ namespace Core
 
             m_AudioMixer.SetFloat(parameter, dB);
         }
+
+        public void PlayCombatantFootstepSFX() => PlayRandomSFXFromList(m_StepSFX);
+
+        public void PlayCombatantBlockedSFX() => PlayRandomSFXFromList(m_BlockSFX);
+
+        public void PlayCombatantHurtSFX() => PlayRandomSFXFromList(m_HurtSFX);
+
+        public void PlayCombatantDeathSFX() => PlaySFX(m_DeathSFX);
+
+        public void PlayWallBreakSFX() => PlayRandomSFXFromList(m_WallBreakSFX);
+
+        public void PlayFoodConsumedSFX() => PlayRandomSFXFromList(m_FoodConsumeSFX);
     }
 }

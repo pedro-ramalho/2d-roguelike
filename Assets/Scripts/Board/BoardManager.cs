@@ -114,6 +114,12 @@ namespace Board
         public bool IsCellFree(Vector2Int cellIndex) =>
             GetCellData(cellIndex).ContainedObject == null;
 
+        public bool IsCellOccupiable(Vector2Int cell)
+        {
+            CellData data = GetCellData(cell);
+            return data != null && data.Passable && data.ContainedObject == null;
+        }
+
         public bool IsInLineOfSight(Vector2Int coordA, Vector2Int coordB)
         {
             Vector2Int delta = coordB - coordA;

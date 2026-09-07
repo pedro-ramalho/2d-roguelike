@@ -9119,6 +9119,22 @@ MonoBehaviour:
   m_AudioMixer: {fileID: 0}
   m_MusicSource: {fileID: 2048853694}
   m_SFXSource: {fileID: 2048853695}
+  m_HurtSFX:
+  - {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
+  - {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_BlockSFX:
+  - {fileID: 0}
+  - {fileID: 0}
+  m_StepSFX:
+  - {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
+  - {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  m_WallBreakSFX:
+  - {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  - {fileID: 8300000, guid: f6aaac83be9e0493493aace800b76619, type: 3}
+  m_FoodConsumeSFX:
+  - {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  - {fileID: 8300000, guid: 062161c1897a54088a5430f8c197e1b8, type: 3}
 --- !u!82 &2048853694
 AudioSource:
   m_ObjectHideFlags: 0

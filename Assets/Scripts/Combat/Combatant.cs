@@ -7,7 +7,6 @@ namespace Combat
 {
     public class Combatant : MonoBehaviour, ICellOccupant
     {
-        private TurnManager m_TurnManager;
         private BoardManager m_BoardManager;
 
         private CombatantStats m_Stats;
@@ -21,20 +20,18 @@ namespace Combat
         public CombatantStats Stats => m_Stats;
         public CombatantStatusEffects Statuses => m_Statuses;
 
+        public event Action<Vector3, Vector2Int> Moved;
         public event Action Defeated;
         public event Action<Vector2Int> AttackPerformed;
 
         void Awake()
         {
-            m_TurnManager = GameManager.Instance.TurnManager;
             m_BoardManager = GameManager.Instance.BoardManager;
 
             m_Stats = GetComponent<CombatantStats>();
             m_Statuses = GetComponent<CombatantStatusEffects>();
 
             m_Cell = m_BoardManager.WorldToCell(transform.position);
-
-            GetComponent<CombatantAnimator>().Bind(this, m_TurnManager, m_BoardManager);
         }
 
         void OnDestroy()
@@ -53,15 +50,9 @@ namespace Combat
             m_BoardManager.SetOccupant(cell, this);
         }
 
-        public bool CanMoveTo(Vector2Int cell)
-        {
-            BoardManager.CellData data = m_BoardManager.GetCellData(cell);
-            return data != null && data.Passable && data.ContainedObject == null;
-        }
-
         public bool TryMoveTo(Vector2Int cell)
         {
-            if (!CanMoveTo(cell))
+            if (!m_BoardManager.IsCellOccupiable(cell))
                 return false;
 
             Vector2Int direction = cell - m_Cell;
@@ -71,7 +62,9 @@ namespace Combat
 
             m_Cell = cell;
 
-            GetComponent<CombatantAnimator>().PlayWalkAnimation(cell, direction);
+            Vector3 target = m_BoardManager.CellToWorld(cell);
+
+            Moved?.Invoke(target, direction);
 
             return true;
         }

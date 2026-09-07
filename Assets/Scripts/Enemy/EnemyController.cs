@@ -10,7 +10,7 @@ namespace Enemy
     public abstract class EnemyController : MonoBehaviour
     {
         // Private references
-        private BoardManager m_BoardManager;
+        protected BoardManager m_BoardManager;
         private TurnManager m_TurnManager;
         private PlayerController m_PlayerController;
         private Combatant m_Combatant;

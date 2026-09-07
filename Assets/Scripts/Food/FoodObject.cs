@@ -11,9 +11,6 @@ namespace Food
         [SerializeField]
         private BandAmount[] m_BandAmounts;
 
-        [SerializeField]
-        protected AudioClip[] m_ConsumeSFX;
-
         protected abstract void ApplyEffect(PlayerController player);
 
         protected int GetAmountForCurrentBand()
@@ -33,7 +30,7 @@ namespace Food
         {
             m_Board.ClearCell(m_Cell);
 
-            AudioManager.Instance.PlayRandomSFXFromList(m_ConsumeSFX);
+            AudioManager.Instance.PlayFoodConsumedSFX();
 
             ApplyEffect(player);
 
