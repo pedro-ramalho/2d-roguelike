@@ -40,26 +40,17 @@ namespace Combat
         void OnDestroy()
         {
             if (m_BoardManager != null)
-                RemoveSelfFromCell();
-        }
-
-        void RemoveSelfFromCell()
-        {
-            BoardManager.CellData data = m_BoardManager.GetCellData(m_Cell);
-            if (data != null && ReferenceEquals(data.ContainedObject, this))
-                data.ContainedObject = null;
+                m_BoardManager.RemoveOccupant(m_Cell, this);
         }
 
         public void Teleport(Vector2Int cell)
         {
-            RemoveSelfFromCell();
+            m_BoardManager.RemoveOccupant(m_Cell, this);
 
             m_Cell = cell;
             transform.position = m_BoardManager.CellToWorld(cell);
 
-            BoardManager.CellData data = m_BoardManager.GetCellData(cell);
-            if (data != null)
-                data.ContainedObject = this;
+            m_BoardManager.SetOccupant(cell, this);
         }
 
         public bool CanMoveTo(Vector2Int cell)
@@ -75,14 +66,13 @@ namespace Combat
 
             Vector2Int direction = cell - m_Cell;
 
-            RemoveSelfFromCell();
-
-            BoardManager.CellData targetData = m_BoardManager.GetCellData(cell);
-            targetData.ContainedObject = this;
+            m_BoardManager.RemoveOccupant(m_Cell, this);
+            m_BoardManager.SetOccupant(cell, this);
 
             m_Cell = cell;
 
             GetComponent<CombatantAnimator>().PlayWalkAnimation(cell, direction);
+
             return true;
         }
 
@@ -103,7 +93,7 @@ namespace Combat
             DamageResult result = m_Stats.TakeDamage(amount);
             if (previousHP > 0 && m_Stats.HP <= 0)
             {
-                RemoveSelfFromCell();
+                m_BoardManager.RemoveOccupant(m_Cell, this);
                 Defeated?.Invoke();
             }
 

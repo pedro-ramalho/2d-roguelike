@@ -58,7 +58,7 @@ namespace Board
 
             ICellOccupant occupant = instance.GetComponent<ICellOccupant>();
             if (occupant != null)
-                m_BoardData[cell.x, cell.y].ContainedObject = occupant;
+                SetOccupant(cell, occupant);
 
             return instance;
         }
@@ -94,8 +94,22 @@ namespace Board
         public void SetCellTile(Vector2Int cellIndex, Tile tile) =>
             m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
+        public void SetOccupant(Vector2Int cell, ICellOccupant occupant)
+        {
+            CellData data = GetCellData(cell);
+            if (data != null)
+                data.ContainedObject = occupant;
+        }
+
         public Tile GetCellTile(Vector2Int cellIndex) =>
             m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
+
+        public void RemoveOccupant(Vector2Int cell, ICellOccupant occupant)
+        {
+            CellData data = GetCellData(cell);
+            if (data != null && ReferenceEquals(data.ContainedObject, occupant))
+                data.ContainedObject = null;
+        }
 
         public bool IsCellFree(Vector2Int cellIndex) =>
             GetCellData(cellIndex).ContainedObject == null;
