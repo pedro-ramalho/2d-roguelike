@@ -19,7 +19,7 @@ namespace Core
 
         public static GameManager Instance { get; private set; }
 
-        public TurnManager TurnManager { get; private set; }
+        public TurnManager TurnManager;
         public BoardManager BoardManager;
         public LevelManager LevelManager;
         public PlayerController PlayerController;
@@ -36,8 +36,6 @@ namespace Core
             }
 
             Instance = this;
-
-            TurnManager = GetComponent<TurnManager>();
         }
     }
 }

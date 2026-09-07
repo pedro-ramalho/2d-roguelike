@@ -119,6 +119,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &34265271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 34265274}
+  - component: {fileID: 34265272}
+  m_Layer: 0
+  m_Name: TurnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &34265272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34265271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb899467db6086943b2514c850d4b415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+--- !u!4 &34265274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34265271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.00987, y: 0.94305, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &152573810
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,6 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   m_ProgressionSettings: {fileID: 11400000, guid: 0af0cffd3f92ce24fb1f64e9fb43a234, type: 2}
+  TurnManager: {fileID: 34265272}
   BoardManager: {fileID: 1160969521}
   LevelManager: {fileID: 1339684672}
   PlayerController: {fileID: 1653753611}
@@ -383,6 +428,7 @@ GameObject:
   - component: {fileID: 413544369}
   - component: {fileID: 413544372}
   - component: {fileID: 413544373}
+  - component: {fileID: 413544374}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -523,6 +569,20 @@ MonoBehaviour:
     FrequencyGain: 1
     Duration: 1
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &413544374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413544368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99bd9496e5e539e4ab34379e4e720eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoardCameraConfiner
+  m_ConfinerBounds: {fileID: 1831454673}
+  m_Confiner: {fileID: 413544372}
 --- !u!1 &465026499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,8 +1143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   m_LevelTransitionManager: {fileID: 270326508}
   m_BoardGenerator: {fileID: 1160969522}
-  m_ConfinerBounds: {fileID: 1831454673}
-  m_Confiner: {fileID: 413544372}
+  m_CameraConfiner: {fileID: 413544374}
 --- !u!1 &1379060560
 GameObject:
   m_ObjectHideFlags: 0
@@ -9188,6 +9247,7 @@ SceneRoots:
   - {fileID: 1105129793}
   - {fileID: 1160969520}
   - {fileID: 377119139}
+  - {fileID: 34265274}
   - {fileID: 1339684671}
   - {fileID: 270326507}
   - {fileID: 2048853692}

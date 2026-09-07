@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Level;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace Core
                     if (AudioManager.Instance != null && m_TypeSFX != null)
                         AudioManager.Instance.PlaySFXWithPitch(
                             m_TypeSFX,
-                            1f + Random.Range(-0.08f, 0.08f)
+                            1f + UnityEngine.Random.Range(-0.08f, 0.08f)
                         );
                 }
 
@@ -119,6 +120,19 @@ namespace Core
 
                 yield return null;
             }
+        }
+
+        public IEnumerator PlayBandTransitionCoroutine(LevelBand band, Action onFadeOut)
+        {
+            StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
+            yield return FadeOutCoroutine(band);
+
+            onFadeOut?.Invoke();
+
+            yield return new WaitForSeconds(5f);
+
+            StartCoroutine(AudioManager.Instance.FadeInMusicCoroutine(band.Track, 10f));
+            yield return FadeInCoroutine();
         }
     }
 }
