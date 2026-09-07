@@ -16,18 +16,14 @@ namespace Combat
         [SerializeField]
         private bool m_IsSpriteFacingRight = true;
 
-        // Private references
         private Combatant m_Combatant;
         private CombatantStats m_Stats;
         private TurnManager m_TurnManager;
 
-        // Components
         private SpriteRenderer m_SpriteRenderer;
         private Animator m_Animator;
         private Color m_OriginalColor;
-        private bool m_IsHurt;
 
-        // Coroutines
         private Coroutine m_AttackCoroutine;
         private Coroutine m_WalkCoroutine;
         private Coroutine m_HurtCoroutine;
@@ -39,6 +35,8 @@ namespace Combat
         private const float m_HurtAnimationDuration = 0.10f;
         private const float m_DeathAnimationDuration = 0.2f;
         private const float m_ProjectileAnimationDuration = 0.5f;
+
+        private bool m_IsHurt;
 
         private static readonly int m_AttackHash = Animator.StringToHash("Attack");
 
