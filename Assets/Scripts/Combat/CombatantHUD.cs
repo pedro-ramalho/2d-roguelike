@@ -91,8 +91,8 @@ namespace Combat
                 m_Combatant.Stats.Damaged -= OnStatChanged;
                 m_Combatant.Stats.HealthAdded -= OnStatChanged;
                 m_Combatant.Stats.BlockAdded -= OnStatChanged;
-                m_Combatant.StatusApplied -= OnStatusApplied;
-                m_Combatant.StatusRemoved -= OnStatusRemoved;
+                m_Combatant.Statuses.Applied -= OnStatusApplied;
+                m_Combatant.Statuses.Removed -= OnStatusRemoved;
                 m_Combatant.Defeated -= OnCombatantDefeated;
                 m_Combatant.Stats.StatsReset -= RefreshBars;
             }
@@ -153,7 +153,7 @@ namespace Combat
 
         void RefreshSlotDurations()
         {
-            foreach (StatusEffect effect in m_Combatant.StatusEffects)
+            foreach (StatusEffect effect in m_Combatant.Statuses.StatusEffects)
                 if (m_Slots.TryGetValue(effect.Type, out VisualElement slot))
                     slot.Q<Label>("Duration").text = effect.Duration.ToString();
         }
@@ -164,8 +164,8 @@ namespace Combat
             m_Combatant.Stats.Damaged += OnStatChanged;
             m_Combatant.Stats.HealthAdded += OnStatChanged;
             m_Combatant.Stats.BlockAdded += OnStatChanged;
-            m_Combatant.StatusApplied += OnStatusApplied;
-            m_Combatant.StatusRemoved += OnStatusRemoved;
+            m_Combatant.Statuses.Applied += OnStatusApplied;
+            m_Combatant.Statuses.Removed += OnStatusRemoved;
             m_Combatant.Defeated += OnCombatantDefeated;
             m_Combatant.Stats.StatsReset += RefreshBars;
 

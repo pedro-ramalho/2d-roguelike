@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8292751902799664336}
   - component: {fileID: 8010968036663490579}
   - component: {fileID: 5231074414710857929}
+  - component: {fileID: 2133761512039605277}
   - component: {fileID: 1851639081440192285}
   - component: {fileID: 3438537907659785350}
   - component: {fileID: 5746855764516760052}
@@ -133,11 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_StatusRolls:
-  - Type: 3
-    Duration: 1
-    BaseProbability: 0.1
-    PerLevelBonus: 0.05
 --- !u!114 &5231074414710857929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +167,23 @@ MonoBehaviour:
     MaxHP: 5
     Attack: 7
     MaxBlock: 0
+--- !u!114 &2133761512039605277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838354821000031303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
+  m_StatusRolls:
+  - Type: 3
+    Duration: 1
+    BaseProbability: 0.1
+    PerLevelBonus: 0.05
 --- !u!114 &1851639081440192285
 MonoBehaviour:
   m_ObjectHideFlags: 0

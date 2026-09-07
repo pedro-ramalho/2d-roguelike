@@ -51,7 +51,7 @@ namespace Combat
                 m_Combatant.Stats.Damaged -= OnDamaged;
                 m_Combatant.Stats.HealthAdded -= OnHealthAdded;
                 m_Combatant.Stats.BlockAdded -= OnBlockAdded;
-                m_Combatant.StatusApplied -= OnStatusApplied;
+                m_Combatant.Statuses.Applied -= OnStatusApplied;
             }
 
             if (m_ParentLayer != null)
@@ -123,7 +123,7 @@ namespace Combat
             m_Combatant.Stats.Damaged += OnDamaged;
             m_Combatant.Stats.HealthAdded += OnHealthAdded;
             m_Combatant.Stats.BlockAdded += OnBlockAdded;
-            m_Combatant.StatusApplied += OnStatusApplied;
+            m_Combatant.Statuses.Applied += OnStatusApplied;
         }
     }
 }

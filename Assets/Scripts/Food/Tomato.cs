@@ -11,7 +11,7 @@ namespace Food
         protected override void ApplyEffect(PlayerController player)
         {
             List<StatusEffect> negativeStatuses = player
-                .Combatant.StatusEffects.Where(s => s.IsNegative)
+                .Combatant.Statuses.StatusEffects.Where(s => s.IsNegative)
                 .ToList();
 
             if (negativeStatuses.Count == 0)
@@ -21,7 +21,7 @@ namespace Food
                 Random.Range(0, negativeStatuses.Count)
             ];
 
-            player.Combatant.RemoveStatusEffect(randomNegativeEffect);
+            player.Combatant.Statuses.Remove(randomNegativeEffect);
         }
     }
 }

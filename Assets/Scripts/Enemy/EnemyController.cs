@@ -99,7 +99,7 @@ namespace Enemy
             if (m_Combatant.Stats.HP <= 0)
                 return;
 
-            if (m_Combatant.IsStunned)
+            if (m_Combatant.Statuses.IsStunned)
                 return;
 
             ResolveEnemyAction();

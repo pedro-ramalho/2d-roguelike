@@ -30,16 +30,16 @@ namespace Debug
             -> Y: die
         */
             if (Keyboard.current.vKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectEmpowered(2));
+                m_Player.Statuses.Apply(new StatusEffectEmpowered(2));
 
             if (Keyboard.current.bKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectVulnerable(3));
+                m_Player.Statuses.Apply(new StatusEffectVulnerable(3));
 
             if (Keyboard.current.nKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectWeak(4));
+                m_Player.Statuses.Apply(new StatusEffectWeak(4));
 
             if (Keyboard.current.mKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectStunned(1));
+                m_Player.Statuses.Apply(new StatusEffectStunned(1));
 
             if (Keyboard.current.oKey.wasPressedThisFrame)
                 m_Player.TakeDamage(1);

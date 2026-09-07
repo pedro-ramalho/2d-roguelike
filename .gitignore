@@ -78,10 +78,5 @@ crashlytics-build.properties
 .vscode
 docs/
 
-# Claude Code
-CLAUDE.md
-CLAUDE.local.md
-.claude/
-
 # Idea
 .idea/

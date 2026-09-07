@@ -72,7 +72,7 @@ namespace Player
 
         void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)
         {
-            if (m_Combatant.IsStunned)
+            if (m_Combatant.Statuses.IsStunned)
             {
                 m_TurnManager.BeginTurn();
 

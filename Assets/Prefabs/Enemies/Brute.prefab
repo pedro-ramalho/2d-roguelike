@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4643804580259343903}
   - component: {fileID: 5536179765283063511}
   - component: {fileID: 782456443144651402}
+  - component: {fileID: 399146274615124879}
   - component: {fileID: 4943251867301102487}
   - component: {fileID: 1863524310077405169}
   - component: {fileID: -3585038373898010958}
@@ -111,7 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_StatusRolls: []
 --- !u!114 &782456443144651402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +145,19 @@ MonoBehaviour:
     MaxHP: 16
     Attack: 6
     MaxBlock: 0
+--- !u!114 &399146274615124879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
+  m_StatusRolls: []
 --- !u!114 &4943251867301102487
 MonoBehaviour:
   m_ObjectHideFlags: 0
