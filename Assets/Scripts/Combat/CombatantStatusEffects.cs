@@ -21,6 +21,7 @@ namespace Combat
 
         public event Action<StatusEffect> Applied;
         public event Action<StatusEffect> Removed;
+        public event Action Ticked;
 
         public bool IsStunned => m_StatusEffects.Any(e => e.Type == StatusEffectType.Stunned); // RUNTIME FLAG
 
@@ -103,6 +104,8 @@ namespace Combat
                     Removed?.Invoke(effect);
                 }
             }
+
+            Ticked?.Invoke();
         }
     }
 }

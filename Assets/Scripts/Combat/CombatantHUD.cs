@@ -23,8 +23,10 @@ namespace Combat
         [SerializeField]
         private StatusEffectIconSet m_IconSet;
 
-        private TurnManager m_TurnManager;
         private Combatant m_Combatant;
+        private CombatantStats m_Stats;
+        private CombatantStatusEffects m_Statuses;
+
         private VisualElement m_ParentLayer;
         private VisualElement m_Root;
         private VisualElement m_HPFill;
@@ -33,7 +35,16 @@ namespace Combat
         private Camera m_Camera;
         private readonly Dictionary<StatusEffectType, VisualElement> m_Slots = new();
 
-        void Start()
+        void Awake()
+        {
+            m_Camera = Camera.main;
+
+            m_Combatant = GetComponent<Combatant>();
+            m_Stats = GetComponent<CombatantStats>();
+            m_Statuses = GetComponent<CombatantStatusEffects>();
+        }
+
+        void CreateHUD()
         {
             UIDocument doc = GameManager.Instance.HUDLayersDoc;
             m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("CombatantHUDLayer");
@@ -48,12 +59,24 @@ namespace Combat
 
             if (!m_ShowStatusEffects)
                 m_StatusRow.style.display = DisplayStyle.None;
+        }
 
-            m_Camera = Camera.main;
+        void Start()
+        {
+            CreateHUD();
 
-            Combatant combatant = GetComponent<Combatant>();
-            if (combatant != null)
-                Bind(combatant);
+            m_Stats.Damaged += OnStatChanged;
+            m_Stats.HealthAdded += OnStatChanged;
+            m_Stats.BlockAdded += OnStatChanged;
+            m_Stats.StatsReset += RefreshBars;
+
+            m_Statuses.Applied += OnStatusApplied;
+            m_Statuses.Removed += OnStatusRemoved;
+            m_Statuses.Ticked += OnTurnTicked;
+
+            m_Combatant.Defeated += OnCombatantDefeated;
+
+            RefreshBars();
         }
 
         void OnEnable()
@@ -87,18 +110,22 @@ namespace Combat
         void OnDestroy()
         {
             if (m_Combatant != null)
-            {
-                m_Combatant.Stats.Damaged -= OnStatChanged;
-                m_Combatant.Stats.HealthAdded -= OnStatChanged;
-                m_Combatant.Stats.BlockAdded -= OnStatChanged;
-                m_Combatant.Statuses.Applied -= OnStatusApplied;
-                m_Combatant.Statuses.Removed -= OnStatusRemoved;
                 m_Combatant.Defeated -= OnCombatantDefeated;
-                m_Combatant.Stats.StatsReset -= RefreshBars;
+
+            if (m_Stats != null)
+            {
+                m_Stats.Damaged -= OnStatChanged;
+                m_Stats.HealthAdded -= OnStatChanged;
+                m_Stats.BlockAdded -= OnStatChanged;
+                m_Stats.StatsReset -= RefreshBars;
             }
 
-            if (m_TurnManager != null)
-                m_TurnManager.OnTick -= RefreshSlotDurations;
+            if (m_Statuses != null)
+            {
+                m_Statuses.Applied -= OnStatusApplied;
+                m_Statuses.Removed -= OnStatusRemoved;
+                m_Statuses.Ticked -= OnTurnTicked;
+            }
 
             if (m_Root != null && m_ParentLayer != null)
                 m_ParentLayer.Remove(m_Root);
@@ -108,8 +135,8 @@ namespace Combat
 
         void RefreshBars()
         {
-            float hpPct = (float)m_Combatant.Stats.HP / m_Combatant.Stats.MaxHP * 100f;
-            float blockPct = (float)m_Combatant.Stats.Block / m_Combatant.Stats.MaxHP * 100f;
+            float hpPct = (float)m_Stats.HP / m_Stats.MaxHP * 100f;
+            float blockPct = (float)m_Stats.Block / m_Stats.MaxHP * 100f;
 
             m_HPFill.style.width = Length.Percent(hpPct);
             m_BlockFill.style.width = Length.Percent(blockPct);
@@ -151,28 +178,11 @@ namespace Combat
             enabled = false;
         }
 
-        void RefreshSlotDurations()
+        void OnTurnTicked()
         {
-            foreach (StatusEffect effect in m_Combatant.Statuses.StatusEffects)
+            foreach (StatusEffect effect in m_Statuses.StatusEffects)
                 if (m_Slots.TryGetValue(effect.Type, out VisualElement slot))
                     slot.Q<Label>("Duration").text = effect.Duration.ToString();
-        }
-
-        public void Bind(Combatant combatant)
-        {
-            m_Combatant = combatant;
-            m_Combatant.Stats.Damaged += OnStatChanged;
-            m_Combatant.Stats.HealthAdded += OnStatChanged;
-            m_Combatant.Stats.BlockAdded += OnStatChanged;
-            m_Combatant.Statuses.Applied += OnStatusApplied;
-            m_Combatant.Statuses.Removed += OnStatusRemoved;
-            m_Combatant.Defeated += OnCombatantDefeated;
-            m_Combatant.Stats.StatsReset += RefreshBars;
-
-            m_TurnManager = GameManager.Instance.TurnManager;
-            m_TurnManager.OnTick += RefreshSlotDurations;
-
-            RefreshBars();
         }
     }
 }
