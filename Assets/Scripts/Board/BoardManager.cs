@@ -52,10 +52,13 @@ namespace Board
         }
 
         public T Place<T>(T prefab, Vector2Int cell)
-            where T : Component, ICellOccupant
+            where T : Component
         {
             T instance = Instantiate(prefab, CellToWorld(cell), Quaternion.identity);
-            m_BoardData[cell.x, cell.y].ContainedObject = instance;
+
+            ICellOccupant occupant = instance.GetComponent<ICellOccupant>();
+            if (occupant != null)
+                SetOccupant(cell, occupant);
 
             return instance;
         }
@@ -81,7 +84,6 @@ namespace Board
         public void ClearCell(Vector2Int cellIndex)
         {
             CellData cellData = GetCellData(cellIndex);
-
             if (cellData != null)
                 cellData.ContainedObject = null;
         }
@@ -92,11 +94,31 @@ namespace Board
         public void SetCellTile(Vector2Int cellIndex, Tile tile) =>
             m_Tilemap.SetTile((Vector3Int)cellIndex, tile);
 
+        public void SetOccupant(Vector2Int cell, ICellOccupant occupant)
+        {
+            CellData data = GetCellData(cell);
+            if (data != null)
+                data.ContainedObject = occupant;
+        }
+
         public Tile GetCellTile(Vector2Int cellIndex) =>
             m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
 
+        public void RemoveOccupant(Vector2Int cell, ICellOccupant occupant)
+        {
+            CellData data = GetCellData(cell);
+            if (data != null && ReferenceEquals(data.ContainedObject, occupant))
+                data.ContainedObject = null;
+        }
+
         public bool IsCellFree(Vector2Int cellIndex) =>
             GetCellData(cellIndex).ContainedObject == null;
+
+        public bool IsCellOccupiable(Vector2Int cell)
+        {
+            CellData data = GetCellData(cell);
+            return data != null && data.Passable && data.ContainedObject == null;
+        }
 
         public bool IsInLineOfSight(Vector2Int coordA, Vector2Int coordB)
         {
@@ -132,9 +154,13 @@ namespace Board
             {
                 CellData cellData = m_BoardData[x, y];
 
-                if (cellData.ContainedObject != null)
-                    Destroy(cellData.ContainedObject.GameObject);
+                if (cellData.ContainedObject == null)
+                {
+                    SetCellTile(new Vector2Int(x, y), null);
+                    continue;
+                }
 
+                Destroy(cellData.ContainedObject.GameObject);
                 SetCellTile(new Vector2Int(x, y), null);
             }
         }

@@ -30,22 +30,22 @@ namespace Debug
             -> Y: die
         */
             if (Keyboard.current.vKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectEmpowered(2));
+                m_Player.Statuses.Apply(new StatusEffectEmpowered(2));
 
             if (Keyboard.current.bKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectVulnerable(3));
+                m_Player.Statuses.Apply(new StatusEffectVulnerable(3));
 
             if (Keyboard.current.nKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectWeak(4));
+                m_Player.Statuses.Apply(new StatusEffectWeak(4));
 
             if (Keyboard.current.mKey.wasPressedThisFrame)
-                m_Player.ApplyStatusEffect(new StatusEffectStunned(1));
+                m_Player.Statuses.Apply(new StatusEffectStunned(1));
 
             if (Keyboard.current.oKey.wasPressedThisFrame)
                 m_Player.TakeDamage(1);
 
             if (Keyboard.current.pKey.wasPressedThisFrame)
-                m_Player.Heal(1);
+                m_Player.Stats.Heal(1);
 
             if (Keyboard.current.gKey.wasPressedThisFrame)
                 GameManager.Instance.LevelManager.NewLevel();
@@ -54,13 +54,13 @@ namespace Debug
                 SkipToNextBand();
 
             if (Keyboard.current.jKey.wasPressedThisFrame)
-                m_Player.IsGodMode = !m_Player.IsGodMode;
+                m_Player.Stats.IsGodMode = !m_Player.Stats.IsGodMode;
 
             if (Keyboard.current.lKey.wasPressedThisFrame)
                 GameManager.Instance.LevelManager.ReloadCurrentLevel();
 
             if (Keyboard.current.yKey.wasPressedThisFrame)
-                m_Player.TakeDamage(m_Player.MaxHP);
+                m_Player.TakeDamage(m_Player.Stats.MaxHP);
         }
 
         void SkipToNextBand()

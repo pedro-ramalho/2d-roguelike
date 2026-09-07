@@ -6,7 +6,7 @@ namespace Food
     {
         protected override void ApplyEffect(PlayerController player)
         {
-            player.Combatant.Heal(GetAmountForCurrentBand());
+            player.Combatant.Stats.Heal(GetAmountForCurrentBand());
         }
     }
 }

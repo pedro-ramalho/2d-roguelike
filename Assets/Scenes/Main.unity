@@ -8564,6 +8564,8 @@ GameObject:
   - component: {fileID: 1653753610}
   - component: {fileID: 1653753609}
   - component: {fileID: 1653753619}
+  - component: {fileID: 1653753620}
+  - component: {fileID: 1653753621}
   - component: {fileID: 1653753616}
   - component: {fileID: 1653753615}
   - component: {fileID: 1653753618}
@@ -8764,10 +8766,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
+--- !u!114 &1653753620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2022c04c6198f704e9d7f891b4f5b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStats
   m_InitialMaxHP: 15
   m_InitialMaxBlock: 6
   m_InitialAttack: 2
   m_InitialMaxStamina: 25
+  m_BandStats: []
+--- !u!114 &1653753621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653753608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
   m_StatusRolls:
   - Type: 1
     Duration: 2
@@ -8777,7 +8804,6 @@ MonoBehaviour:
     Duration: 2
     BaseProbability: 0.2
     PerLevelBonus: 0.05
-  m_BandStats: []
 --- !u!1 &1680459596
 GameObject:
   m_ObjectHideFlags: 0
@@ -9093,6 +9119,22 @@ MonoBehaviour:
   m_AudioMixer: {fileID: 0}
   m_MusicSource: {fileID: 2048853694}
   m_SFXSource: {fileID: 2048853695}
+  m_HurtSFX:
+  - {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
+  - {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
+  m_BlockSFX:
+  - {fileID: 0}
+  - {fileID: 0}
+  m_StepSFX:
+  - {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
+  - {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
+  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
+  m_WallBreakSFX:
+  - {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  - {fileID: 8300000, guid: f6aaac83be9e0493493aace800b76619, type: 3}
+  m_FoodConsumeSFX:
+  - {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  - {fileID: 8300000, guid: 062161c1897a54088a5430f8c197e1b8, type: 3}
 --- !u!82 &2048853694
 AudioSource:
   m_ObjectHideFlags: 0

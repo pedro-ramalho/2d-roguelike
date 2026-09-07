@@ -27,9 +27,12 @@ namespace Combat
         private static readonly Color BlockAddedColor = new Color(0.05f, 0.10f, 0.31f);
         private static readonly Color StatusAppliedColor = new Color(1f, 1f, 0f);
 
-        private ICombatant m_Combatant;
+        private CombatantStats m_Stats;
+        private CombatantStatusEffects m_Statuses;
+
         private VisualElement m_ParentLayer;
         private Camera m_Camera;
+
         private readonly List<VisualElement> m_Active = new();
 
         void Start()
@@ -39,26 +42,34 @@ namespace Combat
             m_ParentLayer = doc.rootVisualElement.Q<VisualElement>("FloaterLayer");
             m_Camera = Camera.main;
 
-            ICombatant combatant = GetComponent<ICombatant>();
-            if (combatant != null)
-                Bind(combatant);
+            m_Stats = GetComponent<CombatantStats>();
+            m_Statuses = GetComponent<CombatantStatusEffects>();
+
+            m_Stats.Damaged += OnDamaged;
+            m_Stats.HealthAdded += OnHealthAdded;
+            m_Stats.BlockAdded += OnBlockAdded;
+
+            m_Statuses.Applied += OnStatusApplied;
         }
 
         void OnDestroy()
         {
-            if (m_Combatant != null)
+            if (m_Stats != null)
             {
-                m_Combatant.Damaged -= OnDamaged;
-                m_Combatant.HealthAdded -= OnHealthAdded;
-                m_Combatant.BlockAdded -= OnBlockAdded;
-                m_Combatant.StatusApplied -= OnStatusApplied;
+                m_Stats.Damaged -= OnDamaged;
+                m_Stats.HealthAdded -= OnHealthAdded;
+                m_Stats.BlockAdded -= OnBlockAdded;
             }
 
+            if (m_Statuses != null)
+                m_Statuses.Applied -= OnStatusApplied;
+        }
+
+        void OnDisable()
+        {
             if (m_ParentLayer != null)
-            {
                 foreach (VisualElement floater in m_Active)
                     m_ParentLayer.Remove(floater);
-            }
 
             m_Active.Clear();
         }
@@ -89,6 +100,7 @@ namespace Combat
                 transform.position + m_WorldOffset,
                 m_Camera
             );
+
             floater.style.left = panelPos.x;
             floater.style.top = panelPos.y;
 
@@ -115,15 +127,6 @@ namespace Combat
                 m_ParentLayer.Remove(floater);
 
             m_Active.Remove(floater);
-        }
-
-        public void Bind(ICombatant combatant)
-        {
-            m_Combatant = combatant;
-            m_Combatant.Damaged += OnDamaged;
-            m_Combatant.HealthAdded += OnHealthAdded;
-            m_Combatant.BlockAdded += OnBlockAdded;
-            m_Combatant.StatusApplied += OnStatusApplied;
         }
     }
 }

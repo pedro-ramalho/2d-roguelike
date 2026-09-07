@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4387385277494319780}
   - component: {fileID: 4643804580259343903}
   - component: {fileID: 5536179765283063511}
+  - component: {fileID: 782456443144651402}
+  - component: {fileID: 399146274615124879}
   - component: {fileID: 4943251867301102487}
   - component: {fileID: 1863524310077405169}
   - component: {fileID: -3585038373898010958}
@@ -110,11 +112,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
+--- !u!114 &782456443144651402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2022c04c6198f704e9d7f891b4f5b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStats
   m_InitialMaxHP: 12
   m_InitialMaxBlock: 5
   m_InitialAttack: 2
   m_InitialMaxStamina: 0
-  m_StatusRolls: []
   m_BandStats:
   - Band: 0
     MaxHP: 4
@@ -124,14 +137,27 @@ MonoBehaviour:
     MaxHP: 8
     Attack: 3
     MaxBlock: 0
-  - Band: 2
+  - Band: 1
     MaxHP: 12
     Attack: 4
     MaxBlock: 0
   - Band: 3
-    MaxHP: 18
+    MaxHP: 16
     Attack: 6
     MaxBlock: 0
+--- !u!114 &399146274615124879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2182124353006668779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
+  m_StatusRolls: []
 --- !u!114 &4943251867301102487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,15 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
-  m_HurtSFX:
-  - {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
-  - {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
-  m_BlockSFX: []
-  m_StepSFX:
-  - {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
-  - {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
-  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
   m_DestroyOnDeath: 1
+  m_IsSpriteFacingRight: 0
 --- !u!114 &1863524310077405169
 MonoBehaviour:
   m_ObjectHideFlags: 0

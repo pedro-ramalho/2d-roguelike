@@ -70,17 +70,9 @@ namespace Player
             return Vector2Int.zero;
         }
 
-        void HandleEnemyDamage(EnemyController enemy, Vector2Int target, BoardManager.CellData cell)
-        {
-            m_Combatant.AttackTarget(enemy.Combatant, target - m_Combatant.Cell);
-
-            if (enemy.Combatant.HP <= 0 && cell.ContainedObject == (ICellOccupant)enemy)
-                cell.ContainedObject = null;
-        }
-
         void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)
         {
-            if (m_Combatant.IsStunned)
+            if (m_Combatant.Statuses.IsStunned)
             {
                 m_TurnManager.BeginTurn();
 
@@ -88,13 +80,13 @@ namespace Player
             }
 
             if (cell.ContainedObject == null)
-                MoveTo(target, false);
-            else if (cell.ContainedObject is EnemyController enemy)
-                HandleEnemyDamage(enemy, target, cell);
+                m_Combatant.TryMoveTo(target);
+            else if (cell.ContainedObject is Combatant enemy)
+                m_Combatant.AttackTarget(enemy, target - m_Combatant.Cell);
             else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
             {
-                MoveTo(target, false);
                 obj.PlayerEntered(this);
+                m_Combatant.TryMoveTo(target);
             }
 
             m_TurnManager.BeginTurn();
@@ -120,7 +112,7 @@ namespace Player
             ResolvePlayerAction(cell, target);
         }
 
-        void TurnHappened() => m_Combatant.DecrementStamina();
+        void TurnHappened() => m_Combatant.Stats.ChangeStamina(-1);
 
         public void Init() => m_IsGameOver = false;
 
@@ -142,17 +134,6 @@ namespace Player
                 hud.enabled = visible;
         }
 
-        public void Spawn(Vector2Int cell) => MoveTo(cell, true);
-
-        public void MoveTo(Vector2Int cell, bool snap)
-        {
-            Vector2Int direction = cell - m_Combatant.Cell;
-            m_Combatant.SetCell(cell);
-
-            if (snap)
-                transform.position = m_BoardManager.CellToWorld(cell);
-            else
-                m_CombatantAnimator.PlayWalkAnimation(cell, direction);
-        }
+        public void Spawn(Vector2Int cell) => m_Combatant.Teleport(cell);
     }
 }

@@ -128,7 +128,7 @@ namespace Board
                 return null;
 
             EnemyController enemy = m_BoardManager.Place(prefab, coord);
-            enemy.Combatant.ApplyBandStats();
+            enemy.Combatant.Stats.ApplyBandStats();
 
             return enemy;
         }

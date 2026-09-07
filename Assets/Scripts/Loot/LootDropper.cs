@@ -34,7 +34,7 @@ namespace Loot
                 case LootKind.Nothing:
                     break;
                 case LootKind.Stamina:
-                    GameManager.Instance.PlayerController.Combatant.ChangeStamina(
+                    GameManager.Instance.PlayerController.Combatant.Stats.ChangeStamina(
                         entry.StaminaAmount
                     );
                     break;

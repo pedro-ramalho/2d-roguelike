@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7663700088887855209}
   - component: {fileID: 5578303207332953994}
   - component: {fileID: 9156511374086397983}
+  - component: {fileID: 3974188818609409937}
+  - component: {fileID: 8495284075515920263}
   - component: {fileID: 5161219471131270738}
   - component: {fileID: 7805228552613659918}
   - component: {fileID: 39791499197184293}
@@ -132,15 +134,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_InitialMaxHP: 30
-  m_InitialMaxBlock: 15
-  m_InitialAttack: 2
+--- !u!114 &3974188818609409937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2022c04c6198f704e9d7f891b4f5b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStats
+  m_InitialMaxHP: 0
+  m_InitialMaxBlock: 0
+  m_InitialAttack: 0
   m_InitialMaxStamina: 0
-  m_StatusRolls:
-  - Type: 2
-    Duration: 2
-    BaseProbability: 0.15
-    PerLevelBonus: 0.05
   m_BandStats:
   - Band: 0
     MaxHP: 6
@@ -158,6 +167,23 @@ MonoBehaviour:
     MaxHP: 24
     Attack: 4
     MaxBlock: 12
+--- !u!114 &8495284075515920263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
+  m_StatusRolls:
+  - Type: 2
+    Duration: 2
+    BaseProbability: 0.15
+    PerLevelBonus: 0.05
 --- !u!114 &5161219471131270738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,15 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
-  m_HurtSFX:
-  - {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
-  - {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
-  m_BlockSFX: []
-  m_StepSFX:
-  - {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
-  - {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
-  m_DeathSFX: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
   m_DestroyOnDeath: 1
+  m_IsSpriteFacingRight: 0
 --- !u!114 &7805228552613659918
 MonoBehaviour:
   m_ObjectHideFlags: 0

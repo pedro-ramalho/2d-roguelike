@@ -12,7 +12,7 @@ namespace Enemy
         void Awake()
         {
             m_Combatant = GetComponent<Combatant>();
-            m_Combatant.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
+            m_Combatant.Stats.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
 
             // Update the tint
             SpriteRenderer sprite = GetComponent<SpriteRenderer>();
@@ -34,7 +34,7 @@ namespace Enemy
                 return;
 
             EliteRewardEntry entry = WeightedPool.PickRandom(pool, e => e.Weight);
-            m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+            m_Combatant.Stats.UpgradeStat(entry.Stat, entry.Amount);
         }
     }
 }

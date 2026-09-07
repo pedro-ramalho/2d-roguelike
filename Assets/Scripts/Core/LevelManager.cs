@@ -53,7 +53,7 @@ namespace Core
             m_BoardManager = GameManager.Instance.BoardManager;
             m_PlayerController = GameManager.Instance.PlayerController;
 
-            m_PlayerController.Combatant.Depleted += OnPlayerDepleted;
+            m_PlayerController.Combatant.Stats.Depleted += OnPlayerDepleted;
             m_PlayerController.Combatant.Defeated += OnPlayerDefeated;
 
             NewLevel();
@@ -63,7 +63,7 @@ namespace Core
         {
             if (m_PlayerController != null)
             {
-                m_PlayerController.Combatant.Depleted -= OnPlayerDepleted;
+                m_PlayerController.Combatant.Stats.Depleted -= OnPlayerDepleted;
                 m_PlayerController.Combatant.Defeated -= OnPlayerDefeated;
             }
         }
@@ -102,6 +102,7 @@ namespace Core
 
         void RebuildLevel()
         {
+            m_BoardManager.ClearCell(m_PlayerController.Combatant.Cell);
             m_PlayerController.gameObject.SetActive(false);
 
             m_BoardManager.Clean();
@@ -116,7 +117,7 @@ namespace Core
 
         IEnumerator BandTransitionCoroutine(LevelBand band)
         {
-            m_PlayerController.Combatant.RefreshStats();
+            m_PlayerController.Combatant.Stats.RefreshStats();
 
             StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
 
@@ -132,8 +133,8 @@ namespace Core
 
         public void NewLevel()
         {
-            int amount = Mathf.RoundToInt(m_PlayerController.Combatant.MaxStamina * 0.25f);
-            m_PlayerController.Combatant.ChangeStamina(amount);
+            int amount = Mathf.RoundToInt(m_PlayerController.Combatant.Stats.MaxStamina * 0.25f);
+            m_PlayerController.Combatant.Stats.ChangeStamina(amount);
             GoToLevel(m_CurrentLevel + 1);
         }
 
@@ -146,7 +147,7 @@ namespace Core
             m_CurrentBand = null;
             m_CurrentLevel = 0;
 
-            m_PlayerController.Combatant.ResetState();
+            m_PlayerController.Combatant.Stats.Reset();
             m_PlayerController.Init();
             m_PlayerController.SetVisible(true);
 

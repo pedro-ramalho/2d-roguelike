@@ -16,7 +16,10 @@ namespace Board
             m_Board.SetCellTile(m_Cell, endTile);
         }
 
-        public override void PlayerEntered(PlayerController _) =>
+        public override void PlayerEntered(PlayerController _)
+        {
+            m_Board.ClearCell(m_Cell);
             GameManager.Instance?.LevelManager?.NewLevel();
+        }
     }
 }

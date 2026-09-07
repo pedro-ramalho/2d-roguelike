@@ -21,12 +21,13 @@ namespace Core
             m_ImpulseSource = GetComponent<CinemachineImpulseSource>();
         }
 
-        void Start() => GameManager.Instance.PlayerController.Combatant.Damaged += OnPlayerDamaged;
+        void Start() =>
+            GameManager.Instance.PlayerController.Combatant.Stats.Damaged += OnPlayerDamaged;
 
         void OnDestroy()
         {
             if (GameManager.Instance != null && GameManager.Instance.PlayerController != null)
-                GameManager.Instance.PlayerController.Combatant.Damaged -= OnPlayerDamaged;
+                GameManager.Instance.PlayerController.Combatant.Stats.Damaged -= OnPlayerDamaged;
         }
 
         void OnPlayerDamaged(DamageResult result)
