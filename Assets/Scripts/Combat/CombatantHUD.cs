@@ -81,7 +81,7 @@ namespace Combat
 
         void OnEnable()
         {
-            if (m_Combatant != null)
+            if (m_Root != null)
                 RefreshBars();
         }
 
