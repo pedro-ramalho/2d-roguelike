@@ -3,7 +3,6 @@ using System.Collections;
 using Board;
 using Level;
 using Player;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Core
@@ -24,10 +23,7 @@ namespace Core
         private BoardGenerator m_BoardGenerator;
 
         [SerializeField]
-        private BoxCollider2D m_ConfinerBounds;
-
-        [SerializeField]
-        private CinemachineConfiner2D m_Confiner;
+        private BoardCameraConfiner m_CameraConfiner;
 
         // Events
         public event Action<GameOverReason, int> GameOverTriggered;
@@ -95,7 +91,12 @@ namespace Core
             bool crossedBand = previousBand != newBand;
 
             if (crossedBand)
-                StartCoroutine(BandTransitionCoroutine(newBand));
+            {
+                m_PlayerController.Combatant.Stats.RefreshStats();
+                StartCoroutine(
+                    m_LevelTransitionManager.PlayBandTransitionCoroutine(newBand, RebuildLevel)
+                );
+            }
             else
                 RebuildLevel();
         }
@@ -107,28 +108,12 @@ namespace Core
 
             m_BoardManager.Clean();
             m_BoardManager.Init(m_BoardWidth, m_BoardHeight);
-            UpdateConfiner();
+            m_CameraConfiner.FitToBoard(m_BoardWidth, m_BoardHeight);
 
             m_BoardGenerator.GenerateBoard(m_BoardManager);
 
             m_PlayerController.gameObject.SetActive(true);
             m_PlayerController.Spawn(m_PlayerSpawnCell);
-        }
-
-        IEnumerator BandTransitionCoroutine(LevelBand band)
-        {
-            m_PlayerController.Combatant.Stats.RefreshStats();
-
-            StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
-
-            yield return m_LevelTransitionManager.FadeOutCoroutine(band);
-
-            RebuildLevel();
-
-            yield return new WaitForSeconds(5f);
-
-            StartCoroutine(AudioManager.Instance.FadeInMusicCoroutine(band.Track, 10f));
-            yield return m_LevelTransitionManager.FadeInCoroutine();
         }
 
         public void NewLevel()
@@ -152,18 +137,6 @@ namespace Core
             m_PlayerController.SetVisible(true);
 
             GoToLevel(1);
-        }
-
-        void UpdateConfiner()
-        {
-            const float k_Padding = 1f;
-
-            m_ConfinerBounds.offset = new Vector2(m_BoardWidth * 0.5f, m_BoardHeight * 0.5f);
-            m_ConfinerBounds.size = new Vector2(
-                m_BoardWidth + k_Padding * 2f,
-                m_BoardHeight + k_Padding * 2f
-            );
-            m_Confiner.InvalidateBoundingShapeCache();
         }
 
         LevelBand ResolveBand(int level)
