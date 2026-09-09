@@ -3,7 +3,6 @@ using System.Collections;
 using Board;
 using Level;
 using Player;
-using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Core
@@ -115,22 +114,6 @@ namespace Core
 
             m_PlayerController.gameObject.SetActive(true);
             m_PlayerController.Spawn(m_PlayerSpawnCell);
-        }
-
-        IEnumerator BandTransitionCoroutine(LevelBand band)
-        {
-            m_PlayerController.Combatant.Stats.RefreshStats();
-
-            StartCoroutine(AudioManager.Instance.FadeOutMusicCoroutine(0.5f));
-
-            yield return m_LevelTransitionManager.FadeOutCoroutine(band);
-
-            RebuildLevel();
-
-            yield return new WaitForSeconds(5f);
-
-            StartCoroutine(AudioManager.Instance.FadeInMusicCoroutine(band.Track, 10f));
-            yield return m_LevelTransitionManager.FadeInCoroutine();
         }
 
         public void NewLevel()
