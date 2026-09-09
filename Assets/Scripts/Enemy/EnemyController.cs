@@ -32,6 +32,7 @@ namespace Enemy
             m_BoardManager = GameManager.Instance.BoardManager;
             m_PlayerController = GameManager.Instance.PlayerController;
 
+            m_Combatant.Defeated += OnCombatantDefeated;
             m_TurnManager.OnTick += OnTurnHappened;
         }
 
@@ -40,6 +41,8 @@ namespace Enemy
             if (m_TurnManager != null)
                 m_TurnManager.OnTick -= OnTurnHappened;
         }
+
+        void OnCombatantDefeated() => m_TurnManager.OnTick -= OnTurnHappened;
 
         protected bool IsInLineOfSightToPlayer() =>
             m_BoardManager.IsInLineOfSight(m_Combatant.Cell, m_PlayerController.Combatant.Cell);
@@ -96,9 +99,6 @@ namespace Enemy
 
         void OnTurnHappened()
         {
-            if (m_Combatant.Stats.HP <= 0)
-                return;
-
             if (m_Combatant.Statuses.IsStunned)
                 return;
 

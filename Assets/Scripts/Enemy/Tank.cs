@@ -6,7 +6,6 @@ namespace Enemy
     {
         protected override void ResolveEnemyAction()
         {
-            // TODO: link block gain with the current level
             Combatant.Stats.AddBlock(3);
 
             Vector2Int delta = ComputeDeltaToPlayer();
