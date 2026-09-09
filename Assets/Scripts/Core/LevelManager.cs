@@ -134,7 +134,6 @@ namespace Core
 
             m_PlayerController.Combatant.Stats.Reset();
             m_PlayerController.Init();
-            m_PlayerController.SetVisible(true);
 
             GoToLevel(1);
         }

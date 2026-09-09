@@ -68,7 +68,8 @@ namespace Combat
             m_Stats.Damaged += OnStatChanged;
             m_Stats.HealthAdded += OnStatChanged;
             m_Stats.BlockAdded += OnStatChanged;
-            m_Stats.StatsReset += RefreshBars;
+
+            m_Stats.StatsReset += OnStatsReset;
 
             m_Statuses.Applied += OnStatusApplied;
             m_Statuses.Removed += OnStatusRemoved;
@@ -89,6 +90,12 @@ namespace Combat
         {
             if (m_Root != null)
                 m_Root.style.visibility = Visibility.Hidden;
+        }
+
+        void OnStatsReset()
+        {
+            enabled = true;
+            RefreshBars();
         }
 
         void LateUpdate()
@@ -117,7 +124,7 @@ namespace Combat
                 m_Stats.Damaged -= OnStatChanged;
                 m_Stats.HealthAdded -= OnStatChanged;
                 m_Stats.BlockAdded -= OnStatChanged;
-                m_Stats.StatsReset -= RefreshBars;
+                m_Stats.StatsReset -= OnStatsReset;
             }
 
             if (m_Statuses != null)

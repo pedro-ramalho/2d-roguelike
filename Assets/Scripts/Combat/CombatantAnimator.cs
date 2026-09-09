@@ -64,6 +64,7 @@ namespace Combat
             m_Combatant.Moved += OnCombatantMove;
 
             m_Stats.Damaged += OnCombatantHurt;
+            m_Stats.StatsReset += OnCombatantReset;
         }
 
         void OnDisable()
@@ -89,6 +90,8 @@ namespace Combat
             if (m_TurnManager != null)
                 m_TurnManager.Unregister(this);
         }
+
+        void OnCombatantReset() => m_SpriteRenderer.color = m_OriginalColor;
 
         IEnumerator MoveCoroutine(Vector3 start, Vector3 target, float duration)
         {

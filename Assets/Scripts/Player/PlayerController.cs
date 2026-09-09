@@ -1,7 +1,6 @@
 using Board;
 using Combat;
 using Core;
-using Enemy;
 using UnityEngine;
 
 namespace Player
@@ -117,22 +116,6 @@ namespace Player
         public void Init() => m_IsGameOver = false;
 
         public void GameOver() => m_IsGameOver = true;
-
-        public void SetVisible(bool visible)
-        {
-            m_SpriteRenderer.enabled = visible;
-
-            if (visible)
-            {
-                Color color = m_SpriteRenderer.color;
-                color.a = 1f;
-                m_SpriteRenderer.color = color;
-            }
-
-            CombatantHUD hud = GetComponent<CombatantHUD>();
-            if (hud != null)
-                hud.enabled = visible;
-        }
 
         public void Spawn(Vector2Int cell) => m_Combatant.Teleport(cell);
     }
