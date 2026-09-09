@@ -31,10 +31,10 @@ namespace Player
             m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
             m_AttackLabel = m_PlayerStatsPanel.Q<Label>("AttackLabel");
 
-            m_Stats.Damaged += _ => Refresh();
-            m_Stats.HealthAdded += _ => Refresh();
-            m_Stats.BlockAdded += _ => Refresh();
-            m_Stats.StaminaChanged += _ => Refresh();
+            m_Stats.Damaged += OnStatChanged;
+            m_Stats.HealthAdded += OnStatChanged;
+            m_Stats.BlockAdded += OnStatChanged;
+            m_Stats.StaminaChanged += OnStatChanged;
             m_Stats.StatsReset += Refresh;
         }
 
@@ -58,6 +58,8 @@ namespace Player
                 m_PlayerStatsPanel.style.display = DisplayStyle.Flex;
         }
 
+        void OnStatChanged<T>(T _) => Refresh();
+
         void OnDestroy()
         {
             if (GameManager.Instance != null && GameManager.Instance.LevelManager != null)
@@ -66,10 +68,10 @@ namespace Player
             if (m_Stats == null)
                 return;
 
-            m_Stats.Damaged -= _ => Refresh();
-            m_Stats.HealthAdded -= _ => Refresh();
-            m_Stats.BlockAdded -= _ => Refresh();
-            m_Stats.StaminaChanged -= _ => Refresh();
+            m_Stats.Damaged -= OnStatChanged;
+            m_Stats.HealthAdded -= OnStatChanged;
+            m_Stats.BlockAdded -= OnStatChanged;
+            m_Stats.StaminaChanged -= OnStatChanged;
             m_Stats.StatsReset -= Refresh;
         }
 

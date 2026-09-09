@@ -101,6 +101,8 @@ namespace Board
                 data.ContainedObject = occupant;
         }
 
+        public ICellOccupant GetOccupantAt(Vector2Int cell) => GetCellData(cell).ContainedObject;
+
         public Tile GetCellTile(Vector2Int cellIndex) =>
             m_Tilemap.GetTile<Tile>((Vector3Int)cellIndex);
 

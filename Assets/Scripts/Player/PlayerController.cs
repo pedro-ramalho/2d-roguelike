@@ -69,7 +69,7 @@ namespace Player
             return Vector2Int.zero;
         }
 
-        void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)
+        void ResolvePlayerAction(Vector2Int target)
         {
             if (m_Combatant.Statuses.IsStunned)
             {
@@ -78,11 +78,13 @@ namespace Player
                 return;
             }
 
-            if (cell.ContainedObject == null)
+            ICellOccupant occupant = m_BoardManager.GetOccupantAt(target);
+
+            if (occupant == null)
                 m_Combatant.TryMoveTo(target);
-            else if (cell.ContainedObject is Combatant enemy)
+            else if (occupant is Combatant enemy)
                 m_Combatant.AttackTarget(enemy, target - m_Combatant.Cell);
-            else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
+            else if (occupant is CellObject obj && obj.PlayerWantsToEnter())
             {
                 obj.PlayerEntered(this);
                 m_Combatant.TryMoveTo(target);
@@ -108,7 +110,7 @@ namespace Player
             if (cell == null || !cell.Passable)
                 return;
 
-            ResolvePlayerAction(cell, target);
+            ResolvePlayerAction(target);
         }
 
         void TurnHappened() => m_Combatant.Stats.ChangeStamina(-1);
