@@ -4,9 +4,7 @@ namespace Food
 {
     public class Salad : FoodObject
     {
-        protected override void ApplyEffect(PlayerController player)
-        {
+        protected override void ApplyEffect(PlayerController player) =>
             player.Combatant.Stats.Heal(GetAmountForCurrentBand());
-        }
     }
 }
