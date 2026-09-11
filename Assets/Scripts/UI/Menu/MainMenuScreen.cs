@@ -1,6 +1,7 @@
 using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +22,8 @@ namespace UI
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        private SettingsMenuScreen m_SettingsMenuHUD;
+        [FormerlySerializedAs("m_SettingsMenuHUD")]
+        private SettingsMenuScreen m_SettingsMenuScreen;
 
         [SerializeField]
         private AudioClip m_ClickSFX;
@@ -64,7 +66,7 @@ namespace UI
 
             m_CreditsBackButton.clicked += OnCreditsBackButtonPress;
 
-            m_SettingsMenuHUD.Closed += OnSettingsMenuClosed;
+            m_SettingsMenuScreen.Closed += OnSettingsMenuClosed;
         }
 
         void OnDestroy()
@@ -84,8 +86,8 @@ namespace UI
             if (m_CreditsBackButton != null)
                 m_CreditsBackButton.clicked -= OnCreditsBackButtonPress;
 
-            if (m_SettingsMenuHUD != null)
-                m_SettingsMenuHUD.Closed -= OnSettingsMenuClosed;
+            if (m_SettingsMenuScreen != null)
+                m_SettingsMenuScreen.Closed -= OnSettingsMenuClosed;
         }
 
         void ShowPanel(PanelType panel)
@@ -96,7 +98,7 @@ namespace UI
             m_ButtonsPanel.style.display =
                 panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
 
-            m_SettingsMenuHUD.Show(panel == PanelType.Settings);
+            m_SettingsMenuScreen.Show(panel == PanelType.Settings);
 
             m_CreditsPanel.style.display =
                 panel == PanelType.Credits ? DisplayStyle.Flex : DisplayStyle.None;

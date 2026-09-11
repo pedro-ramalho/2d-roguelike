@@ -1,7 +1,7 @@
 using Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,7 +14,8 @@ namespace UI
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        private SettingsMenuScreen m_SettingsMenuHUD;
+        [FormerlySerializedAs("m_SettingsMenuHUD")]
+        private SettingsMenuScreen m_SettingsMenuScreen;
 
         [SerializeField]
         private AudioClip m_ClickSFX;
@@ -45,7 +46,7 @@ namespace UI
             m_SettingsButton.clicked += OnSettingsButtonPress;
             m_QuitButton.clicked += OnQuitButtonPress;
 
-            m_SettingsMenuHUD.Closed += OnSettingsMenuClosed;
+            m_SettingsMenuScreen.Closed += OnSettingsMenuClosed;
         }
 
         void OnEnable() => m_InputActions.Enable();
@@ -63,8 +64,8 @@ namespace UI
             if (m_QuitButton != null)
                 m_QuitButton.clicked -= OnQuitButtonPress;
 
-            if (m_SettingsMenuHUD != null)
-                m_SettingsMenuHUD.Closed -= OnSettingsMenuClosed;
+            if (m_SettingsMenuScreen != null)
+                m_SettingsMenuScreen.Closed -= OnSettingsMenuClosed;
         }
 
         void Pause(bool pause)
@@ -102,7 +103,7 @@ namespace UI
 
             ShowPauseButtons(false);
 
-            m_SettingsMenuHUD.Show(true);
+            m_SettingsMenuScreen.Show(true);
         }
 
         void OnSettingsMenuClosed() => ShowPauseButtons(true);

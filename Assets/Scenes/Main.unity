@@ -594,7 +594,7 @@ GameObject:
   - component: {fileID: 465026500}
   - component: {fileID: 465026501}
   m_Layer: 0
-  m_Name: GameOverHUD
+  m_Name: GameOverScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -789,7 +789,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2318094904047327488, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
       propertyPath: m_Name
-      value: SettingsMenuHUD
+      value: SettingsMenuScreen
       objectReference: {fileID: 0}
     - target: {fileID: 4586996582043336122, guid: b7ef0e7ce68c51b43a1552573fbe1ee8, type: 3}
       propertyPath: m_UIDocument
@@ -8723,7 +8723,7 @@ GameObject:
   - component: {fileID: 1680459597}
   - component: {fileID: 1680459598}
   m_Layer: 0
-  m_Name: PauseMenuHUD
+  m_Name: PauseMenuScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8757,7 +8757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuHUD
   m_UIDocument: {fileID: 394013677}
-  m_SettingsMenuHUD: {fileID: 996595076}
+  m_SettingsMenuScreen: {fileID: 996595076}
   m_ClickSFX: {fileID: 8300000, guid: 340a289a1f064124ba2fb75f823e19ae, type: 3}
 --- !u!1 &1691645435
 GameObject:
@@ -8769,7 +8769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1691645436}
   m_Layer: 0
-  m_Name: "\u2501\u2501\u2501 HUD \u2501\u2501\u2501"
+  m_Name: "\u2501\u2501\u2501 UI COMPONENTS \u2501\u2501\u2501"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
