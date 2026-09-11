@@ -9,20 +9,19 @@ using UnityEditor;
 
 namespace UI
 {
-    enum PanelType
-    {
-        Main,
-        Settings,
-        Credits,
-    }
-
     public class MainMenuScreen : MonoBehaviour
     {
+        enum PanelType
+        {
+            Main,
+            Settings,
+            Credits,
+        }
+
         [SerializeField]
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        [FormerlySerializedAs("m_SettingsMenuHUD")]
         private SettingsMenuScreen m_SettingsMenuScreen;
 
         [SerializeField]

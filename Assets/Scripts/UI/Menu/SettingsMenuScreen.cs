@@ -31,14 +31,14 @@ namespace UI
             m_SFXVolumeSlider = m_SettingsMenuPanel.Q<Slider>("SFXVolumeSlider");
             m_BackButton = m_SettingsMenuPanel.Q<Button>("BackButton");
 
-            BindVolumeSilder(m_MasterVolumeSlider, "MasterVolume", 0.5f);
-            BindVolumeSilder(m_MusicVolumeSlider, "MusicVolume", 0.5f);
-            BindVolumeSilder(m_SFXVolumeSlider, "SFXVolume", 0.5f);
+            BindVolumeSlider(m_MasterVolumeSlider, "MasterVolume", 0.5f);
+            BindVolumeSlider(m_MusicVolumeSlider, "MusicVolume", 0.5f);
+            BindVolumeSlider(m_SFXVolumeSlider, "SFXVolume", 0.5f);
 
             m_BackButton.clicked += OnBackButtonPress;
         }
 
-        void BindVolumeSilder(Slider slider, string mixerParam, float defaultValue)
+        void BindVolumeSlider(Slider slider, string mixerParam, float defaultValue)
         {
             float initial = PlayerPrefs.GetFloat(mixerParam, defaultValue);
             slider.value = initial;

@@ -14,7 +14,6 @@ namespace UI
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        [FormerlySerializedAs("m_SettingsMenuHUD")]
         private SettingsMenuScreen m_SettingsMenuScreen;
 
         [SerializeField]
@@ -29,10 +28,10 @@ namespace UI
 
         private bool m_IsPaused;
 
+        void Awake() => m_InputActions = new PlayerInputActions();
+
         void Start()
         {
-            m_InputActions = new PlayerInputActions();
-
             VisualElement root = m_UIDocument.rootVisualElement;
 
             m_PauseMenuPanel = root.Q<VisualElement>("PauseMenuPanel");
