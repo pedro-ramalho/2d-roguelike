@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace UI
 {
-    public class SettingsMenuHUD : MonoBehaviour
+    public class SettingsMenuScreen : MonoBehaviour
     {
         [SerializeField]
         private UIDocument m_UIDocument;

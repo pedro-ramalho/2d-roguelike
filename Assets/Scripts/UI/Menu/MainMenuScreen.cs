@@ -15,13 +15,13 @@ namespace UI
         Credits,
     }
 
-    public class MainMenuHUD : MonoBehaviour
+    public class MainMenuScreen : MonoBehaviour
     {
         [SerializeField]
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        private SettingsMenuHUD m_SettingsMenuHUD;
+        private SettingsMenuScreen m_SettingsMenuHUD;
 
         [SerializeField]
         private AudioClip m_ClickSFX;

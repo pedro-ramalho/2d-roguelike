@@ -1,19 +1,20 @@
 using Core;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 namespace UI
 {
-    public class PauseMenuHUD : MonoBehaviour
+    public class PauseMenuScreen : MonoBehaviour
     {
         [SerializeField]
         private UIDocument m_UIDocument;
 
         [SerializeField]
-        private SettingsMenuHUD m_SettingsMenuHUD;
+        private SettingsMenuScreen m_SettingsMenuHUD;
 
         [SerializeField]
         private AudioClip m_ClickSFX;
