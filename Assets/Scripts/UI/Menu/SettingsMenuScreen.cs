@@ -19,14 +19,6 @@ namespace UI
         private Slider m_SFXVolumeSlider;
         private Button m_BackButton;
 
-        private static readonly string m_MasterVolumeMixerParam = "MasterVolume";
-        private static readonly string m_MusicVolumeMixerParam = "MusicVolume";
-        private static readonly string m_SFXVolumeMixerParam = "SFXVolume";
-
-        private static readonly float m_MasterVolumeDefaultValue = 0.5f;
-        private static readonly float m_MusicVolumeDefaultValue = 0.5f;
-        private static readonly float m_SFXVolumeDefaultValue = 0.5f;
-
         public event Action Closed;
 
         void Start()
@@ -39,70 +31,30 @@ namespace UI
             m_SFXVolumeSlider = m_SettingsMenuPanel.Q<Slider>("SFXVolumeSlider");
             m_BackButton = m_SettingsMenuPanel.Q<Button>("BackButton");
 
-            LoadSliderSettings();
-
-            m_MasterVolumeSlider.RegisterValueChangedCallback(OnMasterVolumeChanged);
-            m_MusicVolumeSlider.RegisterValueChangedCallback(OnMusicVolumeChanged);
-            m_SFXVolumeSlider.RegisterValueChangedCallback(OnSFXVolumeChanged);
+            BindVolumeSilder(m_MasterVolumeSlider, "MasterVolume", 0.5f);
+            BindVolumeSilder(m_MusicVolumeSlider, "MusicVolume", 0.5f);
+            BindVolumeSilder(m_SFXVolumeSlider, "SFXVolume", 0.5f);
 
             m_BackButton.clicked += OnBackButtonPress;
         }
 
-        void LoadSliderSettings()
+        void BindVolumeSilder(Slider slider, string mixerParam, float defaultValue)
         {
-            float masterVolumeValue = PlayerPrefs.GetFloat(
-                m_MasterVolumeMixerParam,
-                m_MasterVolumeDefaultValue
-            );
-            float musicVolumeValue = PlayerPrefs.GetFloat(
-                m_MusicVolumeMixerParam,
-                m_MusicVolumeDefaultValue
-            );
-            float sfxVolumeValue = PlayerPrefs.GetFloat(
-                m_SFXVolumeMixerParam,
-                m_SFXVolumeDefaultValue
-            );
+            float initial = PlayerPrefs.GetFloat(mixerParam, defaultValue);
+            slider.value = initial;
+            AudioManager.Instance.SetVolume(mixerParam, initial);
 
-            m_MasterVolumeSlider.value = masterVolumeValue;
-            m_MusicVolumeSlider.value = musicVolumeValue;
-            m_SFXVolumeSlider.value = sfxVolumeValue;
-
-            AudioManager.Instance.SetVolume(m_MasterVolumeMixerParam, masterVolumeValue);
-            AudioManager.Instance.SetVolume(m_MusicVolumeMixerParam, musicVolumeValue);
-            AudioManager.Instance.SetVolume(m_SFXVolumeMixerParam, sfxVolumeValue);
+            slider.RegisterValueChangedCallback(evt =>
+            {
+                PlayerPrefs.SetFloat(mixerParam, evt.newValue);
+                AudioManager.Instance.SetVolume(mixerParam, evt.newValue);
+            });
         }
 
         void OnDestroy()
         {
-            if (m_MasterVolumeSlider != null)
-                m_MasterVolumeSlider.UnregisterValueChangedCallback(OnMasterVolumeChanged);
-
-            if (m_MusicVolumeSlider != null)
-                m_MusicVolumeSlider.UnregisterValueChangedCallback(OnMusicVolumeChanged);
-
-            if (m_SFXVolumeSlider != null)
-                m_SFXVolumeSlider.UnregisterValueChangedCallback(OnSFXVolumeChanged);
-
             if (m_BackButton != null)
                 m_BackButton.clicked -= OnBackButtonPress;
-        }
-
-        void OnMasterVolumeChanged(ChangeEvent<float> evt)
-        {
-            PlayerPrefs.SetFloat(m_MasterVolumeMixerParam, evt.newValue);
-            AudioManager.Instance.SetVolume(m_MasterVolumeMixerParam, evt.newValue);
-        }
-
-        void OnMusicVolumeChanged(ChangeEvent<float> evt)
-        {
-            PlayerPrefs.SetFloat(m_MusicVolumeMixerParam, evt.newValue);
-            AudioManager.Instance.SetVolume(m_MusicVolumeMixerParam, evt.newValue);
-        }
-
-        void OnSFXVolumeChanged(ChangeEvent<float> evt)
-        {
-            PlayerPrefs.SetFloat(m_SFXVolumeMixerParam, evt.newValue);
-            AudioManager.Instance.SetVolume(m_SFXVolumeMixerParam, evt.newValue);
         }
 
         void OnBackButtonPress()

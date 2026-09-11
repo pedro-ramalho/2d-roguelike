@@ -11,7 +11,7 @@ namespace UI
 {
     enum PanelType
     {
-        Buttons,
+        Main,
         Settings,
         Credits,
     }
@@ -93,10 +93,10 @@ namespace UI
         void ShowPanel(PanelType panel)
         {
             m_GameTitleLabel.style.display =
-                panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
+                panel == PanelType.Main ? DisplayStyle.Flex : DisplayStyle.None;
 
             m_ButtonsPanel.style.display =
-                panel == PanelType.Buttons ? DisplayStyle.Flex : DisplayStyle.None;
+                panel == PanelType.Main ? DisplayStyle.Flex : DisplayStyle.None;
 
             m_SettingsMenuScreen.Show(panel == PanelType.Settings);
 
@@ -121,7 +121,7 @@ namespace UI
         void OnCreditsBackButtonPress()
         {
             PlayClickSFX();
-            ShowPanel(PanelType.Buttons);
+            ShowPanel(PanelType.Main);
         }
 
         void OnSettingsButtonPress()
@@ -130,7 +130,7 @@ namespace UI
             ShowPanel(PanelType.Settings);
         }
 
-        void OnSettingsMenuClosed() => ShowPanel(PanelType.Buttons);
+        void OnSettingsMenuClosed() => ShowPanel(PanelType.Main);
 
         void OnQuitButtonPress()
         {

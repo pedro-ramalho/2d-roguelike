@@ -29,11 +29,9 @@ namespace UI
 
         private bool m_IsPaused;
 
-        void Awake()
+        void Start()
         {
             m_InputActions = new PlayerInputActions();
-
-            m_IsPaused = false;
 
             VisualElement root = m_UIDocument.rootVisualElement;
 
