@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mid
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 2
-  Name: Mid
+  Name: Warped Alien Band
   Track: {fileID: 8300000, guid: 63c0b415d448a46478f44d42b91bdaa2, type: 3}
   MinLevel: 9
   MaxLevel: 15

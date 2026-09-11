@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 0
-  Name: Tutorial
+  Name: Blob Monsters Return
   Track: {fileID: 8300000, guid: dddfeae95d5224d43a8be565cc6b8aa5, type: 3}
   MinLevel: 1
   MaxLevel: 3

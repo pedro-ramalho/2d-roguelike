@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Late
   m_EditorClassIdentifier: Assembly-CSharp::LevelBand
   Type: 3
-  Name: Late
+  Name: Cranky Monster
   Track: {fileID: 8300000, guid: 470edf7308074134ba31c535a8d4253c, type: 3}
   MinLevel: 16
   MaxLevel: 1000
