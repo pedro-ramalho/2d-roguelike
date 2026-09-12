@@ -43,6 +43,9 @@ namespace CombatTests
             m_Stats.Reset();
         }
 
+        [TearDown]
+        public void TearDown() => Object.DestroyImmediate(m_GameObject);
+
         [TestCase(10, 3, 3, 0, 7, 20)]
         [TestCase(3, 10, 3, 7, 0, 13)]
         [TestCase(0, 5, 0, 5, 0, 15)]
@@ -59,11 +62,11 @@ namespace CombatTests
 
             DamageResult result = m_Stats.TakeDamage(damage);
 
-            Assert.That(result.BlockLost, Is.EqualTo(expectedBlockLost));
-            Assert.That(result.HPLost, Is.EqualTo(expectedHpLost));
+            Assert.AreEqual(result.BlockLost, expectedBlockLost);
+            Assert.AreEqual(result.HPLost, expectedHpLost);
 
-            Assert.That(m_Stats.Block, Is.EqualTo(expectedBlockLeft));
-            Assert.That(m_Stats.HP, Is.EqualTo(expectedHpLeft));
+            Assert.AreEqual(m_Stats.Block, expectedBlockLeft);
+            Assert.AreEqual(m_Stats.HP, expectedHpLeft);
         }
 
         [Test]
@@ -93,7 +96,7 @@ namespace CombatTests
 
             m_Stats.Heal(healing);
 
-            Assert.That(m_Stats.HP, Is.EqualTo(expectedHp));
+            Assert.AreEqual(m_Stats.HP, expectedHp);
         }
 
         [Test]
@@ -114,7 +117,7 @@ namespace CombatTests
         {
             m_Stats.AddBlock(amount);
 
-            Assert.That(m_Stats.Block, Is.EqualTo(expectedBlock));
+            Assert.AreEqual(m_Stats.Block, expectedBlock);
         }
 
         [Test]
@@ -136,7 +139,7 @@ namespace CombatTests
         {
             m_Stats.ChangeStamina(amount);
 
-            Assert.That(m_Stats.Stamina, Is.EqualTo(expectedStamina));
+            Assert.AreEqual(m_Stats.Stamina, expectedStamina);
         }
 
         [Test]

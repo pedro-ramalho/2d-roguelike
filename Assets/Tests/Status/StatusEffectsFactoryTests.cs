@@ -3,7 +3,7 @@ using Status;
 
 namespace StatusTests
 {
-    public class StatusEffectsFactoryTest
+    public class StatusEffectsFactoryTests
     {
         [TestCase(StatusEffectType.Stunned, typeof(StatusEffectStunned), 1)]
         [TestCase(StatusEffectType.Weak, typeof(StatusEffectWeak), 2)]

@@ -3,7 +3,7 @@ using Status;
 
 namespace StatusTests
 {
-    public class StatusEffectTest
+    public class StatusEffectTests
     {
         [TestCase(StatusEffectType.Weak)]
         [TestCase(StatusEffectType.Stunned)]
@@ -17,7 +17,7 @@ namespace StatusTests
 
             effect.OnTurnEnd(null);
 
-            Assert.AreEqual(--duration, effect.Duration);
+            Assert.AreEqual(duration - 1, effect.Duration);
         }
 
         [TestCase(3, false)]
