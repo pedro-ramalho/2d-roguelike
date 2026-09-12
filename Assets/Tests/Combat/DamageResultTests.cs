@@ -1,8 +1,5 @@
-using System.Collections;
 using Combat;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace CombatTests
 {
