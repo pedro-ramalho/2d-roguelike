@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Status;
 using UnityEngine;
 
@@ -19,15 +20,11 @@ namespace Combat
     {
         public static DamageResult ApplyDamage(Combatant attacker, Combatant defender)
         {
-            float damage = attacker.Stats.Attack;
-
-            foreach (StatusEffect status in attacker.Statuses.StatusEffects)
-                damage = status.ModifyOutgoingDamage(damage);
-
-            foreach (StatusEffect status in defender.Statuses.StatusEffects)
-                damage = status.ModifyIncomingDamage(damage);
-
-            int finalDamage = Mathf.Max(0, Mathf.FloorToInt(damage));
+            int finalDamage = ComputeDamage(
+                attacker.Stats.Attack,
+                attacker.Statuses.StatusEffects,
+                defender.Statuses.StatusEffects
+            );
 
             DamageResult result = defender.TakeDamage(finalDamage);
 
@@ -35,6 +32,23 @@ namespace Combat
                 attacker.Statuses.RollStatusOnHit(defender);
 
             return result;
+        }
+
+        public static int ComputeDamage(
+            int baseAttack,
+            IReadOnlyList<StatusEffect> attackerStatuses,
+            IReadOnlyList<StatusEffect> defenderStatuses
+        )
+        {
+            float damage = baseAttack;
+
+            for (int i = 0; i < attackerStatuses.Count; i++)
+                damage = attackerStatuses[i].ModifyOutgoingDamage(damage);
+
+            for (int i = 0; i < defenderStatuses.Count; i++)
+                damage = defenderStatuses[i].ModifyIncomingDamage(damage);
+
+            return Mathf.Max(0, Mathf.FloorToInt(damage));
         }
     }
 }
