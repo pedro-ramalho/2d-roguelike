@@ -76,7 +76,6 @@ crashlytics-build.properties
 
 # Misc.
 .vscode
-docs/
 
 # Idea
 .idea/
