@@ -1,31 +1,22 @@
-using System;
+using Enemy;
 using UnityEngine;
 
-[Serializable]
-public class LevelBand
+namespace Level
 {
-    public string Name;
-    public int MinLevel;
-    public int MaxLevel;
-    public LevelConfig DefaultConfig;
-}
+    [CreateAssetMenu(
+        fileName = "LevelProgressionSettings",
+        menuName = "Game/Level Progression Settings"
+    )]
+    public class LevelProgressionSettings : ScriptableObject
+    {
+        public LevelBand[] Bands;
 
-[CreateAssetMenu(
-    fileName = "LevelProgressionSettings",
-    menuName = "Game/Level Progression Settings"
-)]
-public class LevelProgressionSettings : ScriptableObject
-{
-    [Header("Elite Cadence")]
-    public int EliteCadence = 3;
+        [Header("Elite")]
+        public int EliteCadence = 3;
+        public EliteRewardEntry[] EliteRewardPool;
 
-    [Header("Status Rolls")]
-    [Range(0f, 1f)]
-    public float MaxStatusChance = 1f;
-
-    [Header("Level Bands")]
-    public LevelBand[] LevelBands;
-
-    [Header("Elite Rewards")]
-    public EliteRewardEntry[] EliteRewardPool;
+        [Header("Status")]
+        [Range(0f, 1f)]
+        public float MaxStatusChance = 0.5f;
+    }
 }

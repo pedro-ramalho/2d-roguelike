@@ -1,10 +1,10 @@
-using UnityEngine;
+using Player;
 
-public class Salad : FoodObject
+namespace Food
 {
-    [SerializeField]
-    private int m_HealthPoints = 3;
-
-    protected override void ApplyEffect(PlayerController player) =>
-        player.Combatant.Heal(m_HealthPoints);
+    public class Salad : FoodObject
+    {
+        protected override void ApplyEffect(PlayerController player) =>
+            player.Combatant.Stats.Heal(GetAmountForCurrentBand());
+    }
 }

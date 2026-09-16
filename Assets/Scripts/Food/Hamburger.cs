@@ -1,10 +1,10 @@
-using UnityEngine;
+using Player;
 
-public class Hamburger : FoodObject
+namespace Food
 {
-    [SerializeField]
-    private int m_StaminaPoints = 5;
-
-    protected override void ApplyEffect(PlayerController player) =>
-        player.Combatant.ChangeStamina(m_StaminaPoints);
+    public class Hamburger : FoodObject
+    {
+        protected override void ApplyEffect(PlayerController player) =>
+            player.Combatant.Stats.ChangeStamina(GetAmountForCurrentBand());
+    }
 }

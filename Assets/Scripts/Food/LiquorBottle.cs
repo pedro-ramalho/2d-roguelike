@@ -1,16 +1,16 @@
-using UnityEngine;
+using Player;
 
-public class LiquorBottle : FoodObject
+namespace Food
 {
-    [SerializeField]
-    private int m_MaxHealthPoints = 1;
-
-    [SerializeField]
-    private int m_HealthPoints = 1;
-
-    protected override void ApplyEffect(PlayerController player)
+    public class LiquorBottle : FoodObject
     {
-        player.Combatant.IncreaseMaxHP(m_MaxHealthPoints);
-        player.Combatant.Heal(m_HealthPoints);
+        protected override void ApplyEffect(PlayerController player)
+        {
+            player.Combatant.Stats.UpgradeStat(
+                Combat.CombatantStat.MaxHP,
+                GetAmountForCurrentBand()
+            );
+            player.Combatant.Stats.Heal(GetAmountForCurrentBand());
+        }
     }
 }

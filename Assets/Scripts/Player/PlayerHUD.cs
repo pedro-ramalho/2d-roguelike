@@ -1,64 +1,86 @@
+using Combat;
+using Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerHUD : MonoBehaviour
+namespace Player
 {
-    [SerializeField]
-    private UIDocument m_UIDocument;
-    private Combatant m_Player;
-
-    private VisualElement m_PlayerStatsPanel;
-    private Label m_HealthLabel;
-    private Label m_BlockLabel;
-    private Label m_StaminaLabel;
-    private Label m_AttackLabel;
-
-    void Awake()
+    public class PlayerHUD : MonoBehaviour
     {
-        m_Player = GetComponent<Combatant>();
+        [SerializeField]
+        private UIDocument m_UIDocument;
+        private CombatantStats m_Stats;
 
-        m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>("PlayerStatsPanel");
-        m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
-        m_BlockLabel = m_PlayerStatsPanel.Q<Label>("BlockLabel");
-        m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
-        m_AttackLabel = m_PlayerStatsPanel.Q<Label>("AttackLabel");
+        private VisualElement m_PlayerStatsPanel;
+        private Label m_LevelLabel;
+        private Label m_HealthLabel;
+        private Label m_BlockLabel;
+        private Label m_StaminaLabel;
+        private Label m_AttackLabel;
 
-        m_Player.Damaged += _ => Refresh();
-        m_Player.HealthAdded += _ => Refresh();
-        m_Player.BlockAdded += _ => Refresh();
-        m_Player.StaminaChanged += _ => Refresh();
-    }
+        void Awake()
+        {
+            m_Stats = GetComponent<CombatantStats>();
 
-    void Start() => Refresh();
+            m_PlayerStatsPanel = m_UIDocument.rootVisualElement.Q<VisualElement>(
+                "PlayerStatsPanel"
+            );
+            m_LevelLabel = m_PlayerStatsPanel.Q<Label>("LevelLabel");
+            m_HealthLabel = m_PlayerStatsPanel.Q<Label>("HealthLabel");
+            m_BlockLabel = m_PlayerStatsPanel.Q<Label>("BlockLabel");
+            m_StaminaLabel = m_PlayerStatsPanel.Q<Label>("StaminaLabel");
+            m_AttackLabel = m_PlayerStatsPanel.Q<Label>("AttackLabel");
 
-    void OnDisable()
-    {
-        if (m_PlayerStatsPanel != null)
-            m_PlayerStatsPanel.style.display = DisplayStyle.None;
-    }
+            m_Stats.Damaged += OnStatChanged;
+            m_Stats.HealthAdded += OnStatChanged;
+            m_Stats.BlockAdded += OnStatChanged;
+            m_Stats.StaminaChanged += OnStatChanged;
+            m_Stats.StatsReset += Refresh;
+        }
 
-    void OnEnable()
-    {
-        if (m_PlayerStatsPanel != null)
-            m_PlayerStatsPanel.style.display = DisplayStyle.Flex;
-    }
+        void Start()
+        {
+            GameManager.Instance.LevelManager.LevelChanged += OnLevelChanged;
+            Refresh();
+        }
 
-    void OnDestroy()
-    {
-        if (m_Player == null)
-            return;
+        void OnLevelChanged(int level) => m_LevelLabel.text = $"LV {level}";
 
-        m_Player.Damaged -= _ => Refresh();
-        m_Player.HealthAdded -= _ => Refresh();
-        m_Player.BlockAdded -= _ => Refresh();
-        m_Player.StaminaChanged -= _ => Refresh();
-    }
+        void OnDisable()
+        {
+            if (m_PlayerStatsPanel != null)
+                m_PlayerStatsPanel.style.display = DisplayStyle.None;
+        }
 
-    void Refresh()
-    {
-        m_HealthLabel.text = $"HP: {m_Player.HP}/{m_Player.MaxHP}";
-        m_BlockLabel.text = $"Block: {m_Player.Block}";
-        m_StaminaLabel.text = $"Stamina: {m_Player.Stamina}";
-        m_AttackLabel.text = $"Attack: {m_Player.Attack}";
+        void OnEnable()
+        {
+            if (m_PlayerStatsPanel != null)
+                m_PlayerStatsPanel.style.display = DisplayStyle.Flex;
+        }
+
+        void OnStatChanged<T>(T _) => Refresh();
+
+        void OnDestroy()
+        {
+            if (GameManager.Instance != null && GameManager.Instance.LevelManager != null)
+                GameManager.Instance.LevelManager.LevelChanged -= OnLevelChanged;
+
+            if (m_Stats == null)
+                return;
+
+            m_Stats.Damaged -= OnStatChanged;
+            m_Stats.HealthAdded -= OnStatChanged;
+            m_Stats.BlockAdded -= OnStatChanged;
+            m_Stats.StaminaChanged -= OnStatChanged;
+            m_Stats.StatsReset -= Refresh;
+        }
+
+        void Refresh()
+        {
+            m_HealthLabel.text = $"{m_Stats.HP}/{m_Stats.MaxHP}";
+            m_BlockLabel.text = $"{m_Stats.Block}";
+            m_StaminaLabel.text = $"{m_Stats.Stamina}";
+            m_AttackLabel.text = $"{m_Stats.Attack}";
+        }
     }
 }

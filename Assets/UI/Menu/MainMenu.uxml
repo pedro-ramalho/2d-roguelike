@@ -1,0 +1,23 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Menu/MainMenuStyles.uss?fileID=7433441132597879392&amp;guid=7092ed0d9a2219e43b511b70a9033ac7&amp;type=3#MainMenuStyles"/>
+    <ui:VisualElement name="MainMenuPanel" class="menu-panel">
+        <ui:Label text="Roguelike 2D" name="GameTitleLabel" class="menu-title"/>
+        <ui:VisualElement name="ButtonsPanel">
+            <ui:Button text="Start Run" name="StartRunButton" class="menu-button"/>
+            <ui:Button text="Credits" name="CreditsButton" class="menu-button"/>
+            <ui:Button text="Settings" name="SettingsButton" class="menu-button"/>
+            <ui:Button text="Quit" name="QuitButton" class="menu-button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="CreditsPanel" class="overlay-panel">
+            <ui:VisualElement name="GitHubPanel" class="credit-row">
+                <ui:VisualElement name="GitHubIcon" class="credit-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/GitHubRetroIcon.png?fileID=2800000&amp;guid=eb7fb291047e4dc48bbdcead3c04bff7&amp;type=3#GitHubRetroIcon&quot;);"/>
+                <ui:Label text="pedro-ramalho" name="GitHubLabel" class="panel-label credit-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="MusicPanel" class="credit-row">
+                <ui:VisualElement name="MusicIcon" class="credit-icon" style="background-image: url(&quot;project://database/Assets/Roguelike2D/TutorialAssets/Sprites/MusicIconRetroTrimmed.png?fileID=2800000&amp;guid=d591cbf0b6965dd47ac84cb9d8161fb6&amp;type=3#MusicIconRetroTrimmed&quot;);"/>
+                <ui:Label text="Eric Matyas" name="MusicLabel" class="panel-label credit-label"/>
+            </ui:VisualElement>
+            <ui:Button text="Back" name="CreditsBackButton" class="menu-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

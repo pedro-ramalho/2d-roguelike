@@ -1,50 +1,40 @@
-using System;
+using Combat;
+using Core;
+using Loot;
 using UnityEngine;
 
-public class EliteModifier : MonoBehaviour
+namespace Enemy
 {
-    private Combatant m_Combatant;
-
-    void Awake()
+    public class EliteModifier : MonoBehaviour
     {
-        m_Combatant = GetComponent<Combatant>();
-        m_Combatant.ApplyStatMultiplier(2f);
+        private Combatant m_Combatant;
 
-        // Update the tint
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
-
-        m_Combatant.Defeated += OnEliteDefeated;
-    }
-
-    void OnDestroy()
-    {
-        if (m_Combatant != null)
-            m_Combatant.Defeated -= OnEliteDefeated;
-    }
-
-    void OnEliteDefeated()
-    {
-        var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
-        if (pool.Length == 0)
-            return;
-
-        float totalWeight = 0f;
-        foreach (var entry in pool)
-            totalWeight += entry.Weight;
-
-        float roll = UnityEngine.Random.value * totalWeight;
-        float acc = 0f;
-
-        foreach (var entry in pool)
+        void Awake()
         {
-            acc += entry.Weight;
-            if (roll <= acc)
-            {
-                m_Combatant.UpgradeStat(entry.Stat, entry.Amount);
+            m_Combatant = GetComponent<Combatant>();
+            m_Combatant.Stats.ApplyStatMultiplier(1.5f, 1.25f, 1.2f);
 
+            // Update the tint
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            sprite.color = new Color(138f / 255f, 43f / 255f, 226f / 255f);
+
+            m_Combatant.Defeated += OnEliteDefeated;
+        }
+
+        void OnDestroy()
+        {
+            if (m_Combatant != null)
+                m_Combatant.Defeated -= OnEliteDefeated;
+        }
+
+        void OnEliteDefeated()
+        {
+            var pool = GameManager.Instance.ProgressionSettings.EliteRewardPool;
+            if (pool.Length == 0)
                 return;
-            }
+
+            EliteRewardEntry entry = WeightedPool.PickRandom(pool, e => e.Weight);
+            m_Combatant.Stats.UpgradeStat(entry.Stat, entry.Amount);
         }
     }
 }

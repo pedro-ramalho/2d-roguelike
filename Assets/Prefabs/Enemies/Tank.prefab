@@ -12,10 +12,13 @@ GameObject:
   - component: {fileID: 7663700088887855209}
   - component: {fileID: 5578303207332953994}
   - component: {fileID: 9156511374086397983}
+  - component: {fileID: 3974188818609409937}
+  - component: {fileID: 8495284075515920263}
   - component: {fileID: 5161219471131270738}
   - component: {fileID: 7805228552613659918}
   - component: {fileID: 39791499197184293}
   - component: {fileID: 4574097391474534851}
+  - component: {fileID: 1067346110860324081}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -131,10 +134,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461ab6c5a7d84647b7736a707771ec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Combatant
-  m_InitialMaxHP: 20
-  m_InitialMaxBlock: 12
-  m_InitialAttack: 1
+--- !u!114 &3974188818609409937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2022c04c6198f704e9d7f891b4f5b9cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStats
+  m_InitialMaxHP: 0
+  m_InitialMaxBlock: 0
+  m_InitialAttack: 0
   m_InitialMaxStamina: 0
+  m_BandStats:
+  - Band: 0
+    MaxHP: 6
+    Attack: 1
+    MaxBlock: 4
+  - Band: 1
+    MaxHP: 10
+    Attack: 2
+    MaxBlock: 6
+  - Band: 2
+    MaxHP: 16
+    Attack: 3
+    MaxBlock: 9
+  - Band: 3
+    MaxHP: 24
+    Attack: 4
+    MaxBlock: 12
+--- !u!114 &8495284075515920263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398c0a572a53c7546a65b6d6afa9c265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.CombatantStatusEffects
   m_StatusRolls:
   - Type: 2
     Duration: 2
@@ -152,6 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57855c7a6142f34d92a7ac6587142ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantAnimator
+  m_DestroyOnDeath: 1
+  m_IsSpriteFacingRight: 0
 --- !u!114 &7805228552613659918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff0976062235b941af152adac2b9534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantHUD
-  m_Template: {fileID: 9197481963319205126, guid: 7c63a2d9060ffc54ebfbe4bea2e037b1, type: 3}
-  m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: 6539176e9e74fe14ea7bbecbee347e44, type: 3}
+  m_Template: {fileID: 9197481963319205126, guid: 1aa4cb910e41b8c47a8277cbc368db86, type: 3}
+  m_StatusSlotTemplate: {fileID: 9197481963319205126, guid: ac42c91d101e6374e9b725c76f8e658a, type: 3}
   m_ShowStatusEffects: 1
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_IconSet: {fileID: 11400000, guid: 493c85b27f0fbc04d844abe5369e67df, type: 2}
@@ -181,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9641e0d05be0a541bf0bc7f8a83601c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatantFloaters
-  m_FloaterTemplate: {fileID: 9197481963319205126, guid: f3909eb1f19fd7942974b47abe58a77d, type: 3}
+  m_FloaterTemplate: {fileID: 9197481963319205126, guid: fd932fcc75c3f5d40b08c28d851695b4, type: 3}
   m_WorldOffset: {x: 0, y: 0.5, z: 0}
   m_Duration: 0.5
   m_RisePixels: 50
@@ -197,3 +243,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f1263e496a40045b909779c2aebcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tank
+--- !u!114 &1067346110860324081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579293508111468068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111cd4f2e9901b04ca60906accf47f72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LootDropper
+  m_LootTable:
+  - Kind: 0
+    Weight: 20
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 0
+  - Kind: 2
+    Weight: 25
+    FoodPrefab: {fileID: 0}
+    StaminaAmount: 5
+  - Kind: 1
+    Weight: 20
+    FoodPrefab: {fileID: 8989629000530212592, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 20
+    FoodPrefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    StaminaAmount: 0
+  - Kind: 1
+    Weight: 15
+    FoodPrefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    StaminaAmount: 0

@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class Tank : EnemyController
+namespace Enemy
 {
-    protected override void ResolveEnemyAction()
+    public class Tank : EnemyController
     {
-        // TODO: link block gain with the current level
-        Combatant.AddBlock(3);
+        protected override void ResolveEnemyAction()
+        {
+            Combatant.Stats.AddBlock(3);
 
-        Vector2Int delta = ComputeDeltaToPlayer();
-        ChaseOrAttack(delta);
+            Vector2Int delta = ComputeDeltaToPlayer();
+            ChaseOrAttack(delta);
+        }
     }
 }

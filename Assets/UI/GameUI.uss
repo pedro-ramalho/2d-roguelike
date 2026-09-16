@@ -51,9 +51,9 @@
 }
 
 .status-icon {
-    width: 16px;
-    height: 16px;
-    background-color: rgb(180, 180, 180);
+    width: 24px;
+    height: 24px;
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 .status-duration {
@@ -68,7 +68,60 @@
     color: rgb(255, 255, 255);
 }
 
+.player-stats-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(20, 20, 20, 0.95);
+    padding: 8px 12px;
+}
 
+.level-panel {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.level-label {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-text-align: middle-left;
+}
+
+.stats-row {
+    flex-grow: 3;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.stats-separator {
+    width: 2px;
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.stat {
+    flex-direction: row;
+    align-items: center;
+}
+
+.stat-icon {
+    width: 36px;
+    height: 36px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: 10px;
+}
+
+.stat-label {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-text-align: middle-left;
+}
 
 Label {
     -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf?fileID=12800000&guid=b284a6525342f44599e9ce79e37c2d61&type=3#PressStart2P-Regular");

@@ -1,20 +1,40 @@
+using Board;
+using Core;
+using Level;
+using Player;
 using UnityEngine;
 
-public abstract class FoodObject : CellObject
+namespace Food
 {
-    [SerializeField]
-    private int m_FirstAllowedLevel = 1;
-
-    public int FirstAllowedLevel => m_FirstAllowedLevel;
-
-    protected abstract void ApplyEffect(PlayerController player);
-
-    public override void PlayerEntered(PlayerController player)
+    public abstract class FoodObject : CellObject
     {
-        m_Board.ClearCell(m_Cell);
+        [SerializeField]
+        private BandAmount[] m_BandAmounts;
 
-        ApplyEffect(player);
+        protected abstract void ApplyEffect(PlayerController player);
 
-        Destroy(gameObject);
+        protected int GetAmountForCurrentBand()
+        {
+            BandType current = GameManager.Instance.LevelManager.CurrentBand.Type;
+
+            foreach (BandAmount entry in m_BandAmounts)
+            {
+                if (entry.Band == current)
+                    return entry.Amount;
+            }
+
+            return 0;
+        }
+
+        public override void PlayerEntered(PlayerController player)
+        {
+            m_Board.ClearCell(m_Cell);
+
+            AudioManager.Instance.PlayFoodConsumedSFX();
+
+            ApplyEffect(player);
+
+            Destroy(gameObject);
+        }
     }
 }

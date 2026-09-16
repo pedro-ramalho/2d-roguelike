@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fedb9ddf8da94f4ea1eb8e507e56160, type: 3}
+  m_Name: Early
+  m_EditorClassIdentifier: Assembly-CSharp::LevelBand
+  Type: 1
+  Name: Invasion of the Disco Ants
+  Track: {fileID: 8300000, guid: b8a354477d0a56840950f65e41b57edb, type: 3}
+  MinLevel: 4
+  MaxLevel: 8
+  BoardWidth: 10
+  BoardHeight: 10
+  MinWallCount: 10
+  MaxWallCount: 16
+  FoodEntries:
+  - Prefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
+    MinCount: 2
+    MaxCount: 3
+  - Prefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    MinCount: 2
+    MaxCount: 3
+  - Prefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    MinCount: 0
+    MaxCount: 2
+  - Prefab: {fileID: 8989629000530212592, guid: 5d872d7d99e7a7048a7ca4e8d5a8b27d, type: 3}
+    MinCount: 0
+    MaxCount: 1
+  EnemyEntries:
+  - Prefab: {fileID: 7905232947335659139, guid: 50519bc32474670408738a752f910956, type: 3}
+    MinCount: 1
+    MaxCount: 2
+  - Prefab: {fileID: 6146092015076375650, guid: 14cca5c3694140f42ab6e3aac517afb3, type: 3}
+    MinCount: 2
+    MaxCount: 3

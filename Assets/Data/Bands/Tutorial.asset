@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fedb9ddf8da94f4ea1eb8e507e56160, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: Assembly-CSharp::LevelBand
+  Type: 0
+  Name: Blob Monsters Return
+  Track: {fileID: 8300000, guid: dddfeae95d5224d43a8be565cc6b8aa5, type: 3}
+  MinLevel: 1
+  MaxLevel: 3
+  BoardWidth: 8
+  BoardHeight: 8
+  MinWallCount: 4
+  MaxWallCount: 8
+  FoodEntries:
+  - Prefab: {fileID: 2550013416529947414, guid: 83c4131131a09bc47bdb621477ec2271, type: 3}
+    MinCount: 1
+    MaxCount: 2
+  - Prefab: {fileID: 2354760863796000218, guid: c36f249db5dc3544292615ef32472094, type: 3}
+    MinCount: 1
+    MaxCount: 2
+  - Prefab: {fileID: 6378411101149034503, guid: e813c5e86718d51498a10145f60dd45e, type: 3}
+    MinCount: 0
+    MaxCount: 1
+  EnemyEntries:
+  - Prefab: {fileID: 7905232947335659139, guid: 50519bc32474670408738a752f910956, type: 3}
+    MinCount: 1
+    MaxCount: 2

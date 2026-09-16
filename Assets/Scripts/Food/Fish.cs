@@ -1,10 +1,10 @@
-using UnityEngine;
+using Player;
 
-public class Fish : FoodObject
+namespace Food
 {
-    [SerializeField]
-    private int m_BlockPoints = 3;
-
-    protected override void ApplyEffect(PlayerController player) =>
-        player.Combatant.AddBlock(m_BlockPoints);
+    public class Fish : FoodObject
+    {
+        protected override void ApplyEffect(PlayerController player) =>
+            player.Combatant.Stats.AddBlock(GetAmountForCurrentBand());
+    }
 }

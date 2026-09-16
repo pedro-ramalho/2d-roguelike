@@ -1,236 +1,248 @@
 using System;
 using System.Collections;
+using Board;
+using Core;
 using UnityEngine;
 
-public class CombatantAnimator : MonoBehaviour
+namespace Combat
 {
-    // Private references
-    private ICombatant m_Combatant;
-    private TurnManager m_TurnManager;
-    private BoardManager m_BoardManager;
-
-    // Components
-    private SpriteRenderer m_SpriteRenderer;
-    private Animator m_Animator;
-
-    // Coroutines
-    private Coroutine m_AttackCoroutine;
-    private Coroutine m_WalkCoroutine;
-    private Coroutine m_HurtCoroutine;
-    private Coroutine m_DeathCoroutine;
-
-    private readonly float m_AttackNudgeDistance = 0.3f;
-    private readonly float m_AttackAnimationDuration = 0.2f;
-    private readonly float m_WalkAnimationDuration = 0.25f;
-    private readonly float m_HurtAnimationDuration = 0.15f;
-    private readonly float m_DeathAnimationDuration = 0.3f;
-    private readonly float m_ProjectileAnimationDuration = 0.5f;
-
-    private static readonly int m_AttackHash = Animator.StringToHash("Attack");
-
-    public float WalkDuration => m_WalkAnimationDuration;
-    public bool IsBusy =>
-        m_WalkCoroutine != null
-        || m_AttackCoroutine != null
-        || m_HurtCoroutine != null
-        || m_DeathCoroutine != null;
-
-    void Awake()
+    public class CombatantAnimator : MonoBehaviour
     {
-        m_SpriteRenderer = GetComponent<SpriteRenderer>();
-        m_Animator = GetComponent<Animator>();
-    }
+        [Header("Death Handling")]
+        [SerializeField]
+        private bool m_DestroyOnDeath = true;
 
-    void OnDisable()
-    {
-        m_WalkCoroutine = null;
-        m_AttackCoroutine = null;
-        m_HurtCoroutine = null;
-        m_DeathCoroutine = null;
-    }
+        [Header("Sprite Facing")]
+        [SerializeField]
+        private bool m_IsSpriteFacingRight = true;
 
-    void OnDestroy()
-    {
-        if (m_Combatant != null)
+        private Combatant m_Combatant;
+        private CombatantStats m_Stats;
+        private TurnManager m_TurnManager;
+
+        private SpriteRenderer m_SpriteRenderer;
+        private Animator m_Animator;
+        private Color m_OriginalColor;
+
+        private Coroutine m_AttackCoroutine;
+        private Coroutine m_WalkCoroutine;
+        private Coroutine m_HurtCoroutine;
+        private Coroutine m_DeathCoroutine;
+
+        private const float m_AttackNudgeDistance = 0.2f;
+        private const float m_AttackAnimationDuration = 0.15f;
+        private const float m_WalkAnimationDuration = 0.20f;
+        private const float m_HurtAnimationDuration = 0.10f;
+        private const float m_DeathAnimationDuration = 0.2f;
+        private const float m_ProjectileAnimationDuration = 0.5f;
+
+        private bool m_IsHurt;
+
+        private static readonly int m_AttackHash = Animator.StringToHash("Attack");
+
+        public float WalkDuration => m_WalkAnimationDuration;
+        public bool IsBusy =>
+            m_WalkCoroutine != null
+            || m_AttackCoroutine != null
+            || m_HurtCoroutine != null
+            || m_DeathCoroutine != null;
+
+        void Awake()
         {
-            m_Combatant.AttackPerformed -= PlayAttackAnimation;
-            m_Combatant.Damaged -= PlayHurtAnimation;
-            m_Combatant.Defeated -= PlayDeathAnimation;
+            m_SpriteRenderer = GetComponent<SpriteRenderer>();
+            m_Animator = GetComponent<Animator>();
+            m_OriginalColor = m_SpriteRenderer.color;
+
+            m_TurnManager = GameManager.Instance.TurnManager;
+            m_Combatant = GetComponent<Combatant>();
+            m_Stats = GetComponent<CombatantStats>();
+
+            m_TurnManager.Register(this);
+
+            m_Combatant.AttackPerformed += OnCombatantAttack;
+            m_Combatant.Defeated += OnCombatantDeath;
+            m_Combatant.Moved += OnCombatantMove;
+
+            m_Stats.Damaged += OnCombatantHurt;
+            m_Stats.StatsReset += OnCombatantReset;
         }
 
-        if (m_TurnManager != null)
-            m_TurnManager.Unregister(this);
-    }
-
-    IEnumerator WalkAnimationCoroutine(Vector2Int targetCell)
-    {
-        Vector3 startPos = transform.position;
-        Vector3 endPos = m_BoardManager.CellToWorld(targetCell);
-
-        float elapsed = 0;
-        float t;
-
-        while (elapsed < m_WalkAnimationDuration)
+        void OnDisable()
         {
-            elapsed += Time.deltaTime;
-
-            t = elapsed / m_WalkAnimationDuration;
-
-            transform.position = Vector3.Lerp(startPos, endPos, t);
-
-            yield return null;
+            m_WalkCoroutine = null;
+            m_AttackCoroutine = null;
+            m_HurtCoroutine = null;
+            m_DeathCoroutine = null;
         }
 
-        transform.position = endPos;
-
-        m_WalkCoroutine = null;
-    }
-
-    IEnumerator AttackNudgeCoroutine(Vector2Int direction)
-    {
-        Vector3 startPos = transform.position;
-        Vector3 endPos =
-            startPos + new Vector3(direction.x, direction.y, 0) * m_AttackNudgeDistance;
-
-        float elapsed = 0;
-        float t = 0;
-        float singlePhaseDuration = m_AttackAnimationDuration / 2;
-
-        // Ascent phase
-        while (elapsed < singlePhaseDuration)
+        void OnDestroy()
         {
-            elapsed += Time.deltaTime;
+            if (m_Combatant != null)
+            {
+                m_Combatant.Moved -= OnCombatantMove;
+                m_Combatant.AttackPerformed -= OnCombatantAttack;
+                m_Combatant.Defeated -= OnCombatantDeath;
+            }
 
-            t = elapsed / singlePhaseDuration;
+            if (m_Stats != null)
+                m_Stats.Damaged -= OnCombatantHurt;
 
-            transform.position = Vector3.Lerp(startPos, endPos, t);
-
-            yield return null;
+            if (m_TurnManager != null)
+                m_TurnManager.Unregister(this);
         }
 
-        // Ascent phase complete, set position and reset elapsed & t
-        transform.position = endPos;
+        void OnCombatantReset() => m_SpriteRenderer.color = m_OriginalColor;
 
-        elapsed = 0f;
-        t = 0f;
-
-        // Begin descent phase
-        while (elapsed < singlePhaseDuration)
+        IEnumerator MoveCoroutine(Vector3 start, Vector3 target, float duration)
         {
-            elapsed += Time.deltaTime;
+            float elapsed = 0;
 
-            t = elapsed / singlePhaseDuration;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
 
-            transform.position = Vector3.Lerp(endPos, startPos, t);
+                float t = elapsed / duration;
 
-            yield return null;
+                transform.position = Vector3.Lerp(start, target, t);
+
+                yield return null;
+            }
+
+            transform.position = target;
         }
 
-        // Descent phase complete, set position
-        transform.position = startPos;
-
-        m_AttackCoroutine = null;
-    }
-
-    IEnumerator HurtAnimationCoroutine()
-    {
-        Color startColor = m_SpriteRenderer.color;
-
-        m_SpriteRenderer.color = Color.red;
-
-        yield return new WaitForSeconds(m_HurtAnimationDuration);
-
-        m_SpriteRenderer.color = startColor;
-
-        m_HurtCoroutine = null;
-    }
-
-    IEnumerator DeathAnimationCoroutine()
-    {
-        float elapsed = 0;
-
-        Color startColor = m_SpriteRenderer.color;
-
-        while (elapsed <= m_DeathAnimationDuration)
+        IEnumerator WalkAnimationCoroutine(Vector3 target)
         {
-            Color c = startColor;
+            Vector3 start = transform.position;
 
-            float t = elapsed / m_DeathAnimationDuration;
+            yield return MoveCoroutine(start, target, m_WalkAnimationDuration);
 
-            c.a = 1 - t;
-
-            m_SpriteRenderer.color = c;
-
-            elapsed += Time.deltaTime;
-
-            yield return null;
+            m_WalkCoroutine = null;
         }
 
-        m_DeathCoroutine = null;
+        IEnumerator AttackNudgeCoroutine(Vector2Int direction)
+        {
+            Vector3 start = transform.position;
+            Vector3 target =
+                start + new Vector3(direction.x, direction.y, 0) * m_AttackNudgeDistance;
 
-        Destroy(gameObject);
-    }
+            float duration = m_AttackAnimationDuration / 2;
 
-    public void PlayWalkAnimation(Vector2Int targetCell, Vector2Int direction)
-    {
-        if (m_WalkCoroutine != null)
-            StopCoroutine(m_WalkCoroutine);
+            // Ascent
+            yield return MoveCoroutine(start, target, duration);
 
-        SetSpriteFacing(direction);
-        m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetCell));
-    }
+            // Descent
+            yield return MoveCoroutine(target, start, duration);
 
-    public void SetSpriteFacing(Vector2Int direction)
-    {
-        if (direction == Vector2Int.left)
-            m_SpriteRenderer.flipX = true;
-        if (direction == Vector2Int.right)
-            m_SpriteRenderer.flipX = false;
-    }
+            m_AttackCoroutine = null;
+        }
 
-    public void PlayHurtAnimation(DamageResult result)
-    {
-        if (m_HurtCoroutine != null)
-            StopCoroutine(m_HurtCoroutine);
+        IEnumerator HurtAnimationCoroutine()
+        {
+            if (!m_IsHurt)
+                m_OriginalColor = m_SpriteRenderer.color;
 
-        if (result.HPLost > 0)
-            m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
-    }
+            m_IsHurt = true;
 
-    public void PlayDeathAnimation()
-    {
-        if (m_DeathCoroutine != null)
-            StopCoroutine(m_DeathCoroutine);
+            m_SpriteRenderer.color = Color.red;
 
-        m_DeathCoroutine = StartCoroutine(DeathAnimationCoroutine());
-    }
+            yield return new WaitForSeconds(m_HurtAnimationDuration);
 
-    public void PlayAttackAnimation(Vector2Int direction)
-    {
-        if (m_AttackCoroutine != null)
-            StopCoroutine(m_AttackCoroutine);
+            m_SpriteRenderer.color = m_OriginalColor;
 
-        SetSpriteFacing(direction);
-        m_Animator.SetTrigger(m_AttackHash);
-        m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction));
-    }
+            m_IsHurt = false;
 
-    public void PlayProjectileAnimation(Projectile prefab, Vector3 target, Action onArrive)
-    {
-        Projectile p = Instantiate(prefab);
-        p.Launch(transform.position, target, m_ProjectileAnimationDuration, onArrive);
-    }
+            m_HurtCoroutine = null;
+        }
 
-    public void Bind(ICombatant combatant, TurnManager turnManager, BoardManager boardManager)
-    {
-        m_Combatant = combatant;
-        m_TurnManager = turnManager;
-        m_BoardManager = boardManager;
+        IEnumerator DeathAnimationCoroutine()
+        {
+            float elapsed = 0;
 
-        m_TurnManager.Register(this);
+            Color startColor = m_SpriteRenderer.color;
 
-        m_Combatant.AttackPerformed += PlayAttackAnimation;
-        m_Combatant.Damaged += PlayHurtAnimation;
-        m_Combatant.Defeated += PlayDeathAnimation;
+            while (elapsed <= m_DeathAnimationDuration)
+            {
+                Color c = startColor;
+
+                float t = elapsed / m_DeathAnimationDuration;
+
+                c.a = 1 - t;
+
+                m_SpriteRenderer.color = c;
+
+                elapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            m_DeathCoroutine = null;
+
+            if (m_DestroyOnDeath)
+                Destroy(gameObject);
+        }
+
+        public void OnCombatantMove(Vector3 targetPosition, Vector2Int direction)
+        {
+            if (m_WalkCoroutine != null)
+                StopCoroutine(m_WalkCoroutine);
+
+            SetSpriteFacing(direction);
+            AudioManager.Instance.PlayCombatantFootstepSFX();
+            m_WalkCoroutine = StartCoroutine(WalkAnimationCoroutine(targetPosition));
+        }
+
+        public void SetSpriteFacing(Vector2Int direction)
+        {
+            if (direction == Vector2Int.left)
+                m_SpriteRenderer.flipX = m_IsSpriteFacingRight;
+            if (direction == Vector2Int.right)
+                m_SpriteRenderer.flipX = !m_IsSpriteFacingRight;
+        }
+
+        public void OnCombatantHurt(DamageResult result)
+        {
+            if (result.BlockLost > 0)
+                AudioManager.Instance.PlayCombatantBlockedSFX();
+
+            if (result.HPLost > 0)
+            {
+                AudioManager.Instance.PlayCombatantHurtSFX();
+
+                if (m_HurtCoroutine != null)
+                    StopCoroutine(m_HurtCoroutine);
+
+                m_HurtCoroutine = StartCoroutine(HurtAnimationCoroutine());
+            }
+        }
+
+        public void OnCombatantDeath()
+        {
+            if (m_DeathCoroutine != null)
+                StopCoroutine(m_DeathCoroutine);
+
+            AudioManager.Instance.PlayCombatantDeathSFX();
+            m_DeathCoroutine = StartCoroutine(DeathAnimationCoroutine());
+        }
+
+        public void OnCombatantAttack(Vector2Int direction)
+        {
+            if (m_AttackCoroutine != null)
+                StopCoroutine(m_AttackCoroutine);
+
+            SetSpriteFacing(direction);
+            m_Animator.SetTrigger(m_AttackHash);
+            m_AttackCoroutine = StartCoroutine(AttackNudgeCoroutine(direction));
+        }
+
+        public void PlayProjectileAnimation(
+            Projectile.Projectile prefab,
+            Vector3 target,
+            Action onArrive
+        )
+        {
+            Projectile.Projectile p = Instantiate(prefab);
+            p.Launch(transform.position, target, m_ProjectileAnimationDuration, onArrive);
+        }
     }
 }

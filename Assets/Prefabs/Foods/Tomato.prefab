@@ -104,3 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f3af6346980024792593428a44b2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tomato
+  m_BandAmounts: []
+  m_ConsumeSFX:
+  - {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
+  - {fileID: 8300000, guid: 062161c1897a54088a5430f8c197e1b8, type: 3}

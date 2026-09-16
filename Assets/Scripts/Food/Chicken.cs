@@ -1,10 +1,13 @@
-using UnityEngine;
+using Player;
 
-public class Chicken : FoodObject
+namespace Food
 {
-    [SerializeField]
-    private int m_AttackPoints = 1;
-
-    protected override void ApplyEffect(PlayerController player) =>
-        player.Combatant.IncreaseAttack(m_AttackPoints);
+    public class Chicken : FoodObject
+    {
+        protected override void ApplyEffect(PlayerController player) =>
+            player.Combatant.Stats.UpgradeStat(
+                Combat.CombatantStat.Attack,
+                GetAmountForCurrentBand()
+            );
+    }
 }

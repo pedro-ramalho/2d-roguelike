@@ -1,178 +1,124 @@
-using System.Collections;
+using Board;
+using Combat;
+using Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-    // References
-    private BoardManager m_BoardManager;
-    private TurnManager m_TurnManager;
-    private PlayerInputActions m_InputActions;
-    private Combatant m_Combatant;
-    private CombatantAnimator m_CombatantAnimator;
-    private SpriteRenderer m_SpriteRenderer;
-
-    // State
-    private Vector2Int m_CellPosition;
-    private bool m_IsGameOver;
-
-    public Combatant Combatant => m_Combatant;
-    public Vector2Int Cell => m_CellPosition;
-
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        m_TurnManager = GameManager.Instance.TurnManager;
-        m_TurnManager.OnTick += TurnHappened;
-    }
+        // References
+        private BoardManager m_BoardManager;
+        private TurnManager m_TurnManager;
+        private PlayerInputActions m_InputActions;
+        private Combatant m_Combatant;
+        private CombatantAnimator m_CombatantAnimator;
+        private SpriteRenderer m_SpriteRenderer;
 
-    void Awake()
-    {
-        m_InputActions = new PlayerInputActions();
-        m_SpriteRenderer = GetComponent<SpriteRenderer>();
+        private bool m_IsGameOver;
 
-        m_Combatant = GetComponent<Combatant>();
-        m_CombatantAnimator = GetComponent<CombatantAnimator>();
-    }
+        public Combatant Combatant => m_Combatant;
 
-    void OnEnable() => m_InputActions.Player.Enable();
-
-    void OnDisable() => m_InputActions.Player.Disable();
-
-    void OnDestroy()
-    {
-        m_InputActions.Dispose();
-
-        if (m_TurnManager != null)
-            m_TurnManager.OnTick -= TurnHappened;
-    }
-
-    void Update()
-    {
-        if (m_IsGameOver)
+        void Start()
         {
-            HandleRestartInput();
-
-            return;
+            m_TurnManager = GameManager.Instance.TurnManager;
+            m_TurnManager.OnTick += TurnHappened;
         }
 
-        // Temporary debug logs (should be removed later)
-        if (Keyboard.current.vKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectEmpowered(2));
-
-        if (Keyboard.current.bKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectVulnerable(3));
-
-        if (Keyboard.current.nKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectWeak(4));
-
-        if (Keyboard.current.mKey.wasPressedThisFrame)
-            m_Combatant.ApplyStatusEffect(new StatusEffectStunned(1));
-
-        if (Keyboard.current.oKey.wasPressedThisFrame)
-            m_Combatant.TakeDamage(1);
-
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-            m_Combatant.Heal(1);
-
-        HandleMovementInput();
-    }
-
-    void HandleRestartInput()
-    {
-        if (m_InputActions.Player.Restart.WasPressedThisFrame())
-            GameManager.Instance.LevelManager.StartNewGame();
-    }
-
-    Vector2Int GetInputDirection()
-    {
-        if (m_InputActions.Player.MoveUp.WasPressedThisFrame())
-            return Vector2Int.up;
-        if (m_InputActions.Player.MoveDown.WasPressedThisFrame())
-            return Vector2Int.down;
-        if (m_InputActions.Player.MoveLeft.WasPressedThisFrame())
-            return Vector2Int.left;
-        if (m_InputActions.Player.MoveRight.WasPressedThisFrame())
-            return Vector2Int.right;
-
-        return Vector2Int.zero;
-    }
-
-    void HandleEnemyDamage(ICombatant enemy, Vector2Int target, BoardManager.CellData cell)
-    {
-        m_Combatant.AttackTarget(enemy, target - m_CellPosition);
-
-        if (enemy.HP <= 0)
+        void Awake()
         {
-            cell.ContainedObject = null;
+            m_InputActions = new PlayerInputActions();
+            m_SpriteRenderer = GetComponent<SpriteRenderer>();
 
-            MoveTo(target, false);
+            m_Combatant = GetComponent<Combatant>();
+            m_CombatantAnimator = GetComponent<CombatantAnimator>();
+            m_BoardManager = GameManager.Instance.BoardManager;
         }
-    }
 
-    void ResolvePlayerAction(BoardManager.CellData cell, Vector2Int target)
-    {
-        if (m_Combatant.IsStunned)
+        void OnEnable() => m_InputActions.Player.Enable();
+
+        void OnDisable() => m_InputActions.Player.Disable();
+
+        void OnDestroy()
         {
+            m_InputActions.Dispose();
+
+            if (m_TurnManager != null)
+                m_TurnManager.OnTick -= TurnHappened;
+        }
+
+        void Update()
+        {
+            if (m_IsGameOver)
+                return;
+
+            HandleMovementInput();
+        }
+
+        Vector2Int GetInputDirection()
+        {
+            if (m_InputActions.Player.MoveUp.WasPressedThisFrame())
+                return Vector2Int.up;
+            if (m_InputActions.Player.MoveDown.WasPressedThisFrame())
+                return Vector2Int.down;
+            if (m_InputActions.Player.MoveLeft.WasPressedThisFrame())
+                return Vector2Int.left;
+            if (m_InputActions.Player.MoveRight.WasPressedThisFrame())
+                return Vector2Int.right;
+
+            return Vector2Int.zero;
+        }
+
+        void ResolvePlayerAction(Vector2Int target)
+        {
+            if (m_Combatant.Statuses.IsStunned)
+            {
+                m_TurnManager.BeginTurn();
+
+                return;
+            }
+
+            ICellOccupant occupant = m_BoardManager.GetOccupantAt(target);
+
+            if (occupant == null)
+                m_Combatant.TryMoveTo(target);
+            else if (occupant is Combatant enemy)
+                m_Combatant.AttackTarget(enemy, target - m_Combatant.Cell);
+            else if (occupant is CellObject obj && obj.PlayerWantsToEnter())
+            {
+                obj.PlayerEntered(this);
+                m_Combatant.TryMoveTo(target);
+            }
+
             m_TurnManager.BeginTurn();
-
-            return;
         }
 
-        if (cell.ContainedObject == null)
-            MoveTo(target, false);
-        else if (cell.ContainedObject is ICombatant enemy)
-            HandleEnemyDamage(enemy, target, cell);
-        else if (cell.ContainedObject is CellObject obj && obj.PlayerWantsToEnter())
+        void HandleMovementInput()
         {
-            MoveTo(target, false);
-            obj.PlayerEntered(this);
+            if (m_TurnManager.IsProcessingTurn)
+                return;
+
+            Vector2Int direction = GetInputDirection();
+            if (direction == Vector2Int.zero)
+                return;
+
+            m_CombatantAnimator.SetSpriteFacing(direction);
+
+            Vector2Int target = m_Combatant.Cell + direction;
+
+            BoardManager.CellData cell = m_BoardManager.GetCellData(target);
+            if (cell == null || !cell.Passable)
+                return;
+
+            ResolvePlayerAction(target);
         }
 
-        m_TurnManager.BeginTurn();
-    }
+        void TurnHappened() => m_Combatant.Stats.ChangeStamina(-1);
 
-    void HandleMovementInput()
-    {
-        if (m_TurnManager.IsProcessingTurn)
-            return;
+        public void Init() => m_IsGameOver = false;
 
-        Vector2Int direction = GetInputDirection();
-        if (direction == Vector2Int.zero)
-            return;
+        public void GameOver() => m_IsGameOver = true;
 
-        m_CombatantAnimator.SetSpriteFacing(direction);
-
-        Vector2Int target = m_CellPosition + direction;
-
-        BoardManager.CellData cell = m_BoardManager.GetCellData(target);
-        if (cell == null || !cell.Passable)
-            return;
-
-        ResolvePlayerAction(cell, target);
-    }
-
-    void TurnHappened() => m_Combatant.DecrementStamina();
-
-    public void Init() => m_IsGameOver = false;
-
-    public void GameOver() => m_IsGameOver = true;
-
-    public void SetVisible(bool visible) => m_SpriteRenderer.enabled = visible;
-
-    public void Spawn(BoardManager boardManager, Vector2Int cell)
-    {
-        m_BoardManager = boardManager;
-        MoveTo(cell, true);
-    }
-
-    public void MoveTo(Vector2Int cell, bool snap)
-    {
-        Vector2Int direction = cell - m_CellPosition;
-        m_CellPosition = cell;
-
-        if (snap)
-            transform.position = m_BoardManager.CellToWorld(cell);
-        else
-            m_CombatantAnimator.PlayWalkAnimation(cell, direction);
+        public void Spawn(Vector2Int cell) => m_Combatant.Teleport(cell);
     }
 }

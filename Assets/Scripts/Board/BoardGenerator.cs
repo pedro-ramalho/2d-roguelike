@@ -1,183 +1,176 @@
 using System.Collections.Generic;
+using Core;
+using Enemy;
+using Food;
+using Level;
+using Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class BoardGenerator : MonoBehaviour
+namespace Board
 {
-    // Tiles
-    [SerializeField]
-    private Tile[] m_GroundTiles;
-
-    [SerializeField]
-    private Tile[] m_WallTiles;
-
-    // Prefabs
-    [SerializeField]
-    private WallObject m_WallPrefab;
-
-    [SerializeField]
-    private ExitCellObject m_ExitPrefab;
-
-    // Private references
-    private BoardManager m_BoardManager;
-    private TurnManager m_TurnManager;
-    private PlayerController m_PlayerController;
-    private LevelConfig m_CurrentConfig;
-
-    // Empty cells
-    private List<Vector2Int> m_EmptyCells;
-
-    // Level
-    private int m_CurrentLevel;
-
-    void GenerateWall()
+    public class BoardGenerator : MonoBehaviour
     {
-        int wallCount = Random.Range(
-            m_CurrentConfig.MinWallCount,
-            m_CurrentConfig.MaxWallCount + 1
-        );
+        [SerializeField]
+        private Tile[] m_GroundTiles;
 
-        for (int i = 0; i < wallCount; i++)
+        [SerializeField]
+        private Tile[] m_WallTiles;
+
+        [SerializeField]
+        private WallObject m_WallPrefab;
+
+        [SerializeField]
+        private ExitCellObject m_ExitPrefab;
+
+        private BoardManager m_BoardManager;
+        private LevelBand m_CurrentBand;
+
+        private List<Vector2Int> m_EmptyCells;
+
+        void Setup(BoardManager board)
         {
-            int randomIndex = Random.Range(0, m_EmptyCells.Count);
-            Vector2Int coord = m_EmptyCells[randomIndex];
-
-            m_EmptyCells.RemoveAt(randomIndex);
-            WallObject newWall = Instantiate(m_WallPrefab);
-
-            m_BoardManager.AddObject(newWall, coord);
+            m_BoardManager = board;
+            m_CurrentBand = GameManager.Instance.LevelManager.CurrentBand;
+            m_EmptyCells = new List<Vector2Int>();
         }
-    }
 
-    void GenerateFood()
-    {
-        foreach (var entry in m_CurrentConfig.FoodEntries)
+        void CreateBorderTile(Vector2Int coord)
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
+            Tile tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
+            m_BoardManager.SetCellTile(coord, tile);
+            m_BoardManager.SetCellPassable(coord, false);
+        }
 
-            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
+        void CreateGroundTile(Vector2Int coord)
+        {
+            Tile tile = m_GroundTiles[Random.Range(0, m_GroundTiles.Length)];
+            m_BoardManager.SetCellTile(coord, tile);
+            m_BoardManager.SetCellPassable(coord, true);
+            m_EmptyCells.Add(coord);
+        }
+
+        void CreateTile(int x, int y)
+        {
+            Vector2Int coord = new Vector2Int(x, y);
+
+            if (IsBorder(x, y))
+                CreateBorderTile(coord);
+            else
+                CreateGroundTile(coord);
+        }
+
+        void CreateTiles()
+        {
+            for (int y = 0; y < m_BoardManager.Height; y++)
+            for (int x = 0; x < m_BoardManager.Width; x++)
+                CreateTile(x, y);
+        }
+
+        void ReserveSpecialCells()
+        {
+            m_EmptyCells.Remove(new Vector2Int(1, 1));
+            m_EmptyCells.Remove(
+                new Vector2Int(m_BoardManager.Width - 2, m_BoardManager.Height - 2)
+            );
+        }
+
+        bool TryGetRandomEmptyCell(out Vector2Int coord)
+        {
+            if (m_EmptyCells.Count == 0)
+            {
+                coord = new Vector2Int(-1, -1);
+                return false;
+            }
+
+            int index = Random.Range(0, m_EmptyCells.Count);
+            coord = m_EmptyCells[index];
+            m_EmptyCells.RemoveAt(index);
+
+            return true;
+        }
+
+        void GenerateExitCell()
+        {
+            Vector2Int endCoord = new Vector2Int(
+                m_BoardManager.Width - 2,
+                m_BoardManager.Height - 2
+            );
+            m_BoardManager.Place(m_ExitPrefab, endCoord);
+        }
+
+        void GenerateWalls()
+        {
+            int count = Random.Range(m_CurrentBand.MinWallCount, m_CurrentBand.MaxWallCount + 1);
 
             for (int i = 0; i < count; i++)
             {
-                int randomIndex = Random.Range(0, m_EmptyCells.Count);
-                Vector2Int coord = m_EmptyCells[randomIndex];
-
-                m_EmptyCells.RemoveAt(randomIndex);
-
-                FoodObject newFood = Instantiate(entry.Prefab);
-                m_BoardManager.AddObject(newFood, coord);
+                if (TryGetRandomEmptyCell(out Vector2Int coord))
+                    m_BoardManager.Place(m_WallPrefab, coord);
             }
         }
-    }
 
-    bool IsEliteLevel(int level) =>
-        level % GameManager.Instance.ProgressionSettings.EliteCadence == 0;
-
-    EnemyController SpawnEnemy(EnemyController prefab)
-    {
-        if (m_EmptyCells.Count == 0)
-            return null;
-
-        int randomIndex = Random.Range(0, m_EmptyCells.Count);
-        Vector2Int coord = m_EmptyCells[randomIndex];
-        m_EmptyCells.RemoveAt(randomIndex);
-
-        EnemyController newEnemy = Instantiate(prefab);
-        m_BoardManager.SetCellOccupant(coord, newEnemy.Combatant);
-
-        newEnemy.Spawn(m_BoardManager, m_TurnManager, m_PlayerController, coord);
-
-        return newEnemy;
-    }
-
-    void GenerateEnemy()
-    {
-        List<EnemyController> spawned = new List<EnemyController>();
-
-        foreach (var entry in m_CurrentConfig.EnemyEntries)
+        void GenerateFood()
         {
-            if (entry.Prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
-
-            int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
-
-            for (int i = 0; i < count; i++)
+            foreach (var entry in m_CurrentBand.FoodEntries)
             {
-                EnemyController e = SpawnEnemy(entry.Prefab);
-                if (e != null)
-                    spawned.Add(e);
+                int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
+
+                for (int i = 0; i < count; i++)
+                    if (TryGetRandomEmptyCell(out Vector2Int coord))
+                        m_BoardManager.Place(entry.Prefab, coord);
             }
         }
 
-        foreach (var prefab in m_CurrentConfig.GuaranteedEnemies)
+        EnemyController SpawnEnemy(EnemyController prefab)
         {
-            if (prefab.FirstAllowedLevel > m_CurrentLevel)
-                continue;
+            if (!TryGetRandomEmptyCell(out Vector2Int coord))
+                return null;
 
-            EnemyController e = SpawnEnemy(prefab);
-            if (e != null)
-                spawned.Add(e);
+            EnemyController enemy = m_BoardManager.Place(prefab, coord);
+            enemy.Combatant.Stats.ApplyBandStats();
+
+            return enemy;
         }
 
-        if (IsEliteLevel(m_CurrentLevel) && spawned.Count > 0)
+        void GenerateEnemies()
         {
-            EnemyController chosen = spawned[Random.Range(0, spawned.Count)];
-            chosen.gameObject.AddComponent<EliteModifier>();
-        }
-    }
+            List<EnemyController> spawned = new List<EnemyController>();
 
-    public void GenerateBoard(
-        BoardManager boardManager,
-        TurnManager turnManager,
-        PlayerController playerController,
-        int currentLevel
-    )
-    {
-        m_BoardManager = boardManager;
-        m_TurnManager = turnManager;
-        m_PlayerController = playerController;
-        m_CurrentConfig = GameManager.Instance.LevelManager.CurrentConfig;
-        m_CurrentLevel = currentLevel;
-
-        if (m_CurrentConfig.UseSeed)
-            Random.InitState(m_CurrentConfig.Seed + m_CurrentLevel);
-
-        m_EmptyCells = new List<Vector2Int>();
-
-        for (int y = 0; y < boardManager.Height; y++)
-        {
-            for (int x = 0; x < boardManager.Width; x++)
+            foreach (var entry in m_CurrentBand.EnemyEntries)
             {
-                Tile tile;
-                Vector2Int coord = new Vector2Int(x, y);
+                int count = Random.Range(entry.MinCount, entry.MaxCount + 1);
 
-                bool isBorder =
-                    x == 0 || y == 0 || x == boardManager.Width - 1 || y == boardManager.Height - 1;
-                if (isBorder)
+                for (int i = 0; i < count; i++)
                 {
-                    tile = m_WallTiles[Random.Range(0, m_WallTiles.Length)];
-                    m_BoardManager.SetCellPassable(coord, false);
+                    EnemyController e = SpawnEnemy(entry.Prefab);
+                    if (e != null)
+                        spawned.Add(e);
                 }
-                else
-                {
-                    tile = m_GroundTiles[Random.Range(0, m_GroundTiles.Length)];
-                    m_BoardManager.SetCellPassable(coord, true);
-                    m_EmptyCells.Add(coord);
-                }
+            }
 
-                m_BoardManager.SetCellTile(coord, tile);
+            if (GameManager.Instance.LevelManager.IsEliteLevel() && spawned.Count > 0)
+            {
+                EnemyController chosen = spawned[Random.Range(0, spawned.Count)];
+
+                chosen.gameObject.AddComponent<EliteModifier>();
             }
         }
 
-        m_EmptyCells.Remove(new Vector2Int(1, 1));
+        bool IsBorder(int x, int y) =>
+            x == 0 || y == 0 || x == m_BoardManager.Width - 1 || y == m_BoardManager.Height - 1;
 
-        Vector2Int endCoord = new Vector2Int(boardManager.Width - 2, boardManager.Height - 2);
-        m_BoardManager.AddObject(Instantiate(m_ExitPrefab), endCoord);
-        m_EmptyCells.Remove(endCoord);
+        public void GenerateBoard(BoardManager board)
+        {
+            Setup(board);
 
-        GenerateWall();
-        GenerateFood();
-        GenerateEnemy();
+            CreateTiles();
+            ReserveSpecialCells();
+
+            GenerateExitCell();
+            GenerateWalls();
+            GenerateFood();
+            GenerateEnemies();
+        }
     }
 }

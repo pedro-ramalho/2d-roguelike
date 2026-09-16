@@ -1,174 +1,110 @@
 using System;
+using Board;
+using Combat;
+using Core;
+using Player;
 using UnityEngine;
 
-public abstract class EnemyController : MonoBehaviour
+namespace Enemy
 {
-    [SerializeField]
-    private int m_FirstAllowedLevel = 1;
-
-    // Private references
-    private BoardManager m_BoardManager;
-    private TurnManager m_TurnManager;
-    private PlayerController m_PlayerController;
-    private Combatant m_Combatant;
-    private CombatantAnimator m_CombatantAnimator;
-
-    // State
-    private Vector2Int m_Cell;
-
-    // Protected properties
-    protected CombatantAnimator Animator => m_CombatantAnimator;
-    protected Vector2Int PlayerCell => m_PlayerController.Cell;
-
-    // Public properties
-    public Combatant Combatant => m_Combatant;
-    public Vector2Int Cell => m_Cell;
-    public int FirstAllowedLevel => m_FirstAllowedLevel;
-
-    void Awake()
+    public abstract class EnemyController : MonoBehaviour
     {
-        m_Combatant = GetComponent<Combatant>();
-        m_CombatantAnimator = GetComponent<CombatantAnimator>();
+        // Private references
+        protected BoardManager m_BoardManager;
+        private TurnManager m_TurnManager;
+        private PlayerController m_PlayerController;
+        private Combatant m_Combatant;
+        private CombatantAnimator m_CombatantAnimator;
 
-        m_Combatant.Defeated += OnDefeated;
-    }
+        // Protected properties
+        protected CombatantAnimator Animator => m_CombatantAnimator;
+        protected Vector2Int PlayerCell => m_PlayerController.Combatant.Cell;
 
-    void Start() => m_TurnManager.OnTick += OnTurnHappened;
+        // Public properties
+        public Combatant Combatant => m_Combatant;
 
-    void OnDestroy()
-    {
-        if (m_TurnManager != null)
-            m_TurnManager.OnTick -= OnTurnHappened;
-
-        if (m_Combatant != null)
-            m_Combatant.Defeated -= OnDefeated;
-    }
-
-    void OnDefeated()
-    {
-        if (m_TurnManager != null)
-            m_TurnManager.OnTick -= OnTurnHappened;
-    }
-
-    bool MoveTo(Vector2Int coord)
-    {
-        BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
-
-        bool isInvalidCell =
-            (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
-        if (isInvalidCell)
-            return false;
-
-        Vector2Int direction = coord - m_Cell;
-
-        BoardManager.CellData currentCell = m_BoardManager.GetCellData(m_Cell);
-        currentCell.ContainedObject = null;
-
-        targetCell.ContainedObject = m_Combatant;
-        m_Cell = coord;
-
-        m_CombatantAnimator.PlayWalkAnimation(coord, direction);
-
-        return true;
-    }
-
-    void SnapTo(Vector2Int coord)
-    {
-        m_Cell = coord;
-        transform.position = m_BoardManager.CellToWorld(coord);
-    }
-
-    protected bool CanEnterCell(Vector2Int coord)
-    {
-        BoardManager.CellData targetCell = m_BoardManager.GetCellData(coord);
-
-        bool isInvalidCell =
-            (targetCell == null) || (!targetCell.Passable) || (targetCell.ContainedObject != null);
-        if (isInvalidCell)
-            return false;
-
-        return true;
-    }
-
-    protected bool TryMove(Vector2Int direction) => MoveTo(m_Cell + direction);
-
-    protected bool IsInLineOfSightToPlayer() =>
-        m_BoardManager.IsInLineOfSight(m_Cell, m_PlayerController.Cell);
-
-    protected bool IsAdjacentToPlayer(Vector2Int delta) =>
-        Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
-
-    protected void MoveTowards(Vector2Int delta)
-    {
-        Vector2Int xDirection = delta.x > 0 ? Vector2Int.right : Vector2Int.left;
-        Vector2Int yDirection = delta.y > 0 ? Vector2Int.up : Vector2Int.down;
-
-        bool prioritizeX = Mathf.Abs(delta.x) > Mathf.Abs(delta.y);
-
-        if (prioritizeX)
+        void Awake()
         {
-            if (!TryMove(xDirection))
-                TryMove(yDirection);
+            m_Combatant = GetComponent<Combatant>();
+            m_CombatantAnimator = GetComponent<CombatantAnimator>();
+
+            m_TurnManager = GameManager.Instance.TurnManager;
+            m_BoardManager = GameManager.Instance.BoardManager;
+            m_PlayerController = GameManager.Instance.PlayerController;
+
+            m_Combatant.Defeated += OnCombatantDefeated;
+            m_TurnManager.OnTick += OnTurnHappened;
         }
-        else
+
+        void OnDestroy()
         {
-            if (!TryMove(yDirection))
-                TryMove(xDirection);
+            if (m_TurnManager != null)
+                m_TurnManager.OnTick -= OnTurnHappened;
         }
-    }
 
-    protected Vector3 PlayerCellToWorld() => m_BoardManager.CellToWorld(PlayerCell);
+        void OnCombatantDefeated() => m_TurnManager.OnTick -= OnTurnHappened;
 
-    protected Vector2Int ComputeDeltaToPlayer() => m_PlayerController.Cell - m_Cell;
+        protected bool IsInLineOfSightToPlayer() =>
+            m_BoardManager.IsInLineOfSight(m_Combatant.Cell, m_PlayerController.Combatant.Cell);
 
-    protected void DealDamageToPlayer()
-    {
-        DamageResult result = m_Combatant.DealDamageTo(m_PlayerController.Combatant);
-        if (result.HPLost > 0)
-            Combatant.RollStatusOnHit(m_PlayerController.Combatant);
-    }
+        protected bool IsAdjacentToPlayer(Vector2Int delta) =>
+            Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1;
 
-    protected void AttackPlayer(Vector2Int direction)
-    {
-        DamageResult result = m_Combatant.AttackTarget(
-            m_PlayerController.Combatant,
-            new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y))
-        );
-        if (result.HPLost > 0)
-            Combatant.RollStatusOnHit(m_PlayerController.Combatant);
-    }
+        protected void MoveTowards(Vector2Int delta)
+        {
+            Vector2Int xDirection = delta.x > 0 ? Vector2Int.right : Vector2Int.left;
+            Vector2Int yDirection = delta.y > 0 ? Vector2Int.up : Vector2Int.down;
 
-    protected void ChaseOrAttack(Vector2Int delta)
-    {
-        m_CombatantAnimator.SetSpriteFacing(delta);
+            bool prioritizeX = Mathf.Abs(delta.x) > Mathf.Abs(delta.y);
 
-        if (IsAdjacentToPlayer(delta))
-            AttackPlayer(delta);
-        else
-            MoveTowards(delta);
-    }
+            if (prioritizeX)
+            {
+                if (!m_Combatant.TryMoveTo(m_Combatant.Cell + xDirection))
+                    m_Combatant.TryMoveTo(m_Combatant.Cell + yDirection);
+            }
+            else
+            {
+                if (!m_Combatant.TryMoveTo(m_Combatant.Cell + yDirection))
+                    m_Combatant.TryMoveTo(m_Combatant.Cell + xDirection);
+            }
+        }
 
-    void OnTurnHappened()
-    {
-        if (m_Combatant.IsStunned)
-            return;
+        protected Vector3 PlayerCellToWorld() => m_BoardManager.CellToWorld(PlayerCell);
 
-        ResolveEnemyAction();
-    }
+        protected Vector2Int ComputeDeltaToPlayer() =>
+            m_PlayerController.Combatant.Cell - m_Combatant.Cell;
 
-    protected abstract void ResolveEnemyAction();
+        protected void DealDamageToPlayer()
+        {
+            m_Combatant.DealDamageTo(m_PlayerController.Combatant);
+        }
 
-    public void Spawn(
-        BoardManager boardManager,
-        TurnManager turnManager,
-        PlayerController playerController,
-        Vector2Int cell
-    )
-    {
-        m_BoardManager = boardManager;
-        m_TurnManager = turnManager;
-        m_PlayerController = playerController;
+        protected void AttackPlayer(Vector2Int direction)
+        {
+            m_Combatant.AttackTarget(
+                m_PlayerController.Combatant,
+                new Vector2Int(Math.Sign(direction.x), Math.Sign(direction.y))
+            );
+        }
 
-        SnapTo(cell);
+        protected void ChaseOrAttack(Vector2Int delta)
+        {
+            m_CombatantAnimator.SetSpriteFacing(delta);
+
+            if (IsAdjacentToPlayer(delta))
+                AttackPlayer(delta);
+            else
+                MoveTowards(delta);
+        }
+
+        void OnTurnHappened()
+        {
+            if (m_Combatant.Statuses.IsStunned)
+                return;
+
+            ResolveEnemyAction();
+        }
+
+        protected abstract void ResolveEnemyAction();
     }
 }

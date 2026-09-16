@@ -1,0 +1,121 @@
+.menu-panel {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-panel {
+    flex-grow: 1;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel-label {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.menu-title {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    color: rgb(255, 255, 255);
+    font-size: 48px;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(27, 27, 27);
+    margin-bottom: 64px;
+}
+
+.credit-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.credit-icon {
+    width: 36px;
+    height: 36px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: 12px;
+}
+
+.credit-label {
+    font-size: 24px;
+}
+
+.menu-button {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    font-size: 28px;
+    width: 456px;
+    height: 48px;
+    margin-bottom: 16px;
+    background-color: rgb(36, 36, 36);
+    color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-color: rgb(255, 255, 255);
+}
+
+.menu-button:hover {
+    background-color: rgb(85, 85, 85);
+}
+
+.game-over-panel {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+}
+
+.game-over-panel--visible {
+    opacity: 1;
+}
+
+.game-over-banner {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+    color: rgb(255, 255, 255);
+    font-size: 42px;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(27, 27, 27);
+    margin-bottom: 64px;
+}
+
+.game-over-panel-label {
+    font-size: 18px;
+}
+.settings-slider {
+    -unity-font-definition: url("project://database/Assets/Roguelike2D/TutorialAssets/Fonts/PressStart2P-Regular.ttf");
+
+    color: rgb(255, 255, 255);
+    font-size: 28px;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(27, 27, 27);
+
+    width:425px;
+    margin-bottom:16px;
+}
+
+.settings-slider .unity-base-slider__label {
+    width: 200px;
+    min-width: 200px;
+    -unity-text-align: middle-left;
+}
+
+.settings-slider:hover .unity-base-slider__label,
+.settings-slider:focus .unity-base-slider__label {
+    color: rgb(255, 255, 255);
+}
+
+.settings-slider .unity-base-slider__dragger {
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+}
+
+.settings-slider .unity-base-slider__dragger:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+.hidden {
+    visibility: hidden;
+}

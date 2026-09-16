@@ -1,7 +1,8 @@
-using UnityEngine;
-
-public class StatusEffectStunned : StatusEffect
+namespace Status
 {
-    public StatusEffectStunned(int duration)
-        : base(StatusEffectType.Stunned, duration, true) { }
+    public class StatusEffectStunned : StatusEffect
+    {
+        public StatusEffectStunned(int duration)
+            : base(StatusEffectType.Stunned, duration, true) { }
+    }
 }

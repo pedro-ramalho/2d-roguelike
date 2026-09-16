@@ -31,5 +31,5 @@
 *.obj filter=lfs diff=lfs merge=lfs -text
 
 # Unity-specific binaries
-*.unity filter=lfs diff=lfs merge=lfs -text  # optional — see note below
-*.prefab filter=lfs diff=lfs merge=lfs -text # optional
+*.unity filter=lfs diff=lfs merge=lfs -text  
+*.prefab filter=lfs diff=lfs merge=lfs -text 

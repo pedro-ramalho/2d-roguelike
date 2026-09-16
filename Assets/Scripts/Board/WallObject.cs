@@ -1,48 +1,60 @@
+using Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class WallObject : CellObject
+namespace Board
 {
-    private int m_HealthPoint;
-    private Tile m_OriginalTile;
-
-    public Tile[] ObstacleTiles;
-    public int MaxHealth = 3;
-
-    Tile GetTileByHealthPoint()
+    public class WallObject : CellObject
     {
-        if (m_HealthPoint <= 0)
-            return null;
+        [Header("Wall Properties")]
+        [SerializeField]
+        private Tile[] m_ObstacleTiles;
 
-        return ObstacleTiles[MaxHealth - m_HealthPoint];
-    }
+        [SerializeField]
+        private int m_MaxHealth;
 
-    public override void Init(BoardManager board, Vector2Int cell)
-    {
-        base.Init(board, cell);
+        private int m_HealthPoint;
+        private Tile m_OriginalTile;
 
-        m_HealthPoint = MaxHealth;
+        public Tile[] ObstacleTiles => m_ObstacleTiles;
+        public int MaxHealth => m_MaxHealth;
 
-        m_OriginalTile = m_Board.GetCellTile(cell);
-        m_Board.SetCellTile(cell, GetTileByHealthPoint());
-    }
-
-    public override bool PlayerWantsToEnter()
-    {
-        m_HealthPoint--;
-
-        if (m_HealthPoint > 0)
+        protected override void Awake()
         {
-            m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
+            base.Awake();
 
-            return false;
+            m_HealthPoint = m_MaxHealth;
+            m_OriginalTile = m_Board.GetCellTile(m_Cell);
+            m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
         }
 
-        m_Board.SetCellTile(m_Cell, m_OriginalTile);
-        m_Board.ClearCell(m_Cell);
+        Tile GetTileByHealthPoint()
+        {
+            if (m_HealthPoint <= 0)
+                return null;
 
-        Destroy(gameObject);
+            return ObstacleTiles[MaxHealth - m_HealthPoint];
+        }
 
-        return true;
+        public override bool PlayerWantsToEnter()
+        {
+            m_HealthPoint--;
+
+            AudioManager.Instance.PlayWallBreakSFX();
+
+            if (m_HealthPoint > 0)
+            {
+                m_Board.SetCellTile(m_Cell, GetTileByHealthPoint());
+
+                return false;
+            }
+
+            m_Board.SetCellTile(m_Cell, m_OriginalTile);
+            m_Board.ClearCell(m_Cell);
+
+            Destroy(gameObject);
+
+            return true;
+        }
     }
 }
