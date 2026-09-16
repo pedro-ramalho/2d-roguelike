@@ -33,3 +33,7 @@
 # Unity-specific binaries
 *.unity filter=lfs diff=lfs merge=lfs -text  
 *.prefab filter=lfs diff=lfs merge=lfs -text 
+*.shader linguist-generated
+*.hlsl   linguist-generated
+*.cginc  linguist-generated
+*.shadergraph linguist-generated
