@@ -74,6 +74,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Auto-generated Unity UIElements schema
+/[Uu][Ii][Ee]lements[Ss]chema/
+
 # Misc.
 .vscode
 
